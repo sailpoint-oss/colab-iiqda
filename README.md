@@ -11,35 +11,10 @@
 [release-shield]: https://img.shields.io/github/v/release/sailpoint-oss/colab-iiqda?label=Current%20Release
 [contributor-shield]:https://img.shields.io/github/contributors/sailpoint-oss/colab-iiqda?label=Contributors
 
-[product-screenshot]: ./assets/images/api-linter-output.png
+# IIQ Deployment Accellerator
+[Explore the docs »](https://developer.sailpoint.com/discuss/t/identityiq-deployment-accelerator-iiqda/18131)
 
-<!-- PROJECT LOGO -->
-<br />
-<div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="https://avatars.githubusercontent.com/u/63106368?s=200&v=4" alt="Logo" width="80" height="80">
-  </a>
-
-  <h3 align="center">SailPoint OSS - README - Template</h3>
-
-  <p align="center">
-    An awesome README template to jumpstart your projects!
-    <br />
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <!-- <a href="https://github.com/sailpoint/repo-template">View Demo</a>
-    ·
-    <a href="https://github.com/sailpoint-oss/repo-template/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/sailpoint-oss/repo-template/issueschoose">Request Feature</a> -->
-  </p>
-</div>
-
-<!-- ABOUT THE PROJECT -->
-## About The Project
-
-For more information, see https://developer.sailpoint.com/discuss/t/identityiq-deployment-accelerator-iiqda/18131
+[New to the CoLab? Click here »](https://developer.sailpoint.com/discuss/t/about-the-sailpoint-developer-community-colab/11230)
 
 <!-- CONTRIBUTING -->
 ## Contributing
