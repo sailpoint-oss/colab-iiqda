@@ -1,0 +1,9 @@
+Fixed Issues:
+
+[174] Reverse substitution not working
+
+Enhancements:
+
+[152] Update for 7.1 beta
+[162] Break into separate plugins
+[175] Allow substitution of complex values

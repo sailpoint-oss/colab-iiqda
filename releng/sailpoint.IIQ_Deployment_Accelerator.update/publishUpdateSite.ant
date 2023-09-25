@@ -1,0 +1,93 @@
+<project name="PublishUpdateSite">  
+  <target name="publish.p2" depends="init,have-git,git-pull,do-copy,git-push">
+  	<echo>Git publish complete</echo>
+  </target>
+	
+  <target name="init" unless="git.tmp.exists">
+    <available property="git.tmp.exists" file="${git.temp.location}"/>
+  	<exec executable="hostname" outputproperty="computer.hostname"/>
+  </target>
+  	
+  <target name="do-copy">
+    <echo message="Source:      ${source}"/>  
+    <echo message="Destination: ${git.temp.location}"/>      
+    <copy todir="${git.temp.location}" preservelastmodified="true">  
+      <fileset dir="${source}"/>  
+    </copy>
+    <copy todir="${git.temp.location}" file="${buckminster.home}/../release notes.txt"/>  
+    <copy todir="${git.temp.location}" file="${buckminster.home}/../resources/Workflow-Importer.xml"/>
+    
+    <!-- This is to find the most recent file in the plugins directory. There must be a better way to do this -->
+    <property name="pluginloc" value="${git.temp.location}/plugins"/>
+    <script language="javascript">
+      var File=java.io.File;
+
+      fs = project.createDataType("fileset");
+      var loc=new File(pluginloc);
+      fs.setDir( loc );
+      fs.setIncludes("*.jar");
+
+      // Get the files (array) of that fileset
+      ds = fs.getDirectoryScanner(project);
+      srcFiles = ds.getIncludedFiles();
+      
+      var mostRecentFile=null;
+      var mostRecentDate=-1;          
+      for(var i = 0; i &lt; srcFiles.length; i++) {
+        var file=new File(loc, srcFiles[i]);
+        if (file.lastModified()>mostRecentDate) {
+          mostRecentFile=srcFiles[i];
+          mostRecentDate=file.lastModified();
+        }           
+      }
+      project.setProperty("mostRecent", mostRecentFile);
+    </script>
+
+    <replaceregexp file="${git.temp.location}/index.html" match="plugins/.*\.jar" replace="plugins/${mostRecent}"/>
+  </target>
+	
+	<target name="git-pull" if="${git.tmp.exists}">
+		<echo>Git Pull!!!</echo>
+		<exec executable="git" dir="${git.temp.location}">
+			<arg value="pull"/>
+	  </exec>
+	</target>
+
+  <target name="have-git" unless="git.tmp.exists">
+    <available property="git.tmp.exists" file="${git.temp.location}"/>
+    <!-- check for existing git checkout of https://github.com/sailpoint/epiiq/branches/gh-pages -->
+  	<echo>No location git copy found!!!</echo>
+  	<exec executable="git">
+  		<arg value="clone"/>
+  		<arg value="-b"/>
+  		<arg value="${git.branch}"/>
+  		<arg value="${git.location}"/>
+  		<arg value="${git.temp.location}"/>
+  	</exec>
+  </target>   
+
+  <target name="git-push">
+		<tstamp>
+		  <format property="commit.time" pattern="MM/dd/yyyy hh:mm aa"/>
+		</tstamp>
+		<property name="commit.message" value="Buckminster build on ${computer.hostname} at ${commit.time}"/>
+		<echo>Commit message: ${commit.message}</echo>
+		
+		<exec executable="git" dir="${git.temp.location}">
+  		<arg value="add"/>
+  		<arg value="."/>
+  	</exec>
+		
+		<exec executable="git" dir="${git.temp.location}">
+  		<arg value="commit"/>
+  		<arg value="-m"/>
+  		<arg value="${commit.message}"/>
+  	</exec>
+  	
+		<exec executable="git" dir="${git.temp.location}">
+  		<arg value="push"/>
+	  </exec>
+  	<echo>Git publish complete</echo>
+	</target>
+
+</project>  

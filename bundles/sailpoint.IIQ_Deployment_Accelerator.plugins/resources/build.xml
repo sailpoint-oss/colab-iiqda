@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Plugin Build File" default="package">
+
+  <!-- allow overriding of build properties -->
+  <property file="user.build.properties" />
+  <property file="build.properties" />
+
+  <property name="overlay" location="build/dist/overlay" />
+
+  <property name="dtd" location="build/sailpoint.dtd" />
+
+  <taskdef name="xmltask" classname="com.oopsconsultancy.xmltask.ant.XmlTask">
+    <classpath>
+      <pathelement location="lib/xmltask.jar" />
+    </classpath>
+  </taskdef>
+
+  <target name="setpath" depends="set_project_classpath,set_cmdline_classpath">
+    <!-- This target will set the classpath correctly based on whether the   -->
+    <!-- build is run from Eclipse or the command line. If run from Eclipse, -->
+    <!-- you will need to add "-Dproject_classpath=${project_classpath}" to  -->
+    <!-- the run configuration of build.xml -->
+  </target>
+
+  <target name="set_project_classpath" if="project_classpath">
+    <path id="build.compile.classpath">
+      <pathelement path="${project_classpath}" />
+    </path>
+  </target>
+  <target name="set_cmdline_classpath" unless="project_classpath">
+    <path id="build.compile.classpath">
+      <pathelement path="${iiq.home}/WEB-INF/classes" />
+      <fileset dir="${iiq.home}/WEB-INF/lib">
+        <include name="**/*.jar" />
+      </fileset>
+      <!-- include the libraries we just reference (ones that are in the 
+           project for reference but are really part of the IIQ deployment -->
+      <fileset dir="./lib" erroronmissingdir="false">
+        <include name="**/*.jar" />
+      </fileset>
+      <!-- include the libraries we include in the plugin project -->
+      <fileset dir="./includes" erroronmissingdir="false">
+        <include name="**/*.jar" />
+      </fileset>
+    </path>
+  </target>
+
+  <target name="clean">
+    <delete dir="build" />
+  </target>
+
+  <target name="compile" depends="setpath">
+    <mkdir dir="build/classes" />
+    <pathconvert property="classpathProp" refid="build.compile.classpath" />
+    <javac srcdir="src" destdir="build/classes" debug="true" classpathref="build.compile.classpath" includeantruntime="last">
+    </javac>
+    <!-- don't know if we're ever going to modify hibernate with a plugin..
+    <copy todir="build/classes">
+      <fileset dir="src">
+        <include name="**/*.hbm.xml" />
+      </fileset>
+    </copy>
+    -->
+  </target>
+
+  <target name="checkDTD">
+    <available property="dtd.exists" file="${dtd}" />
+  </target>
+  <target name="generateDTD" depends="checkDTD" unless="dtd.exists">
+    <java classname="sailpoint.launch.Launcher" fork="true" classpathref="build.compile.classpath">
+      <arg line="sailpoint.tools.xml.DTDGenerator '${dtd}'" />
+    </java>
+  </target>
+
+  <target name="package" depends="compile,generateDTD" description="Output zip file overlay to build/dist dir">
+    <mkdir dir="${overlay}/jars" />
+    <buildnumber file="build.num"/>
+    <jar destfile="${overlay}/jars/${pluginname}.jar">
+      <fileset dir="build/classes">
+        <include name="**/**" />
+      </fileset>
+      <!-- this will add resources that were in the src area for getResourceAsStream calls -->
+      <fileset dir="src">
+        <exclude name="**/*.java" />
+      </fileset>
+    </jar>
+    <copy todir="${overlay}">
+      <fileset dir="web">
+        <include name="manifest.xml"/>
+        <include name="ui/**"/>
+      </fileset>
+      <fileset dir=".">
+        <include name="import/**"/>
+        <include name="db/**"/>
+      </fileset>
+    </copy>
+
+    <xmltask source="${overlay}/manifest.xml" dest="${overlay}/manifest.xml" outputter="default" preservetype="true">
+      <xmlcatalog>
+        <dtd publicId="sailpoint.dtd" location="${dtd}" />
+      </xmlcatalog>
+      <replace path="//Plugin/@version" withText="${version}.${build.number}" />
+    </xmltask>
+    <zip basedir="${overlay}" destfile="build/dist/${pluginname}.${version}.${build.number}.zip" />
+  </target>
+  
+</project>

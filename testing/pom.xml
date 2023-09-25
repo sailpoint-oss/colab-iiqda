@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><project>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>sailpoint.IIQ_Deployment_Accelerator.testing</artifactId>
+    <packaging>pom</packaging>
+
+    <parent>
+        <groupId>sailpoint.IIQ_Deployment_Accelerator</groupId>
+        <artifactId>IIQ_Deployment_Accelerator</artifactId>
+        <version>4.0.3-SNAPSHOT</version>
+    </parent>
+
+    <modules>
+        <module>sailpoint.IIQ_Deployment_Accelerator.testing.IIQ</module>
+        <module>sailpoint.IIQ_Deployment_Accelerator.testing.IIQ.UI</module>
+    </modules>
+</project>

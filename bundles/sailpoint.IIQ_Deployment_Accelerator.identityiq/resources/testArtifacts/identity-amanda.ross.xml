@@ -1,0 +1,319 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE Identity PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+<Identity correlated="true" created="1321562298822" id="4028770633b33e610133b34059c60244" lastLogin="1328261375815" lastRefresh="1327672049417" managerStatus="true" modified="1328261375818" name="Amanda.Ross" password="1:JlrOP/UBonF7u1wXAXVWgw==">
+  <Attributes>
+    <Map>
+      <entry key="Department" value="Regional Operations"/>
+      <entry key="costcenter">
+        <value>
+          <List>
+            <String>R01</String>
+            <String>L03</String>
+          </List>
+        </value>
+      </entry>
+      <entry key="displayName" value="Amanda Ross"/>
+      <entry key="email" value="Amanda.Ross@demoexample.com"/>
+      <entry key="empId" value="1b2c"/>
+      <entry key="employeeType" value="Employee"/>
+      <entry key="firstname" value="Amanda"/>
+      <entry key="jobtitle" value="Accounting Line Manager"/>
+      <entry key="lastname" value="Ross"/>
+      <entry key="location" value="London"/>
+      <entry key="region" value="Europe"/>
+      <entry key="triggerSnapshots">
+        <value>
+          <Map>
+            <entry key="AttributeChange">
+              <value>
+                <Attributes>
+                  <Map>
+                    <entry key="Department" value="Regional Operations"/>
+                    <entry key="costcenter">
+                      <value>
+                        <List>
+                          <String>R01</String>
+                          <String>L03</String>
+                        </List>
+                      </value>
+                    </entry>
+                    <entry key="displayName" value="Amanda Ross"/>
+                    <entry key="email" value="Amanda.Ross@demoexample.com"/>
+                    <entry key="empId" value="1b2c"/>
+                    <entry key="employeeType" value="Employee"/>
+                    <entry key="firstname" value="Amanda"/>
+                    <entry key="jobtitle" value="Accounting Line Manager"/>
+                    <entry key="lastname" value="Ross"/>
+                    <entry key="location" value="London"/>
+                    <entry key="region" value="Europe"/>
+                  </Map>
+                </Attributes>
+              </value>
+            </entry>
+            <entry key="ManagerTransfer" value="Jerry.Bennett"/>
+          </Map>
+        </value>
+      </entry>
+    </Map>
+  </Attributes>
+  <UIPreferencesRef>
+    <Reference class="sailpoint.object.UIPreferences" id="4028770633b342860133c70c232917cd"/>
+  </UIPreferencesRef>
+  <AttributeMetaDatas>
+    <AttributeMetaData attribute="region" source="HR_Employees:region"/>
+    <AttributeMetaData attribute="Department" source="HR_Employees:department"/>
+    <AttributeMetaData attribute="location" source="HR_Employees:location"/>
+    <AttributeMetaData attribute="empId" source="HR_Employees:employeeId"/>
+    <AttributeMetaData attribute="jobtitle" source="HR_Employees:jobtitle"/>
+    <AttributeMetaData attribute="inactive" source="HR_Employees:inactiveIdentity"/>
+    <AttributeMetaData attribute="email" source="HR_Employees:email"/>
+    <AttributeMetaData attribute="firstname" source="HR_Employees:firstName"/>
+    <AttributeMetaData attribute="lastname" source="HR_Employees:lastName"/>
+    <AttributeMetaData attribute="costcenter" source="HR_Employees:costcenter"/>
+    <AttributeMetaData attribute="employeeType" source="HR_Employees:employeeType"/>
+    <AttributeMetaData attribute="manager" source="HR_Employees:managerId"/>
+  </AttributeMetaDatas>
+  <Exceptions>
+    <EntitlementGroup created="1327654239815" displayName="Amanda.Ross" id="00000000351a49fe01351e5bfe47003b" instance="101" nativeIdentity="Amanda.Ross">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="8a80828f34d1de3b01350f4d0702008b" name="Instances"/>
+      </ApplicationRef>
+      <Attributes>
+        <Map>
+          <entry key="function">
+            <value>
+              <List>
+                <String>1000</String>
+                <String>1002</String>
+                <String>1004</String>
+                <String>1005</String>
+              </List>
+            </value>
+          </entry>
+        </Map>
+      </Attributes>
+    </EntitlementGroup>
+    <EntitlementGroup created="1327654239816" displayName="Amanda.Ross" id="00000000351a49fe01351e5bfe48003c" instance="103" nativeIdentity="Amanda.Ross">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="8a80828f34d1de3b01350f4d0702008b" name="Instances"/>
+      </ApplicationRef>
+      <Attributes>
+        <Map>
+          <entry key="function">
+            <value>
+              <List>
+                <String>2001</String>
+                <String>2003</String>
+                <String>1006</String>
+                <String>2007</String>
+                <String>2008</String>
+              </List>
+            </value>
+          </entry>
+        </Map>
+      </Attributes>
+    </EntitlementGroup>
+  </Exceptions>
+  <Manager>
+    <Reference class="sailpoint.object.Identity" id="4028770633b340c00133b34140d101ed" name="Jerry.Bennett"/>
+  </Manager>
+  <RoleMetadatas>
+    <Reference class="sailpoint.object.RoleMetadata" id="4028770633b342860133b346ed820a8e" name="User Basic"/>
+  </RoleMetadatas>
+  <Workgroups>
+    <Reference class="sailpoint.object.Identity" id="4028770633b340c00133b34140e001ee" name="Accounting Managers"/>
+    <Reference class="sailpoint.object.Identity" id="4028770633b33e610133b3404f230232" name="ERP Global App Owners"/>
+  </Workgroups>
+  <AuthenticationAnswers>
+    <AuthenticationAnswer answer="1:z4iVZQWhlQbXL01ZU2WdOw==" created="1321629923170" id="4028770633b342860133b7483762124a">
+      <QuestionRef>
+        <Reference class="sailpoint.object.AuthenticationQuestion" id="4028770633b33e610133b3401e1801f7"/>
+      </QuestionRef>
+    </AuthenticationAnswer>
+    <AuthenticationAnswer answer="1:MAffkt8n/oj3+JClpNnT9w==" created="1321629923170" id="4028770633b342860133b7483762124b">
+      <QuestionRef>
+        <Reference class="sailpoint.object.AuthenticationQuestion" id="4028770633b33e610133b3401e1101f6"/>
+      </QuestionRef>
+    </AuthenticationAnswer>
+    <AuthenticationAnswer answer="1:WE6CVqw61KDeBZL73Xi3zQ==" created="1321629923170" id="4028770633b342860133b7483762124c">
+      <QuestionRef>
+        <Reference class="sailpoint.object.AuthenticationQuestion" id="4028770633b33e610133b3401e0b01f5"/>
+      </QuestionRef>
+    </AuthenticationAnswer>
+  </AuthenticationAnswers>
+  <Links>
+    <Link created="1321562487499" displayName="Amanda.Ross" id="4028770633b342860133b3433acb00d6" lastRefresh="1327672000839" modified="1327672000873" identity="1b2c">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="4028770633b33e610133b34050e20236" name="HR_Employees"/>
+      </ApplicationRef>
+      <Attributes>
+        <Map>
+          <entry key="costcenter">
+            <value>
+              <List>
+                <String>R01</String>
+                <String>L03</String>
+              </List>
+            </value>
+          </entry>
+          <entry key="department" value="Regional Operations"/>
+          <entry key="email" value="Amanda.Ross@demoexample.com"/>
+          <entry key="employeeId" value="1b2c"/>
+          <entry key="employeeType" value="Employee"/>
+          <entry key="firstName" value="Amanda"/>
+          <entry key="fullName" value="Amanda.Ross"/>
+          <entry key="inactiveIdentity" value="0"/>
+          <entry key="jobtitle" value="Accounting Line Manager"/>
+          <entry key="lastName" value="Ross"/>
+          <entry key="location" value="London"/>
+          <entry key="managerId" value="1b"/>
+          <entry key="region" value="Europe"/>
+        </Map>
+      </Attributes>
+    </Link>
+    <Link created="1321562509876" displayName="aross" id="4028770633b342860133b34392340243" key1="S-1-5-21-1880283912-3104463022-3865894411-4767" lastRefresh="1321727097425" modified="1327654239817" identity="CN=Amanda Ross,OU=Users,OU=Demo,DC=sailpointdemo,DC=com">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="4028770633b340c00133b341251b0178" name="Active_Directory"/>
+      </ApplicationRef>
+      <Attributes>
+        <Map>
+          <entry key="IIQDisabled">
+            <value>
+              <Boolean></Boolean>
+            </value>
+          </entry>
+          <entry key="IIQLocked">
+            <value>
+              <Boolean></Boolean>
+            </value>
+          </entry>
+          <entry key="UG_DEF" value="CN=Domain Users,CN=Users,DC=sailpointdemo,DC=com"/>
+          <entry key="USER_ID" value="CN=Amanda Ross,OU=Users,OU=Demo,DC=sailpointdemo,DC=com"/>
+          <entry key="USER_OE_PR" value="OU=Users,OU=Demo,DC=sailpointdemo,DC=com"/>
+          <entry key="city" value="London"/>
+          <entry key="department" value="Regional Operations"/>
+          <entry key="displayName" value="Amanda Ross"/>
+          <entry key="givenName" value="Amanda"/>
+          <entry key="lastName" value="Ross"/>
+          <entry key="name" value="Amanda Ross"/>
+          <entry key="objectSid" value="S-1-5-21-1880283912-3104463022-3865894411-4767"/>
+          <entry key="sAMAccountName" value="aross"/>
+        </Map>
+      </Attributes>
+    </Link>
+    <Link created="1321562565730" displayName="Amanda Ross" id="4028770633b342860133b3446c62030a" lastRefresh="1327672018207" modified="1327672018219" identity="179">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="4028770633b33e610133b34058c80242" name="ERP_ApplicationTier"/>
+      </ApplicationRef>
+      <Attributes>
+        <Map>
+          <entry key="dbId" value="179"/>
+          <entry key="email" value="Amanda.Ross@demoexample.com"/>
+          <entry key="employeeId" value="1b2c"/>
+          <entry key="fullName" value="Amanda Ross"/>
+          <entry key="lastName" value="Ross"/>
+        </Map>
+      </Attributes>
+    </Link>
+    <Link created="1327401800350" entitlements="true" id="8a80828f34d1de3b01350f50129e0093" instance="101" lastRefresh="1327478931977" modified="1327654239817" identity="Amanda.Ross">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="8a80828f34d1de3b01350f4d0702008b" name="Instances"/>
+      </ApplicationRef>
+      <Attributes>
+        <Map>
+          <entry key="function">
+            <value>
+              <List>
+                <String>1000</String>
+                <String>1002</String>
+                <String>1004</String>
+                <String>1005</String>
+              </List>
+            </value>
+          </entry>
+          <entry key="id" value="Amanda.Ross"/>
+          <entry key="office">
+            <value>
+              <List>
+                <String>101</String>
+              </List>
+            </value>
+          </entry>
+        </Map>
+      </Attributes>
+    </Link>
+    <Link created="1327401800552" entitlements="true" id="8a80828f34d1de3b01350f5013680094" instance="103" lastRefresh="1327478931951" modified="1327654239817" identity="Amanda.Ross">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="8a80828f34d1de3b01350f4d0702008b" name="Instances"/>
+      </ApplicationRef>
+      <Attributes>
+        <Map>
+          <entry key="function">
+            <value>
+              <List>
+                <String>2001</String>
+                <String>2003</String>
+                <String>1006</String>
+                <String>2007</String>
+                <String>2008</String>
+              </List>
+            </value>
+          </entry>
+          <entry key="id" value="Amanda.Ross"/>
+          <entry key="office">
+            <value>
+              <List>
+                <String>103</String>
+              </List>
+            </value>
+          </entry>
+        </Map>
+      </Attributes>
+    </Link>
+  </Links>
+  <Scorecard certificationScore="1000" compositeScore="212" created="1327654239865" entitlementScore="225" id="00000000351a49fe01351e5bfe79003d" rawEntitlementScore="225">
+    <Attributes>
+      <Map>
+        <entry key="inactiveUser" value="0"/>
+      </Map>
+    </Attributes>
+    <ScoreItem compositePercentage="47" score="1000" scorePercentage="100" type="Certification Age">
+      <TargetMessage>
+        <Message key="cert_scorer_target_id_not_certified" type="Info"/>
+      </TargetMessage>
+    </ScoreItem>
+    <ScoreItem compositePercentage="29" score="125" scorePercentage="55" type="Entitlement Compensated Score">
+      <TargetMessage>
+        <Message key="entitlement_scorer_entitlement_target_desc" type="Info">
+          <Parameters>
+            <String>Instances</String>
+            <String>function</String>
+            <List>
+              <String>2001</String>
+              <String>2003</String>
+              <String>1006</String>
+              <String>2007</String>
+              <String>2008</String>
+            </List>
+          </Parameters>
+        </Message>
+      </TargetMessage>
+    </ScoreItem>
+    <ScoreItem compositePercentage="23" score="100" scorePercentage="44" type="Entitlement Compensated Score">
+      <TargetMessage>
+        <Message key="entitlement_scorer_entitlement_target_desc" type="Info">
+          <Parameters>
+            <String>Instances</String>
+            <String>function</String>
+            <List>
+              <String>1000</String>
+              <String>1002</String>
+              <String>1004</String>
+              <String>1005</String>
+            </List>
+          </Parameters>
+        </Message>
+      </TargetMessage>
+    </ScoreItem>
+  </Scorecard>
+</Identity>

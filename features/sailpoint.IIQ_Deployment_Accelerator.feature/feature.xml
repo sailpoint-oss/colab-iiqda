@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="sailpoint.IIQ_Deployment_Accelerator.feature"
+      label="IdentityIQ Deployment Accelerator Feature"
+      version="4.0.3.qualifier">
+
+   <description url="http://www.example.com/description">
+      This feature provides functionality around the SailPoint portfolio
+of products. It provides features such as 
+- Import/export of various configuration objects
+- Rule editor with syntax checking
+- Workflow editing (including features such as rename step)
+- IdentityNow transform editing
+
+Please check the License Agreement; this tool is worked on in our spare time and as such could contain bugs that may not get fixed in a timely fashion. All questions relating to the plugin should be entered on the Compass &apos;Deployment Accelerator&apos; forum here: https://community.sailpoint.com/community/identityiq/forums/
+   </description>
+
+   <copyright url="http://www.example.com/copyright">
+      Copyright notice
+   </copyright>
+
+   <license url="">
+      By downloading and/or using the IdentityIQ Deployment Accelerator (IIQDA), user agrees to the following terms:
+ 
+This IdentityIQ Deployment Accelerator (IIQDA) is being made available for convenience of the user.  Each user is solely responsible for determining the appropriateness of using and distributing the program and assumes all risks associated with its use, including but not limited to the risks and costs of program errors, compliance with applicable laws, damage to or loss of data, programs or equipment, and unavailability or interruption of operations.
+ 
+THIS SOFTWARE IS PROVIDED &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE PROVIDER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ 
+Provider of the program assumes no obligation to update or maintain the program, to provide support with respect to the program or repair or replace the program.  Use of the program is at the sole risk of the user.
+   </license>
+
+   <plugin
+         id="sailpoint.IIQ_Deployment_Accelerator.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.Plugins"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="sailpoint.IIQ_Deployment_Accelerator.LogView"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="sailpoint.IIQ_Deployment_Accelerator.IdentityNow"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

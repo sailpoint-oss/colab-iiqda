@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE sailpoint PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+<sailpoint>
+    <ImportAction name="merge">
+        <Configuration name="PluginFrameworkConfig">
+            <Attributes>
+                <Map>
+                    <entry key="Plugins">
+                        <value>
+                            <Map>
+                                <entry>
+                                    <value>
+                                        <Plugin certificationLevel="NONE">
+                                            <PluginConfiguration>
+                                            </PluginConfiguration>
+                                            <ConfigurableSettings>
+                                            </ConfigurableSettings>
+                                        </Plugin>
+                                    </value>
+                                </entry>
+                            </Map>
+                        </value>
+                    </entry>
+                </Map>
+            </Attributes>
+        </Configuration>
+    </ImportAction>
+</sailpoint>

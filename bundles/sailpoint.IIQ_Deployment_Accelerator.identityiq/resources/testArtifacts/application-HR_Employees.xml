@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE Application PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+<Application authoritative="true" connector="sailpoint.connector.JDBCConnector" created="1321562296546" id="4028770633b33e610133b34050e20236" modified="1327672005139" name="HR_Employees" profileClass="" type="JDBC">
+  <Attributes>
+    <Map>
+      <entry key="SQL" value="select * from EMPLOYEES where employeeType=&quot;E&quot;"/>
+      <entry key="acctAggregationEnd">
+        <value>
+          <Date>1327672005138</Date>
+        </value>
+      </entry>
+      <entry key="acctAggregationStart">
+        <value>
+          <Date>1327671992558</Date>
+        </value>
+      </entry>
+      <entry key="buildMapRule" value="Build Map - HR"/>
+      <entry key="driverClass" value="com.mysql.jdbc.Driver"/>
+      <entry key="mergeRows">
+        <value>
+          <Boolean></Boolean>
+        </value>
+      </entry>
+      <entry key="password" value="1:+rujZPK3O32hnyr7pR9vFw=="/>
+      <entry key="templateApplication" value="JDBC Template"/>
+      <entry key="url" value="jdbc:mysql://localhost/ahoy"/>
+      <entry key="user" value="root"/>
+    </Map>
+  </Attributes>
+  <CreationRule>
+    <Reference class="sailpoint.object.Rule" id="4028770633b33e610133b3404539021a" name="Set Password Identity Rule"/>
+  </CreationRule>
+  <ManagerCorrelationRule>
+    <Reference class="sailpoint.object.Rule" id="4028770633b33e610133b34042c50216" name="Auth Manager Correlation"/>
+  </ManagerCorrelationRule>
+  <Owner>
+    <Reference class="sailpoint.object.Identity" id="4028770633b33e610133b34066160287" name="John.Williams"/>
+  </Owner>
+  <Schemas>
+    <Schema created="1321562348922" displayAttribute="fullName" id="4028770633b340c00133b3411d7a016c" identityAttribute="employeeId" instanceAttribute="" nativeObjectType="account" objectType="account">
+      <AttributeDefinition name="employeeId" remediationModificationType="None" type="string">
+        <Description>Employee Id</Description>
+      </AttributeDefinition>
+      <AttributeDefinition name="firstName" remediationModificationType="None" type="string">
+        <Description>First Name</Description>
+      </AttributeDefinition>
+      <AttributeDefinition name="lastName" remediationModificationType="None" type="string">
+        <Description>Last Name</Description>
+      </AttributeDefinition>
+      <AttributeDefinition name="managerId" remediationModificationType="None" type="string">
+        <Description>Manager Id</Description>
+      </AttributeDefinition>
+      <AttributeDefinition name="fullName" remediationModificationType="None" type="string">
+        <Description>Full Name</Description>
+      </AttributeDefinition>
+      <AttributeDefinition name="email" remediationModificationType="None" type="string">
+        <Description>Email Address</Description>
+      </AttributeDefinition>
+      <AttributeDefinition name="department" remediationModificationType="None" type="string">
+        <Description>Department</Description>
+      </AttributeDefinition>
+      <AttributeDefinition name="region" remediationModificationType="None" type="string">
+        <Description>Region</Description>
+      </AttributeDefinition>
+      <AttributeDefinition name="location" remediationModificationType="None" type="string">
+        <Description>Location</Description>
+      </AttributeDefinition>
+      <AttributeDefinition name="inactiveIdentity" remediationModificationType="None" type="string">
+        <Description>Inactive Identity</Description>
+      </AttributeDefinition>
+      <AttributeDefinition name="jobtitle" remediationModificationType="None" type="string">
+        <Description>Job Title</Description>
+      </AttributeDefinition>
+      <AttributeDefinition name="employeeType" remediationModificationType="None" type="string">
+        <Description>User Type</Description>
+      </AttributeDefinition>
+      <AttributeDefinition multi="true" name="costcenter" remediationModificationType="None" source="null.null" type="string">
+        <Description>Cost Center</Description>
+      </AttributeDefinition>
+    </Schema>
+  </Schemas>
+  <ApplicationScorecard compositeScore="1000" created="1321562708832" id="4028770633b342860133b3469b6009ec">
+    <Attributes>
+      <Map>
+        <entry key="inactiveAccount" value="0"/>
+        <entry key="privilegedAccount" value="0"/>
+        <entry key="serviceAccount" value="0"/>
+        <entry key="totalEntitlements" value="0"/>
+        <entry key="totalLinks" value="177"/>
+        <entry key="violatorAccount" value="1000"/>
+      </Map>
+    </Attributes>
+    <ScoreItem compositePercentage="100" score="1000" scorePercentage="100" type="Violator Account">
+      <SuggestionMessage>
+        <Message key="score_def_violatorAccount_suggest" type="Info"/>
+      </SuggestionMessage>
+      <TargetMessage>
+        <Message key="link_attr_scorer_match_count" type="Info">
+          <Parameters>
+            <String>40</String>
+            <String>177</String>
+          </Parameters>
+        </Message>
+      </TargetMessage>
+    </ScoreItem>
+  </ApplicationScorecard>
+</Application>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/sailpoint.IIQ_Deployment_Accelerator.feature_4.0.3.qualifier.jar" id="sailpoint.IIQ_Deployment_Accelerator.feature" version="4.0.3.qualifier">
+      <category name="sailpoint"/>
+   </feature>
+   <category-def name="sailpoint" label="SailPoint"/>
+</site>

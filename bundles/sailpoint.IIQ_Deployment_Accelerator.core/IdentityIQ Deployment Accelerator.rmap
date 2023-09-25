@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rm:rmap xmlns:rm="http://www.eclipse.org/buckminster/RMap-1.0">
+  <rm:locator pattern="^sailpoint\.IdentityIQ_Deployment_Accelerator" searchPathRef="iiqda"/>
+  <rm:searchPath name="iiqda">
+    <rm:provider componentTypes="osgi.bundle" readerType="git">
+      <rm:property
+ key="git.remote.uri"
+ value="https://github.com/sailpoint/epiiq.git/branches/develop"/>
+    </rm:provider>
+  </rm:searchPath>
+</rm:rmap>

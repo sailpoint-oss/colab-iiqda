@@ -1,0 +1,158 @@
+
+Since 4.0.0 xx Dec 2017
+- Moved to a feature rather than a plugin, to separate functionality for different products
+- Fixed a bug where some rules were not exhibiting autocomplete/error highlighting
+- Fixed a bug where an error in an Expect: comment would stop any imports working
+- Added a configuration setting to open/not open imported files; useful when importing large numbers of objects at once
+- Early access version of IdentityNow functionality; imports Sources, import/export transforms
+
+
+
+
+Since 3.0.1 27 Feb 2017
+- Fixed the log view not loading any more, and also now loads on Luna (again)
+
+
+Since 3.0
+
+- New wizard to build IdentityIQ Plugin projects 
+
+
+Since 2.2 21 Jan 2016
+- Problems with a quick-fix can be fixed from within the editor; position the cursor inside the error and hit CTRL-1
+- The 'system' folder inside a project is no longer required. Any reference to external objects (e.g. standard IIQ objects)
+  is now achieved by setting a project reference in your Eclipse project. Go to Project Properties->Project References
+  and add it there
+- Colons in object names are translated to underscores in filename during import
+- Insert step in a workflow. Right-click on a <Step> declaration in a workflow, then click Source->Insert step. After giving
+  a name, a new step will be created, that transitions to the step you clicked on. All the <Transition>s that went to the
+  original step, will now go to the new step.
+- Rename step in a workflow. Right-click on a <Step> declaration in a workflow, then click Refactor->Rename step. After giving
+  a name, the step will be renamed. All the <Transition>s that go to the step will be updated.
+- Custom compare filters. 'Compare with remote' now has custom filters to ignore differences that are due to the way Hibernate
+  persists objects. id/created/modified attributes, quote mark differences, CDATA tags and entity references can now be
+  filtered out of the list of differences.
+- Outline view for Workflows. The Outline View in Eclipse will now show a more accurate model of a workflow when open in the
+  main editor window, rather than just a generic XML view.
+- Connection timeout in Project Properties page has changed from a slider to a text box, to allow larger timeouts to be entered
+- Updated the 'most recently changed' tab for Import Artifact, so that the list of filtered types from the client is sent to
+  the server. This allows us to limit the list of objects retrieved on the server side before we return a maximum number.
+  Previously we would retrieve all objects, return a maximum number and then filter on the client side. This mean the list
+  would often contain far fewer objects than it should. 
+- Added ability to Hot Deploy classes. This will replace a class in the running Tomcat with the local version. Some caveats:
+      - The class has to be loaded (i.e. it must have been used at least once in the running IIQ)
+      - Inner classes are not supported (they will return a 'delete not implemented error'; this is a JVM limitation)
+      - Tomcat must be started with the 'jpda' option
+      - For existing projects, you can manually add
+          debugTransport=dt_socket
+          debugPort=<port, default is 8000>
+        to the *.target.properties files
+      - Then, simply right-click on the .java file, select the target, and the class will be replaced (until a restart of Tomcat)
+- Updated Workflow-Import.xml for 7.0
+
+
+Since 2.1 14 Jul 2015
+- List of required JARs for a new project is now configurable (within the plugin - there is a file resources/requiredJars.txt)
+- Fixed the ability to import workgroups
+- Fixed an issue with UTF-8 import/export
+- Added the ability to import setup.xml files (collections of <ImportAction> statements)
+- Open Declaration (F3) will now go to the <Step> referenced in a <Transition> element, as well as already opening the file
+  containing a <Reference> if it is in the current project
+- Run Task context menu entry now shows a dialog with running status
+
+Since 1.2 xxx
+- Connection timeout (to IdentityIQ) is now configurable under Project->Properties->IdentityIQ Project Properties
+
+
+Since 1.1 19 Jan 2015
+- Double-click on log view entry pops up dialog with details
+- Run Task option from context menu
+
+
+Since 1.0 6 Jan 2015
+- References now checked correctly in (afaik) all situations - any reference to an object. Rules are correctly included
+  in compilation check
+- Comment Style for expected variables:
+  // Expect: <Class Name> <Variable Name>
+  For situations like a workflow rule, where the rule expects certain workflow variables to be in existence. This works
+  fine in IIQ but the compiler needs to know about the expectations. Also, FieldValue scripts where a Form will have a
+  previous field available as a variable
+- Make some things adjustable on a per project basis (right click on project->properties->IdentityIQ Project Properties)
+  - Maximum number of lines you can have in a <Source>element before it is advised to use CDATA
+  - Directories to exclude from searching for artifact files (e.g. build)
+  - Some markers can be defined as Errors, Warnings, or ignored
+- Fixed a lot of issues with correct location of markers/fixes on Windows (CRLF) format files
+- Ignore 'ConnectorAfterCreate' rules. They are marked as beanshell but in fact contain PowerShell.
+- QuickFix 'Surround with CDATA tags' can now be bulk applied
+
+
+Since 0.9.4 19 November 2014
+- Context menu now has 'Compare With Remote' for files - shows diff window
+- F3 on <Reference> elements will now open the relevant artifact if it exists in the project
+- HTTPS support. Will check known Root CAs first, then a project .keystore (if one exists). If there is
+  still no valid cert, it will prompt the user to accept it or not. If accepting with 'always' it will
+  persist the cert to a .keystore in the current project
+
+
+Since 0.9.3 10 November 2014
+- Converted Workflow-Importer CRLFs to LF
+- Importer no longer converts LF to CRLF (fixes problem mislocations)
+- Import wizard no longer shows if there is an error connecting to IdentityIQ
+- New project wizard now cancelable for long-running "from remote" initialization
+- Beanshell 'Convenience Syntax' now implemented for rule/script args
+    This is where you can use identity.lastname instead of identity.getLastname()
+- Refactor->Rename of artifact updates name inside file as well
+- Refresh artifact imports same object again
+
+
+Since 0.9.2 5 November 2014
+- "void" error now ignored (i.e. if (void==someVariable))
+- Workspace preferences now saved:
+    Use SSB Template
+    Auto surround <Source> with <![CDATA[
+- Performance improvement - don't recompile all <Source> elements when one is flagged dirty
+
+Since 0.9.1 15 October 2014
+- Option on the New Project wizard to create SSB structure in new project
+- Option on the Import wizard to automatically convert text in <Source> tags to <![CDATA[
+- File selection tab on new project wizard now updates finish button correctly
+- Fixed cursor position error after code complete.
+
+
+Since 0.9.0 10 October 2014
+- Temporary fix for error highlighting, so that we can distribute to the team. Need a more permanent fix.
+
+Since 0.8.1 10 October 2014
+- Application provisioning policy field scripts are now correctly checked
+  - Standard FieldValue variables are passed in
+- Rule Library errors are now flagged as such in relying scripts
+- Fixed customization rule in applications incorrectly being applied to field script sources
+- Deployment failure now raises a dialog box.
+- Code completion v1 is now working. I'm sure there's plenty of work to be done on it!
+
+Since 0.8.0 3 October 2014
+- IIQ Rules can only be created in IIQ projects
+  This follows the Eclipse paradigm of everything being available in the <Right Click>->New->Other menu; the wizard is responsible
+    for telling the user it is the wrong type of project (try creating a java class in a non-Java project)
+- Reconciler now working; This means that you get transient error/warning markers after keyboard inactivity (.5 sec). Problem
+  markers (Window->Show View->Problems) now only updated on save. This is consistent with JDT functionality in Eclipse
+- QuickFixes available for:
+    Missing <![CDATA[
+    Missing ]]>
+    Missing Close XML Tag
+    Consider Using CDATA Around Beanshell in <Source> tags
+- Cosmetic (and not-so cosmetic) fixes for artifact import
+    Removed 'standalone="no"' from <?xml?> declaration on import
+    Added DOCTYPE back in
+    CRLF after <?xml?> declaration.
+    
+Since 0.7.8 30 September 2014
+- Handles Rules with methods
+- Handles References to Rule Libraries
+
+Since 0.7.7 23 September 2014
+- On demand imports (e.g. import sailpoint.object.*) are flagged as warnings, but included in the compilation process
+- Rule arguments are passed in as variables. This is taken from DefaultRuleArgs, which has to be crafted manually from the Rule Registry
+- New Project Wizard creates a default reverse.target.properties file in the new project, with outline instructions
+- reverse.target.properties is excluded from target environments for import/deploy artifact
+- reverse substitution is working

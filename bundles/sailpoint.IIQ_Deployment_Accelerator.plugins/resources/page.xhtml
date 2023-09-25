@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html PUBLIC
+        "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!-- (c) Copyright 2016 SailPoint Technologies, Inc., All Rights Reserved. -->
+
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:sp="http://sailpoint.com/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:c="http://java.sun.com/jstl/core"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:t="http://myfaces.apache.org/tomahawk">
+<body>
+
+
+<ui:composition>
+
+  <div class="container">
+  <!-- To call out to your plugin's REST service from this page, you'll need to add the CSRF token.
+      e.g.
+      
+      $.ajax({
+          method: "GET",
+          beforeSend: function (request) {
+              request.setRequestHeader("X-XSRF-TOKEN", PluginFramework.CsrfToken);
+          },
+          url: "#{base.requestContextPath}/plugin/<myPluginID>/<myMethod>"
+      })
+      .done(function (msg) {
+          // Do something with the REST response
+      });
+  
+   -->
+   
+   </div>
+
+</ui:composition>
+
+
+</body>
+</html>
+

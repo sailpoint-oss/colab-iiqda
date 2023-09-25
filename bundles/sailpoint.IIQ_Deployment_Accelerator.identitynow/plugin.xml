@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+  <extension point="org.eclipse.ui.newWizards">
+    <wizard
+      category="sailpoint.IIQ_Deployment_Accelerator.wizards.category.sailpoint"
+      class="sailpoint.iiqda.wizards.project.idn.NewIDNProjectWizard"
+      icon="platform:/plugin/sailpoint.IIQ_Deployment_Accelerator.core/icons/sailpoint16x16.gif"
+      id="sailpoint.IIQ_Deployment_Accelerator.newIDNProjectWizard"
+      name="IdentityNow Project"
+      project="true">
+    </wizard>
+    <wizard
+      category="sailpoint.IIQ_Deployment_Accelerator.wizards.category.sailpoint"
+      class="sailpoint.iiqda.wizards.IDNNewTransformWizard"
+      icon="platform:/plugin/sailpoint.IIQ_Deployment_Accelerator.core/icons/sailpoint16x16.gif"
+      id="sailpoint.IIQ_Deployment_Accelerator.wizards.idn.IDNNewTransformWizard"
+      name="IdentityNow Transform">
+    </wizard>
+  </extension>
+
+  <!-- Project Nature -->
+  <extension point="org.eclipse.core.resources.natures" id="idnNature"
+   name="IdentityNow Project Nature">
+    <runtime>
+      <run class="sailpoint.iiqda.builder.IDNNature"/>
+    </runtime>
+  </extension>
+  <extension point="org.eclipse.ui.ide.projectNatureImages">
+    <image
+      icon="icons/spIDNOverlay-sml.gif"
+      id="sailpoint.IIQ_Deployment_Accelerator.natureIcon"
+      natureId="sailpoint.IIQ_Deployment_Accelerator.IdentityNow.idnNature">
+    </image>
+  </extension>
+
+  <extension point="org.eclipse.ui.navigator.navigatorContent">
+    <commonWizard
+      menuGroupId="sailpoint.IIQ_Deployment_Accelerator.menugroup"
+      type="new"
+      wizardId="sailpoint.IIQ_Deployment_Accelerator.wizards.idn.IDNNewTransformWizard">
+      <enablement>
+        <adapt type="org.eclipse.core.resources.IProject">
+      <test property="org.eclipse.core.resources.projectNature" value="sailpoint.IIQ_Deployment_Accelerator.IdentityNow.idnNature"/>
+      </adapt>
+    </enablement>   
+    </commonWizard>
+  </extension>
+
+  <extension point="org.eclipse.ui.menus">
+    <menuContribution locationURI="popup:org.eclipse.ui.popup.any?after=export">
+      <menu id="sailpoint.IIQ_Deployment_Accelerator.commands.pack.idn.importObjectMenu"
+        label="IDN Import Object">
+        <visibleWhen>
+          <and>
+            <with variable="activePartId">
+              <or>
+                <equals value="org.eclipse.jdt.ui.PackageExplorer"/>
+                <equals value="org.eclipse.ui.navigator.ProjectExplorer"/>
+                <equals value="org.eclipse.ui.views.ResourceNavigator"/>
+              </or>              
+            </with>            
+            <with variable="selection">
+              <iterate ifEmpty="false" operator="or">
+                <adapt type="org.eclipse.core.resources.IResource">
+                  <and>
+                    <test property="org.eclipse.core.resources.projectNature"
+                      value="sailpoint.IIQ_Deployment_Accelerator.IdentityNow.idnNature"/>
+                    <instanceof value="org.eclipse.core.resources.IContainer"/>
+                  </and>
+                </adapt>
+              </iterate>
+            </with>
+          </and>
+        </visibleWhen>
+        <dynamic id="sailpoint.IIQ_Deployment_Accelerator.pack.idn.ImportObjectMenuProvider"
+          class="sailpoint.iiqda.menuprovider.idn.ImportEnvironmentMenuProvider"
+        />
+      </menu>
+      <menu id="sailpoint.IIQ_Deployment_Accelerator.commands.pack.idn.deployObjectMenu"
+        label="Deploy Object">
+        <visibleWhen>
+          <and>
+            <with variable="activePartId">
+              <or>
+                <equals value="org.eclipse.jdt.ui.PackageExplorer"/>
+                <equals value="org.eclipse.ui.navigator.ProjectExplorer"/>
+                <equals value="org.eclipse.ui.views.ResourceNavigator"/>
+              </or>              
+            </with>            
+            <with variable="selection">
+              <iterate ifEmpty="false" operator="or">
+                <adapt type="org.eclipse.core.resources.IResource">
+                  <test property="org.eclipse.core.resources.projectNature"
+                      value="sailpoint.IIQ_Deployment_Accelerator.IdentityNow.idnNature"/>
+                    <instanceof value="org.eclipse.core.resources.IFile"/>
+                
+                  <!--test property="org.eclipse.core.resources.contentTypeId" args="kindOf"
+                     value="sailpoint.IIQ_Deployment_Accelerator.content.idn.transform"/-->
+                      <!--value="sailpoint.IIQ_Deployment_Accelerator.content.IDNObject"/-->
+                </adapt>
+              </iterate>
+            </with>
+          </and>
+        </visibleWhen>
+        <dynamic id="sailpoint.IIQ_Deployment_Accelerator.pack.idn.DeployArtifactMenuProvider"
+          class="sailpoint.iiqda.menuprovider.idn.DeployEnvironmentMenuProvider"
+        />
+      </menu>
+      
+      <separator name="IDN" visible="true"/>
+    </menuContribution>
+  </extension>
+   
+  <extension point="org.eclipse.ui.commands">
+    <command defaultHandler="sailpoint.iiqda.handlers.idn.ImportResourceCommandHandler"
+      id="sailpoint.IIQ_Deployment_Accelerator.IdentityNow.commands.importArtifactCommand" name="Import Object">
+      <commandParameter id="sailpoint.IIQ_Deployment_Accelerator.IdentityNow.commands.targetEnvironment" name="target"/>
+    </command>
+    <command defaultHandler="sailpoint.iiqda.handlers.idn.DeployResourceCommandHandler"
+      id="sailpoint.IIQ_Deployment_Accelerator.IdentityNow.commands.deployObjectCommand" name="Deploy Object">
+      <commandParameter id="sailpoint.IIQ_Deployment_Accelerator.IdentityNow.commands.targetEnvironment" name="target"/>
+    </command>
+  </extension>
+  
+  <extension point="org.eclipse.core.contenttype.contentTypes">
+    <content-type id="sailpoint.IIQ_Deployment_Accelerator.IdentityNow.content.IDNObject"
+      base-type="org.eclipse.wst.json.core.jsonsource"
+      name="IdentityNow Object"
+      />
+    <content-type id="sailpoint.IIQ_Deployment_Accelerator.IdentityNow.content.transform"
+      name="IdentityNow SeaSpray Transform"
+      file-extensions="transform"
+      base-type="sailpoint.IIQ_Deployment_Accelerator.IdentityNow.content.IDNObject"
+    />
+    <content-type id="sailpoint.IIQ_Deployment_Accelerator.IdentityNow.content.source"
+      name="IdentityNow Source"
+      file-extensions="source"
+      base-type="org.eclipse.wst.json.core.jsonsource"
+    />
+      <!--base-type="sailpoint.IIQ_Deployment_Accelerator.IdentityNow.content.IDNObject" -->
+  </extension>
+
+  <extension point="org.eclipse.ui.propertyPages">
+    <page
+      class="sailpoint.iiqda.properties.IDNProjectPropertyPage"
+      id="sailpoint.IIQ_Deployment_Accelerator.properties.idn.idnPropertyPage"
+      name="IdentityNow Project Properties">
+      <enabledWhen>
+        <adapt type="org.eclipse.core.resources.IProject">
+          <test property="org.eclipse.core.resources.projectNature" 
+            value="sailpoint.IIQ_Deployment_Accelerator.IdentityNow.idnNature"/> 
+        </adapt>   
+      </enabledWhen>
+    </page>     
+  </extension>
+  
+  <extension point="org.eclipse.ui.editors"> 
+  
+     <editor
+     name="Source Editor"
+     class="sailpoint.iiqda.editors.idn.SourceEditor"
+     icon="platform:/plugin/sailpoint.IIQ_Deployment_Accelerator.core/icons/sailpoint16x16.gif"
+     id="sailpoint.IIQ_Deployment_Accelerator.IdentityNow.editors.SourceEditor">
+     <contentTypeBinding contentTypeId="sailpoint.IIQ_Deployment_Accelerator.IdentityNow.content.source"/>
+    </editor>
+    <editor
+     name="Transform Editor"
+     class="sailpoint.iiqda.editors.idn.TransformEditor"
+     icon="platform:/plugin/sailpoint.IIQ_Deployment_Accelerator.core/icons/sailpoint16x16.gif"
+     id="sailpoint.IIQ_Deployment_Accelerator.IdentityNow.editors.TransformEditor">
+     <contentTypeBinding contentTypeId="sailpoint.IIQ_Deployment_Accelerator.IdentityNow.content.transform"/>
+    </editor>
+  </extension>
+</plugin>

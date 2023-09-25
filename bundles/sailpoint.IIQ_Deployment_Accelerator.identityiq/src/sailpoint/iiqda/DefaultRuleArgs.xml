@@ -1,0 +1,598 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--  Updated for 7.2 Dec 6 2017 -->
+<ruleArgs>
+
+	<rule type="default">
+		<arg name="context" class="sailpoint.api.SailPointContext" />
+		<arg name="log" class="org.apache.commons.logging.Log" />
+		<arg name="taskResult" class="sailpoint.object.TaskResult" />
+	</rule>
+	
+	<rule type="AccountSelector" return="sailpoint.object.Link">
+		<arg name="source" class="java.lang.String" />
+		<arg name="role" class="sailpoint.object.Bundle" />
+		<arg name="identity" class="sailpoint.object.Identity" />
+		<arg name="application" class="sailpoint.object.Application" />
+		<arg name="links" class="java.util.List" />
+		<arg name="isSecondary" class="boolean" />
+		<arg name="project" class="sailpoint.object.ProvisioningProject" />
+		<arg name="accountRequest" class="sailpoint.object.ProvisioningPlan.AccountRequest" />
+		<arg name="allowCreate" class="boolean" />
+	</rule>
+
+	<rule type="ActivityConditionBuilder" return="java.lang.Object">
+		<arg name="config" class="java.util.Map" />
+	</rule>
+	
+	<rule type="ActivityCorrelation" return="java.util.Map">
+		<arg name="application" class="sailpoint.object.Application" />
+		<arg name="datasource" class="sailpoint.object.ActivityDataSource" />
+		<arg name="activity" class="sailpoint.object.ApplicationActivity" />
+	</rule>
+	
+	<rule type="ActivityPositionBuilder" return="java.util.Map">
+		<arg name="row" class="java.sql.ResultSet" />
+	</rule>
+	
+	<rule type="ActivityTransformer" return="java.lang.String">
+		<arg name="action" class="java.lang.String" />
+	</rule>
+
+	<rule type="AfterProvisioning" return="void">
+		<arg name="plan" class="sailpoint.object.ProvisioningPlan" />
+		<arg name="application" class="sailpoint.object.Application" />
+		<arg name="result" class="sailpoint.object.ProvisioningResult" />
+	</rule>
+
+	<rule type="AlertCorrelation" return="sailpoint.object.SailPointObject">
+		<arg name="source" class="sailpoint.object.Source" />
+		<arg name="alert" class="sailpoint.object.Alert" />
+	</rule>
+
+	<rule type="AlertCreation" return="sailpoint.object.Alert">
+		<arg name="application" class="sailpoint.object.Application" />
+		<arg name="alert" class="sailpoint.object.Alert" />
+	</rule>
+
+	<rule type="AllowedValues" return="java.lang.Object">
+		<arg name="identity" class="sailpoint.object.Identity" />
+		<arg name="form" class="sailpoint.object.Form" />
+		<arg name="field" class="sailpoint.object.Field" />
+		<arg name="attributeName" class="java.lang.String"/>
+	</rule>
+
+	<rule type="ApprovalAssignment" return="java.util.List">
+		<arg name="approvals" class="java.util.List"/>
+		<arg name="approvalSet" class="sailpoint.object.ApprovalSet"/>
+	</rule>
+
+	<rule type="BeforeProvisioning" return="void">
+		<arg name="plan" class="sailpoint.object.ProvisioningPlan" />
+		<arg name="application" class="sailpoint.object.Application" />
+	</rule>
+	
+	<rule type="BuildMap" return="java.util.Map">
+		<arg name="application" class="sailpoint.object.Application" />
+		<arg name="schema" class="sailpoint.object.Schema" />
+		<arg name="state" class="java.util.Map" />
+		<arg name="record" class="java.util.List" />
+		<arg name="cols" class="java.util.List" />
+	</rule>
+	
+	<rule type="CertificationEntityCompletion" return="java.util.List">
+		<arg name="certification" class="sailpoint.object.Certification" />
+		<arg name="entity" class="sailpoint.object.CertificationEntity" />
+		<arg name="state" class="java.util.Map" />
+	</rule>
+
+	<rule type="CertificationEntityCustomization" return="void">
+		<arg name="certification" class="sailpoint.object.Certification" />
+		<arg name="certifiable" class="sailpoint.object.Certifiable" />
+		<arg name="certifiableEntity" class="sailpoint.object.AbstractCertifiableEntity" />
+		<arg name="certContext" class="sailpoint.api.CertificationContext" />
+		<arg name="entity" class="sailpoint.object.CertificationEntity" />
+	</rule>
+
+	<rule type="CertificationEntityRefresh" return="void">
+		<arg name="certification" class="sailpoint.object.Certification" />
+		<arg name="entity" class="sailpoint.object.CertificationEntity" />
+	</rule>
+
+	<rule type="CertificationExclusion" return="java.lang.String">
+		<arg name="entity" class="sailpoint.object.AbstractCertifiableEntity" />
+		<arg name="certification" class="sailpoint.object.Certification" />
+		<arg name="certContext" class="sailpoint.api.CertificationContext" />
+		<arg name="items" class="java.util.List" />
+		<arg name="itemsToExclude" class="java.util.List" />
+		<arg name="state" class="java.util.Map" />
+	</rule>
+	
+	<rule type="CertificationItemCompletion" return="java.util.List">
+		<arg name="certification" class="sailpoint.object.Certification" />
+		<arg name="item" class="sailpoint.object.CertificationItem" />
+		<arg name="entity" class="sailpoint.object.CertificationItem" />
+		<arg name="state" class="java.util.Map" />
+	</rule>
+	
+	<rule type="CertificationItemCustomization" return="sailpoint.object.CertificationItem">
+		<arg name="certification" class="sailpoint.object.Certification" />
+		<arg name="certifiable" class="sailpoint.object.Certifiable" />
+		<arg name="certifiableEntity" class="sailpoint.object.AbstractCertifiableEntity" />
+		<arg name="certContext" class="sailpoint.api.CertificationBuilder" />
+		<arg name="item" class="sailpoint.object.CertificationItem" />
+		<arg name="state" class="java.util.Map" />
+	</rule>
+	
+	<rule type="CertificationPreDelegation" return="java.util.Map">
+		<arg name="certification" class="sailpoint.object.Certification" />
+		<arg name="entity" class="sailpoint.object.CertificationEntity" />
+		<arg name="certContext" class="sailpoint.api.CertificationContext" />
+		<arg name="state" class="java.util.Map" />
+	</rule>
+	
+	<rule type="CertificationSignOffApprover" return="java.util.Map">
+		<arg name="certification" class="sailpoint.object.Certification" />
+		<arg name="certifier" class="sailpoint.object.Identity" />
+	</rule>
+	
+	<rule type="CertificationPhaseChange" return="void">
+		<arg name="certification" class="sailpoint.object.Certification" />
+		<arg name="certificationItem" class="sailpoint.object.CertificationItem" />
+		<arg name="previousPhase" class="sailpoint.object.Certification.Phase" />
+		<arg name="nextPhase" class="sailpoint.object.Certification.Phase" />
+	</rule>
+	
+	<rule type="CertificationAutomaticClosing" return="void">
+		<arg name="certification" class="sailpoint.object.Certification" />
+	</rule>
+	
+	<rule type="Certifier" return="java.lang.Object">
+		<arg name="factory" class="sailpoint.object.GroupFactory" />
+		<arg name="group" class="sailpoint.object.GroupDefinition" />
+		<arg name="state" class="java.util.Map" />
+	</rule>
+	
+	<rule type="GroupAggregationRefresh" return="sailpoint.object.ManagedAttribute">
+		<arg name="environment" class="java.util.Map" />
+		<arg name="obj" class="sailpoint.object.ResourceObject" />
+		<arg name="accountGroup" class="sailpoint.object.ManagedAttribute" />
+		<arg name="groupApplication" class="sailpoint.object.Application" />
+	</rule>
+
+	<rule type="GroupOwner" return="java.lang.Object">
+		<arg name="factory" class="sailpoint.object.GroupFactory" />
+		<arg name="group" class="sailpoint.object.GroupDefinition" />
+	</rule>
+
+	<rule type="CompositeAccount" return="java.lang.Object">
+		<arg name="identity" class="sailpoint.object.Identity" />
+		<arg name="application" class="sailpoint.object.Application" />
+	</rule>
+
+	<rule type="CompositeRemediation" return="sailpoint.object.ProvisioningPlan">
+		<arg name="identity" class="sailpoint.object.Identity" />
+		<arg name="plan" class="sailpoint.object.ProvisioningPlan" />
+	</rule>
+
+	<rule type="CompositeTierCorrelation" return="java.util.List">
+		<arg name="identity" class="sailpoint.object.Identity" />
+		<arg name="tierApplication" class="sailpoint.object.Application" />
+		<arg name="primaryLink" class="sailpoint.object.Link" />
+	</rule>
+
+	<rule type="Correlation" return="java.util.Map">
+		<arg name="environment" class="sailpoint.object.Attributes" />
+		<arg name="application" class="sailpoint.object.Application" />
+		<arg name="account" class="sailpoint.object.ResourceObject" />
+		<arg name="link" class="sailpoint.object.Link" />
+	</rule>
+
+	<rule type="EmailRecipient" return="java.lang.Object">
+		<arg name="item" class="sailpoint.object.Notifiable" />
+	</rule>
+
+	<rule type="Escalation" return="java.lang.String">
+		<arg name="item" class="sailpoint.object.Notifiable" />
+		<arg name="newOwner" class="java.lang.String" />
+	</rule>
+
+	<rule type="FallbackWorkItemForward" return="java.lang.Object">
+		<arg name="item" class="sailpoint.object.WorkItem" />
+		<arg name="owner" class="sailpoint.object.Identity" />
+		<arg name="creator" class="java.lang.String" />
+		<arg name="certifiers" class="java.util.List" />
+		<arg name="name" class="java.lang.String" />
+		<arg name="type" class="sailpoint.object.Certification.Type" />
+	</rule>
+
+	<rule type="FieldValue" return="java.lang.String">
+		<arg name="application" class="sailpoint.object.Application"/>
+		<arg name="identity" class="sailpoint.object.Identity" />
+		<arg name="form" class="sailpoint.object.Form" />
+		<arg name="field" class="sailpoint.object.Field" />
+		<arg name="link" class="sailpoint.object.Link"/>
+		<arg name="group" class="sailpoint.object.ManagedAttribute"/>
+		<arg name="project" class="sailpoint.object.ProvisioningProject"/>
+		<arg name="accountRequest" class="sailpoint.object.ProvisioningPlan.AccountRequest"/>
+		<arg name="objectRequest" class="sailpoint.object.ProvisioningPlan.ObjectRequest"/>
+		<arg name="role" class="sailpoint.object.Bundle"/>
+		<arg name="template" class="sailpoint.object.Template"/>
+		<arg name="current" class="java.lang.Object"/>
+		<arg name="operation" class="sailpoint.object.ProvisioningPlan.Operation"/>
+		
+	</rule>
+
+	<rule type="FileParsingRule" return="java.util.Map">
+		<arg name="application" class="sailpoint.object.Application" />
+		<arg name="config" class="sailpoint.object.Attributes" />
+		<arg name="schema" class="sailpoint.object.Schema" />
+		<arg name="inputStream" class="java.io.InputStream" />
+		<arg name="reader" class="java.io.Reader" />
+		<arg name="state" class="java.util.Map" />
+	</rule>
+
+	<rule type="IdentityAttribute" return="java.lang.String">
+		<arg name="environment" class="sailpoint.object.Attributes" />
+		<arg name="identity" class="sailpoint.object.Identity" />
+		<arg name="attributeDefinition" class="sailpoint.object.AttributeDefinition" />
+		<arg name="link" class="sailpoint.object.Link" />
+		<arg name="attributeSource" class="sailpoint.object.AttributeSource" />
+		<arg name="oldValue" class="java.lang.String" />
+	</rule>
+
+	<rule type="IdentityAttributeTarget" return="java.lang.Object">
+		<arg name="value" class="java.lang.Object" />
+		<arg name="sourceIdentityAttribute" class="sailpoint.object.ObjectAttribute" />
+		<arg name="sourceIdentityAttributeName" class="java.lang.String" />
+		<arg name="sourceAttributeRequest" class="sailpoint.object.ProvisioningPlan.AttributeRequest" />
+		<arg name="target" class="sailpoint.object.AttributeTarget" />
+		<arg name="identity" class="sailpoint.object.Identity" />
+		<arg name="project" class="sailpoint.object.ProvisioningProject" />
+		<arg name="attributeValue" class="java.lang.Object" />
+	</rule>
+	
+	<rule type="IdentityCreation" return="void">
+		<arg name="environment" class="sailpoint.object.Attributes" />
+		<arg name="application" class="sailpoint.object.Application" />
+		<arg name="account" class="sailpoint.object.ResourceObject" />
+		<arg name="identity" class="sailpoint.object.Identity" />
+	</rule>
+	
+	<rule type="IdentitySelector" return="boolean">
+		<arg name="identity" class="sailpoint.object.Identity" />
+		<arg name="roleName" class="java.lang.String" />
+	</rule>
+	
+	<rule type="IdentityTrigger" return="boolean">
+		<arg name="previousIdentity" class="sailpoint.object.Identity" />
+		<arg name="newIdentity" class="sailpoint.object.Identity" />
+	</rule>
+	
+	<rule type="Integration" return="void">
+		<arg name="identity" class="sailpoint.object.Identity" />
+		<arg name="plan" class="sailpoint.object.ProvisioningPlan" />
+		<arg name="integration" class="sailpoint.object.IntegrationConfig" />
+	</rule>
+
+	<rule type="JDBCBuildMap" return="java.util.Map">
+		<arg name="application" class="sailpoint.object.Application" />
+		<arg name="schema" class="sailpoint.object.Schema" />
+		<arg name="state" class="java.util.Map" />
+		<arg name="result" class="java.sql.ResultSet" />
+		<arg name="connection" class="java.sql.Connection" />
+	</rule>
+
+	<rule type="JDBCProvision" return="sailpoint.object.ProvisioningResult">
+		<arg name="application" class="sailpoint.object.Application" />
+		<arg name="schema" class="sailpoint.object.Schema" />
+		<arg name="connection" class="java.sql.Connection" />
+		<arg name="plan" class="sailpoint.object.ProvisioningPlan" />
+	</rule>
+
+	<rule type="JDBCOperationProvisioning" return="sailpoint.object.ProvisioningResult">
+		<arg name="application" class="sailpoint.object.Application" />
+		<arg name="schema" class="sailpoint.object.Schema" />
+		<arg name="connection" class="java.sql.Connection" />
+		<arg name="plan" class="sailpoint.object.ProvisioningPlan" />
+		<!-- The Rule Registry says this is a ProvisioningRequest object. That appears to be wrong.. -->
+		<arg name="request" class="sailpoint.object.ProvisioningPlan.AccountRequest" />
+	</rule>
+	
+	<rule type="LinkAttribute" return="java.lang.Object">
+		<arg name="environment" class="sailpoint.object.Attributes" />
+		<arg name="link" class="sailpoint.object.Link" />
+	</rule>
+	
+	<rule type="Listener" return="void">
+		<arg name="environment" class="sailpoint.object.Attributes" />
+		<arg name="identity" class="sailpoint.object.Identity" />
+		<arg name="attributeDefinition" class="sailpoint.object.AttributeDefinition" />
+		<arg name="attributeName" class="java.lang.String" />
+		<arg name="oldValue" class="java.lang.Object" />
+		<arg name="newValue" class="java.lang.Object" />
+	</rule>
+	
+	<rule type="ManagedAttributePromotion" return="void">
+		<arg name="attribute" class="sailpoint.object.ManagedAttribute" />
+		<arg name="application" class="sailpoint.object.Application" />
+		<arg name="state" class="java.util.Map" />
+	</rule>
+	
+	<rule type="ManagerCorrelation" return="java.util.Map">
+		<arg name="environment" class="sailpoint.object.Attributes" />
+		<arg name="application" class="sailpoint.object.Application" />
+		<arg name="instance" class="java.lang.String" />
+		<arg name="connector" class="sailpoint.connector.Connector" />
+		<arg name="link" class="sailpoint.object.Link" />
+		<arg name="managerAttributeValue" class="java.lang.String" />
+	</rule>
+	
+	<rule type="MergeMaps" return="java.util.Map">
+		<arg name="application" class="sailpoint.object.Application" />
+		<arg name="schema" class="sailpoint.object.Schema" />
+		<arg name="current" class="java.util.Map" />
+		<arg name="newObject" class="java.util.Map" />
+		<arg name="mergeAttrs" class="java.util.List" />
+	</rule>
+	
+	<rule type="Owner" return="java.lang.Object">
+		<arg name="identity" class="sailpoint.object.Identity" />
+		<arg name="role" class="sailpoint.object.Bundle" />
+		<arg name="application" class="sailpoint.object.Application" />
+		<arg name="template" class="sailpoint.object.Template" />
+		<arg name="field" class="sailpoint.object.Field" />
+	</rule>
+	
+	<rule type="Policy" return="sailpoint.object.PolicyViolation">
+		<arg name="identity" class="sailpoint.object.Identity" />
+		<arg name="policy" class="sailpoint.object.Policy" />
+		<arg name="constraint" class="sailpoint.object.BaseConstraint" />
+	</rule>
+	
+	<rule type="PolicyOwner" return="java.lang.Object">
+		<arg name="identity" class="sailpoint.object.Identity" />
+		<arg name="policy" class="sailpoint.object.Policy" />
+		<arg name="constraint" class="sailpoint.object.BaseConstraint" />
+	</rule>
+
+	<rule type="PolicyNotification" return="java.util.Map">
+		<arg name="violation" class="sailpoint.object.PolicyViolation" />
+		<arg name="policy" class="sailpoint.object.Policy" />
+	</rule>
+	
+	<rule type="PostIterate" return="void">
+		<arg name="application" class="sailpoint.object.Application" />
+		<arg name="schema" class="sailpoint.object.Schema" />
+		<arg name="stats" class="java.util.Map" />
+	</rule>
+	
+	<rule type="PreIterate" return="void">
+		<arg name="application" class="sailpoint.object.Application" />
+		<arg name="schema" class="sailpoint.object.Schema" />
+		<arg name="stats" class="java.util.Map" />
+	</rule>
+
+	<rule type="Refresh" return="void">
+		<arg name="environment" class="sailpoint.object.Attributes" />
+		<arg name="identity" class="sailpoint.object.Identity" />
+	</rule>
+
+	<rule type="RequestObjectSelector" return="sailpoint.object.QueryInfo">
+		<arg name="requestor" class="sailpoint.object.Identity" />
+		<arg name="requestee" class="sailpoint.object.Identity" />
+	</rule>
+
+	<rule type="ResourceObjectCustomization" return="sailpoint.object.ResourceObject">
+		<arg name="object" class="sailpoint.object.ResourceObject" />
+		<arg name="application" class="sailpoint.object.Application" />
+		<arg name="connector" class="sailpoint.connector.Connector" />
+		<arg name="state" class="java.util.Map" />
+	</rule>
+	
+	<rule type="RiskScore" return="java.lang.Object">
+		<arg name="identity" class="sailpoint.object.Identity" />
+	</rule>
+	
+	<rule type="SAPBuildMap" return="void">
+		<arg name="destination" class="com.sap.conn.jco.JCoDestination" />
+		<arg name="schema" class="sailpoint.object.Schema" />
+		<arg name="connector" class="sailpoint.connector.SAPInternalConnector" />
+		<arg name="application" class="sailpoint.object.Application" />
+		<arg name="state" class="java.util.Map" />
+		<arg name="object" class="java.util.Map" />
+	</rule>
+	
+	<rule type="SAPHRManagerRule" return="java.lang.String">
+		<arg name="destination" class="com.sap.conn.jco.JCoDestination" />
+		<arg name="schema" class="sailpoint.object.Schema" />
+		<arg name="connector" class="sailpoint.connector.SAPHRConnector" />
+		<arg name="application" class="sailpoint.object.Application" />
+		<arg name="state" class="java.util.Map" />
+		<arg name="employeeID" class="java.lang.String" />
+		<arg name="objectType" class="java.lang.String" />
+		<arg name="position" class="java.lang.String" />
+	</rule>
+
+	<rule type="SapHrOperationProvisioning" return="sailpoint.object.ProvisioningResult">
+		<arg name="application" class="sailpoint.object.Application" />
+		<arg name="schema" class="sailpoint.object.Schema" />
+		<arg name="destination" class="com.sap.conn.jco.JCoDestination" />
+		<arg name="plan" class="sailpoint.object.ProvisioningPlan" />
+		<arg name="request" class="sailpoint.object.ProvisioningRequest" />
+		<arg name="connector" class="sailpoint.connector.SAPHRConnector" />
+	</rule>
+
+	<rule type="SapHrProvision" return="sailpoint.object.ProvisioningResult">
+		<arg name="application" class="sailpoint.object.Application" />
+		<arg name="schema" class="sailpoint.object.Schema" />
+		<arg name="destination" class="com.sap.conn.jco.JCoDestination" />
+		<arg name="plan" class="sailpoint.object.ProvisioningPlan" />
+		<arg name="request" class="sailpoint.object.ProvisioningRequest" />
+		<arg name="connector" class="sailpoint.connector.SAPHRConnector" />
+	</rule>
+
+	<rule type="PeopleSoftHRMSBuildMap" return="java.util.Map">
+		<arg name="application" class="sailpoint.object.Application" />
+		<arg name="schema" class="sailpoint.object.Schema" />
+		<arg name="connection" class="java.sql.Connection" />
+    <arg name="state" class="java.util.Map" />
+    <arg name="identity" class="sailpoint.object.Identity" />
+		<arg name="connector" class="sailpoint.connector.PeopleSoftHRMSConnector" />
+	</rule>
+
+	<rule type="PeopleSoftHRMSOperationProvisioning" return="sailpoint.object.ProvisioningResult">
+		<arg name="application" class="sailpoint.object.Application" />
+		<arg name="schema" class="sailpoint.object.Schema" />
+		<arg name="plan" class="sailpoint.object.ProvisioningPlan" />
+		<arg name="request" class="sailpoint.object.ProvisioningRequest" />
+    <arg name="session" class="java.lang.Class" />
+		<arg name="connector" class="sailpoint.connector.PeopleSoftHRMSConnector" />
+	</rule>
+
+	<rule type="PeopleSoftHRMSProvision" return="sailpoint.object.ProvisioningResult">
+		<arg name="application" class="sailpoint.object.Application" />
+		<arg name="schema" class="sailpoint.object.Schema" />
+		<arg name="plan" class="sailpoint.object.ProvisioningPlan" />
+		<arg name="request" class="sailpoint.object.ProvisioningRequest" />
+    <arg name="session" class="java.lang.Class" />
+		<arg name="connector" class="sailpoint.connector.PeopleSoftHRMSConnector" />
+	</rule>
+
+	<rule type="ScopeCorrelation" return="java.lang.Object">
+		<arg name="identity" class="sailpoint.object.Identity" />
+		<arg name="scopeCorrelationAttribute" class="java.lang.String" />
+		<arg name="scopeCorrelationAttributeValue" class="java.lang.String" />
+	</rule>
+
+	<rule type="SAMLCorrelation" return="sailpoint.object.SailPointObject">
+		<arg name="assertionAttributes" class="java.util.Map" />
+	</rule>
+
+	<rule type="ScopeSelection" return="sailpoint.object.Scope">
+		<arg name="identity" class="sailpoint.object.Identity" />
+		<arg name="scopeCorrelationAttribute" class="java.lang.String" />
+		<arg name="scopeCorrelationAttributeValue" class="java.lang.String" />
+		<arg name="candidateScopes" class="java.util.List" />
+	</rule>
+
+	<rule type="SSOAuthentication" return="sailpoint.object.SailPointObject">
+		<arg name="httpRequest" class="javax.servlet.http.HttpServletRequest" />
+	</rule>
+
+	<rule type="SSOValidation" return="java.lang.String">
+		<arg name="httpRequest" class="javax.servlet.http.HttpServletRequest" />
+	</rule>
+
+	<rule type="TargetCorrelation" return="java.util.Map">
+		<arg name="application" class="sailpoint.object.Application" />
+		<arg name="nativeId" class="java.lang.String" />
+		<arg name="target" class="sailpoint.object.Target" />
+		<arg name="targetSource" class="sailpoint.object.TargetSource" />
+		<arg name="isGroup" class="boolean" />
+	</rule>
+
+	<rule type="TargetCreation" return="sailpoint.object.Target">
+		<arg name="application" class="sailpoint.object.Application" />
+		<arg name="target" class="sailpoint.object.Target" />
+		<arg name="targetSource" class="sailpoint.object.TargetSource" />
+    <arg name="aggregationSource" class="sailpoint.api.TargetAggregator.AggregationSource" />
+	</rule>
+  
+	<rule type="TargetRefresh" return="sailpoint.object.Target">
+		<arg name="application" class="sailpoint.object.Application" />
+		<arg name="target" class="sailpoint.object.Target" />
+		<arg name="targetSource" class="sailpoint.object.TargetSource" />
+    <arg name="aggregationSource" class="sailpoint.api.TargetAggregator.AggregationSource" />
+	</rule>
+
+	<rule type="TargetTransformer" return="sailpoint.object.Target">
+		<arg name="collector" class="sailpoint.unstructured.TargetCollector" />
+		<arg name="target" class="sailpoint.object.Target" />
+		<arg name="targetSource" class="sailpoint.object.TargetSource" />
+	</rule>
+
+	<rule type="TaskEventRule" return="java.util.Map">
+		<arg name="taskResult" class="sailpoint.object.TaskResult" />
+		<arg name="event" class="sailpoint.object.TaskEvent" />
+	</rule>
+
+	<rule type="Transformation" return="sailpoint.object.ResourceObject">
+		<arg name="application" class="sailpoint.object.Application" />
+		<arg name="schema" class="sailpoint.object.Schema" />
+		<arg name="object" class="java.util.Map" />
+	</rule>
+
+	<rule type="Validation" return="java.lang.Object">
+		<arg name="identity" class="sailpoint.object.Identity" />
+		<arg name="app" class="sailpoint.object.Application" />
+		<arg name="form" class="sailpoint.object.Form" />
+		<arg name="field" class="sailpoint.object.Field" />
+		<arg name="value" class="java.lang.Object" />
+	</rule>
+
+	<rule type="Violation" return="sailpoint.object.PolicyViolation">
+		<arg name="identity" class="sailpoint.object.Identity" />
+		<arg name="policy" class="sailpoint.object.Policy" />
+		<arg name="constraint" class="sailpoint.object.BaseConstraint" />
+		<arg name="violation" class="sailpoint.object.PolicyViolation" />
+		<arg name="state" class="java.util.Map" />
+	</rule>
+  
+  <rule type="WebServiceAfterOperationRule" return="java.lang.Object">
+		<arg name="applciation" class="sailpoint.object.Application" />
+    <arg name="requestEndPoint" class="sailpoint.connector.webservices.EndPoint" />
+    <arg name="processedResponseObject" class="java.util.List" />
+    <arg name="rawResponseObject" class="java.lang.String" />
+    <arg name="restClient" class="sailpoint.connector.webservices.WebServicesClient" />
+  </rule>
+
+  <rule type="WebServiceBeforeOperationRule" return="sailpoint.connector.webservices.EndPoint">
+		<arg name="applciation" class="sailpoint.object.Application" />
+    <arg name="requestEndPoint" class="sailpoint.connector.webservices.EndPoint" />
+    <arg name="oldResponseMap" class="java.util.Map" />
+    <arg name="restClient" class="sailpoint.connector.webservices.WebServicesClient" />
+  </rule>
+
+	<rule type="Workflow" return="java.lang.Object">
+		<arg name="wfcontext" class="sailpoint.workflow.WorkflowContext" />
+		<arg name="handler" class="sailpoint.workflow.WorkflowHandler" />
+		<arg name="workflow" class="sailpoint.object.Workflow" />
+		<arg name="step" class="sailpoint.object.Workflow.Step" />
+		<arg name="approval" class="sailpoint.object.Workflow.Approval" />
+		<arg name="item" class="sailpoint.object.WorkItem" />
+	</rule>
+
+	<rule type="WorkItemForward" return="java.lang.Object">
+		<arg name="item" class="sailpoint.object.WorkItem" />
+		<arg name="owner" class="sailpoint.object.Identity" />
+		<arg name="newOwner" class="sailpoint.object.Identity" />
+	</rule>
+
+	<rule type="TaskCompletion" return="void">
+		<arg name="context" class="sailpoint.api.SailPointContext" />
+		<arg name="result" class="sailpoint.object.TaskResult" />
+	</rule>
+	
+	<!--	Rules we made up because they're not in the rule registry -->
+
+	<rule type="ExtendedColumnScript" return="java.util.List">
+		<arg name="form" class="sailpoint.object.Form"/>
+	</rule>
+
+	<rule type="Approver" return="java.lang.Object">
+		<arg name="object" class="sailpoint.object.SailPointObject" />
+		<arg name="approver" class="sailpoint.object.Identity" />
+	</rule>
+
+	<rule type="ReportCustomizer" return="java.util.Map">
+		<arg name="locale" class="java.util.Locale" />
+		<arg name="report" class="sailpoint.object.LiveReport" />
+	</rule>
+
+	<rule type="RequestObjectSelector" return="sailpoint.object.Filter">
+		<arg name="requestor" class="sailpoint.object.Identity" />
+		<arg name="requestee" class="sailpoint.object.Identity" />
+	</rule>
+
+
+</ruleArgs>

@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<!-- Configuration of the Ant build system to generate a Jar file --> 
+<project name="Log4JServerSideAppender" default="CreateJar">
+  <target name="CreateJar" description="Create Jar file">
+    <jar jarfile="SSAppender.jar" basedir="bin" includes="**/*.class" />
+	  <copy file="SSAppender.jar" todir="../lib" overwrite="true"/>
+  	<copy file="SSAppender.jar" todir="/Library/Tomcat/apache-tomcat-7.0.55/webapps/identityiq/WEB-INF/lib" overwrite="true"/>
+  </target>
+</project>

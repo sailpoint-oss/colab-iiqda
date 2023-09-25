@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="sailpoint.IIQ_Deployment_Accelerator.site"
+      label="IdentityIQ_Deployment_Accelerator_Site"
+      version="3.2.2.qualifier">
+
+   <description url="http://www.example.com/description">
+      [Enter Feature Description here.]
+   </description>
+
+   <copyright url="http://www.example.com/copyright">
+      [Enter Copyright Description here.]
+   </copyright>
+
+   <includes
+         id="sailpoint.IIQ_Deployment_Accelerator.feature"
+         version="0.0.0"/>
+
+</feature>

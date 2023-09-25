@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<list key="installedFeatures">
+	</list>
+	<section name="CleanDialogSettings">
+		<item value="828" key="DIALOG_WIDTH"/>
+		<item value="false" key="TOGGLE_SELECTED"/>
+		<item value="446" key="DIALOG_HEIGHT"/>
+		<item value="758" key="DIALOG_X_ORIGIN"/>
+		<item value="554" key="DIALOG_Y_ORIGIN"/>
+	</section>
+	<section name="NewWizardAction">
+		<item value="sailpoint.IIQ_Deployment_Accelerator.newIIQProjectWizard" key="NewWizardSelectionPage.STORE_SELECTED_ID"/>
+		<list key="NewWizardSelectionPage.STORE_EXPANDED_CATEGORIES_ID">
+			<item value="sailpoint.IIQ_Deployment_Accelerator.wizards.category.sailpoint"/>
+		</list>
+	</section>
+</section>

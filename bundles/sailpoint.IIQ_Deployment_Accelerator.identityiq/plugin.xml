@@ -1,0 +1,728 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin> 
+
+  <extension point="org.eclipse.core.resources.natures" id="iiqNature"
+   name="IdentityIQ Project Nature">
+    <runtime>
+      <run class="sailpoint.iiqda.builder.IIQNature">
+        <parameter name="installBuilder" value="true"/>
+      </run>
+    </runtime>
+    <builder id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.iiqArtifactBuilder"/>
+  </extension>
+
+  <extension point="org.eclipse.ui.newWizards">
+    <wizard
+      category="sailpoint.IIQ_Deployment_Accelerator.wizards.category.sailpoint"
+      class="sailpoint.iiqda.wizards.rule.IIQNewRuleWizard"
+      icon="platform:/plugin/sailpoint.IIQ_Deployment_Accelerator.core/icons/sailpoint16x16.gif"
+      id="sailpoint.IIQ_Deployment_Accelerator.wizards.rule.IIQNewRuleWizard"
+      name="IdentityIQ Rule">
+    </wizard>
+    <wizard
+      category="sailpoint.IIQ_Deployment_Accelerator.wizards.category.sailpoint"
+      class="sailpoint.iiqda.wizards.rulelibrary.IIQNewRuleLibraryWizard"
+      icon="platform:/plugin/sailpoint.IIQ_Deployment_Accelerator.core/icons/sailpoint16x16.gif"
+      id="sailpoint.IIQ_Deployment_Accelerator.wizards.rulelibrary.IIQNewRuleLibraryWizard"
+      name="IdentityIQ Rule Library">
+    </wizard>
+    <wizard
+      category="sailpoint.IIQ_Deployment_Accelerator.wizards.category.sailpoint"
+      class="sailpoint.iiqda.wizards.project.iiq.NewIIQProjectWizard"
+      icon="platform:/plugin/sailpoint.IIQ_Deployment_Accelerator.core/icons/sailpoint16x16.gif"
+      id="sailpoint.IIQ_Deployment_Accelerator.newIIQProjectWizard"
+      name="IdentityIQ Project"
+      project="true">
+    </wizard>
+  </extension>
+  
+  <extension id="iiqArtifactBuilder" name="Artifact Builder"
+    point="org.eclipse.core.resources.builders">
+    <builder>
+      <run class="sailpoint.iiqda.builder.IIQArtifactBuilder"/>
+    </builder>
+  </extension>
+  
+  <extension point="org.eclipse.ui.ide.projectNatureImages">
+    <image
+      icon="icons/spIIQOverlay-sml.gif"
+      id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.natureIcon"
+      natureId="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.iiqNature">
+    </image>
+  </extension>
+  
+  <!--extension point="org.eclipse.ui.navigator.navigatorContent">
+    <commonWizard
+      menuGroupId="sailpoint.IIQ_Deployment_Accelerator.menugroup"
+      type="new"
+      wizardId="sailpoint.IIQ_Deployment_Accelerator.wizards.rule.IIQNewRuleWizard">
+      <enablement>
+        <adapt type="org.eclipse.core.resources.IProject">
+          <test property="org.eclipse.core.resources.projectNature" value="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.iiqNature"/>
+        </adapt>
+    </enablement>   
+    </commonWizard>
+  </extension-->
+ 
+   <extension point="org.eclipse.ui.menus">
+
+    <!--                                                             -->
+    <!-- This menuContribution is for the context menu in the Editor -->
+    <!--                                                             -->
+    
+    <menuContribution locationURI="popup:org.eclipse.ui.popup.any?after=QuickAssist">
+      <menu id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.commands.deployArtifactMenu"
+       label="Deploy Artifact">
+        <visibleWhen>
+          <with variable="activePartId">
+            <equals value="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.content.Artifact.ArtifactEditor"/>
+          </with>
+        </visibleWhen>
+        <dynamic id="sailpoint.IIQ_Deployment_Accelerator.DeployArtifactMenuProvider"
+          class="sailpoint.iiqda.menuprovider.DeployEnvironmentMenuProvider"
+        />
+      </menu>
+      <menu id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.commands.setupXMLMenu"
+       label="Import setup.xml">
+        <visibleWhen>
+          <and>
+            <with variable="activePartId">
+              <equals value="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.content.Artifact.ArtifactEditor"/>              
+            </with>
+            <with variable="activeEditorInput">
+              <adapt type="org.eclipse.core.resources.IResource">
+                <or>
+                  <test property="org.eclipse.core.resources.name" value="setup.xml"/> 
+                </or> 
+              </adapt>     
+            </with>
+          </and>
+        </visibleWhen>
+        <dynamic id="sailpoint.IIQ_Deployment_Accelerator.SetupXMLMenuProvider"
+          class="sailpoint.iiqda.menuprovider.SetupXMLMenuProvider"
+        />
+      </menu>
+      <menu id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.commands.runTaskMenu"
+        label="Run Task">
+        <dynamic id="sailpoint.IIQ_Deployment_Accelerator.RunTaskMenuProvider"
+          class="sailpoint.iiqda.menuprovider.RunTaskMenuProvider"
+        />
+      </menu>
+      <menu id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.commands.compareWithTargetEnvironmentMenu"
+            label="Compare with Remote">
+        <visibleWhen>
+          <with variable="activePartId">
+            <equals value="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.content.Artifact.ArtifactEditor"/>
+          </with>
+        </visibleWhen>
+        <dynamic id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.compareWithTargetEnvironmentMenuProvider"
+          class="sailpoint.iiqda.menuprovider.CompareWithTargetEnvironmentMenuProvider"/>
+      </menu>  
+      <separator name="DeployArtifact" visible="true"/>
+    </menuContribution>
+  
+    <!--                                                                                                  -->
+    <!-- This menuContribution is for the context menu in the Navigator/Project Explorer/Package Explorer -->
+    <!--                                                                                                  -->
+    <menuContribution locationURI="popup:org.eclipse.ui.popup.any?after=export">
+      <menu id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.commands.pack.deployArtifactMenu"
+        label="Deploy Artifact">
+        <visibleWhen>
+          <and>
+            <with variable="activePartId">
+              <or>
+                <equals value="org.eclipse.jdt.ui.PackageExplorer"/>
+                <equals value="org.eclipse.ui.navigator.ProjectExplorer"/>
+                <equals value="org.eclipse.ui.views.ResourceNavigator"/>
+              </or>              
+            </with>            
+            <with variable="selection">
+              <iterate ifEmpty="false" operator="or">
+                <adapt type="org.eclipse.core.resources.IResource">
+                  <and>
+                    <test property="org.eclipse.core.resources.contentTypeId" args="kindOf" 
+                    value="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.content.Artifact"/>
+                  </and>
+                </adapt>
+              </iterate>
+            </with>
+          </and>
+        </visibleWhen>
+        <dynamic id="sailpoint.IIQ_Deployment_Accelerator.pack.DeployArtifactMenuProvider"
+          class="sailpoint.iiqda.menuprovider.DeployEnvironmentMenuProvider"
+        />
+      </menu>
+      <menu id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.commands.pack.importArtifactMenu"
+        label="Import Artifact">
+        <visibleWhen>
+          <and>
+            <with variable="activePartId">
+              <or>
+                <equals value="org.eclipse.jdt.ui.PackageExplorer"/>
+                <equals value="org.eclipse.ui.navigator.ProjectExplorer"/>
+                <equals value="org.eclipse.ui.views.ResourceNavigator"/>
+              </or>              
+            </with>            
+            <with variable="selection">
+              <iterate ifEmpty="false" operator="or">
+                <adapt type="org.eclipse.core.resources.IResource">
+                  <and>
+                    <test property="org.eclipse.core.resources.projectNature"
+                      value="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.iiqNature"/>
+                    <instanceof value="org.eclipse.core.resources.IContainer"/>
+                  </and>
+                </adapt>
+              </iterate>
+            </with>
+          </and>
+        </visibleWhen>
+        <dynamic id="sailpoint.IIQ_Deployment_Accelerator.pack.ImportArtifactMenuProvider"
+          class="sailpoint.iiqda.menuprovider.ImportEnvironmentMenuProvider"
+        />
+      </menu>
+      <menu id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.commands.pack.refreshArtifactMenu"
+        label="Refresh Artifact">
+        <visibleWhen>
+          <and>
+            <with variable="activePartId">
+              <or>
+                <equals value="org.eclipse.jdt.ui.PackageExplorer"/>
+                <equals value="org.eclipse.ui.navigator.ProjectExplorer"/>
+                <equals value="org.eclipse.ui.views.ResourceNavigator"/>
+              </or>              
+            </with>            
+            <with variable="selection">
+              <iterate ifEmpty="false" operator="or">
+                <adapt type="org.eclipse.core.resources.IResource">
+                  <test property="org.eclipse.core.resources.contentTypeId" args="kindOf"
+                    value="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.content.Artifact"/>
+                </adapt>
+              </iterate>
+            </with>
+          </and>
+        </visibleWhen>
+        <dynamic id="sailpoint.IIQ_Deployment_Accelerator.pack.RefreshArtifactMenuProvider"
+          class="sailpoint.iiqda.menuprovider.RefreshEnvironmentMenuProvider"
+        />
+      </menu>
+      <menu id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.commands.pack.hotdeployMenu"
+        label="Hot Deploy Class">
+        <visibleWhen>
+          <and>
+            <with variable="activePartId">
+              <or>
+                <equals value="org.eclipse.jdt.ui.PackageExplorer"/>
+                <equals value="org.eclipse.ui.navigator.ProjectExplorer"/>
+                <equals value="org.eclipse.ui.views.ResourceNavigator"/>
+              </or>              
+            </with>
+            <with variable="selection">
+              <iterate ifEmpty="false" operator="or">
+              <adapt type="org.eclipse.core.resources.IResource">
+                <test property="org.eclipse.core.resources.contentTypeId" value="org.eclipse.jdt.core.javaSource" />
+              </adapt>
+              </iterate>
+            </with>
+          </and>
+        </visibleWhen>
+        <dynamic id="sailpoint.IIQ_Deployment_Accelerator.pack.HotDeployMenuProvider"
+          class="sailpoint.iiqda.menuprovider.HotDeployMenuProvider"
+        />
+      </menu>
+      <menu id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.commands.pack.setupXMLMenu"
+       label="Import setup.xml">
+        <visibleWhen>
+          <and>
+            <with variable="activePartId">
+              <or>
+                <equals value="org.eclipse.jdt.ui.PackageExplorer"/>
+                <equals value="org.eclipse.ui.navigator.ProjectExplorer"/>
+                <equals value="org.eclipse.ui.views.ResourceNavigator"/>
+              </or>              
+            </with>            
+            <with variable="selection">
+              <iterate ifEmpty="false" operator="or">
+                <adapt type="org.eclipse.core.resources.IResource">
+                  <test property="org.eclipse.core.resources.name" value="setup.xml"/> 
+                </adapt>     
+              </iterate>
+            </with>
+          </and>
+        </visibleWhen>
+        <dynamic id="sailpoint.IIQ_Deployment_Accelerator.SetupXMLMenuProvider"
+          class="sailpoint.iiqda.menuprovider.SetupXMLMenuProvider"
+        />
+      </menu>
+      <menu id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.commands.pack.compareWithTargetEnvironmentMenu"
+            label="Compare with Remote">
+        <visibleWhen>
+          <and>
+            <with variable="activePartId">
+              <or>
+                <equals value="org.eclipse.jdt.ui.PackageExplorer"/>
+                <equals value="org.eclipse.ui.navigator.ProjectExplorer"/>
+                <equals value="org.eclipse.ui.views.ResourceNavigator"/>
+              </or>              
+            </with>            
+            <with variable="selection">
+              <iterate ifEmpty="false" operator="or">
+                <adapt type="org.eclipse.core.resources.IResource">
+                  <test property="org.eclipse.core.resources.contentTypeId" args="kindOf"
+                  value="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.content.Artifact"/>
+                </adapt>
+              </iterate>
+            </with>
+            <!--with variable="activePartId">
+              <equals value="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.content.Artifact.ArtifactEditor"/>
+            </with-->
+          </and>
+        </visibleWhen>
+        <dynamic id="sailpoint.IIQ_Deployment_Accelerator.pack.CompareWithTargetEnvironmentMenuProvider"
+          class="sailpoint.iiqda.menuprovider.CompareWithTargetEnvironmentMenuProvider"/>
+      </menu>         
+      <separator name="IdentityIQ" visible="true"/>
+    </menuContribution>
+    <!--                                                                                                  -->
+    <!-- This menuContribution is for the Source menu to insert a workflow step -->
+    <!--                                                                                                  -->
+    
+    <!--menuContribution locationURI="popup:org.eclipse.ui.popup.any"-->
+    <menuContribution locationURI="popup:sourcePopupMenuId">
+       <command
+             commandId="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.commands.insertStepCommand">
+         <visibleWhen>
+          <and>
+            <with variable="activePartId">
+              <equals value="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.content.Artifact.ArtifactEditor"/>              
+            </with>
+            <with variable="activeEditorInput">
+              <adapt type="org.eclipse.core.resources.IResource">
+                <test property="org.eclipse.core.resources.contentTypeId" 
+                      value="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.content.WorkflowArtifact"/>
+              </adapt>     
+            </with>
+            <!--with variable="selection"-->
+            <with variable="activeEditor">
+              <test property="sailpoint.iiqda.propertytest.inElement"
+                    value="Step"/>
+            </with>
+          </and>
+        </visibleWhen>
+       </command>
+     </menuContribution>
+
+    <!--menuContribution locationURI="popup:org.eclipse.ui.popup.any"-->
+    <menuContribution locationURI="popup:refactorPopupMenuId">
+       <command
+             commandId="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.commands.renameStepCommand">
+         <visibleWhen>
+          <and>
+            <with variable="activePartId">
+              <equals value="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.content.Artifact.ArtifactEditor"/>              
+            </with>
+            <with variable="activeEditorInput">
+              <adapt type="org.eclipse.core.resources.IResource">
+                <test property="org.eclipse.core.resources.contentTypeId" 
+                      value="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.content.WorkflowArtifact"/>
+              </adapt>     
+            </with>
+            <!--with variable="selection"-->
+            <with variable="activeEditor">
+              <test property="sailpoint.iiqda.propertytest.inElement"
+                    value="Step"/>
+            </with>
+          </and>
+        </visibleWhen>
+       </command>
+     </menuContribution>
+     
+  </extension>
+   
+  <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="sailpoint.iiqda.propertytest.ElementPropertyTester"
+            id="sailpoint.IIQ_Deployment_Accelerator.propertytest.ElementPropertyTester"
+            namespace="sailpoint.iiqda.propertytest"
+            properties="inElement"
+            type="java.lang.Object">
+      </propertyTester>
+  </extension>
+   
+  <extension point="org.eclipse.ui.editors"> 
+    <editor
+      name="Artifact Editor"
+      class="sailpoint.iiqda.editors.ArtifactEditor" 
+      icon="platform:/plugin/sailpoint.IIQ_Deployment_Accelerator.core/icons/sailpoint16x16.gif"
+      id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.content.Artifact.ArtifactEditor">
+      <contentTypeBinding contentTypeId="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.content.Artifact"/>
+    </editor> 
+  </extension>
+  
+   
+  <extension point="org.eclipse.ui.commands">
+    <command defaultHandler="sailpoint.iiqda.handlers.DeployArtifactCommandHandler"
+      id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.commands.deployArtifactCommand" name="Deploy Artifact">
+      <commandParameter id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.commands.targetEnvironment" name="target"/>
+    </command>
+    <command defaultHandler="sailpoint.iiqda.handlers.ImportResourceCommandHandler"
+      id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.commands.importArtifactCommand" name="Import Artifact">
+      <commandParameter id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.commands.targetEnvironment" name="target"/>
+    </command>
+    <command defaultHandler="sailpoint.iiqda.handlers.HotDeployCommandHandler"
+      id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.commands.hotDeployCommand" name="Hot Deploy Class">
+      <commandParameter id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.commands.targetEnvironment" name="target"/>
+    </command>
+    <command defaultHandler="sailpoint.iiqda.handlers.InsertStepCommandHandler"
+      id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.commands.insertStepCommand" name="Insert Step">
+    </command>
+    <command defaultHandler="sailpoint.iiqda.handlers.RefreshResourceCommandHandler"
+      id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.commands.refreshArtifactCommand" name="Refresh Artifact">
+      <commandParameter id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.commands.targetEnvironment" name="target"/>
+    </command>
+    <command defaultHandler="sailpoint.iiqda.handlers.RenameStepCommandHandler"
+      id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.commands.renameStepCommand" name="Rename Step">
+    </command>
+    <command defaultHandler="sailpoint.iiqda.handlers.SetupXMLCommandHandler"
+      id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.commands.setupXMLCommand" name="Run setup.xml">
+      <commandParameter id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.commands.targetEnvironment" name="target"/>
+    </command>
+    <command defaultHandler="sailpoint.iiqda.handlers.CompareWithTargetEnvironmentCommandHandler"
+      id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.commands.compareWithTargetEnvironmentCommand" name="Compare with target">
+      <commandParameter id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.commands.targetEnvironment" name="target"/>
+    </command>
+    <command defaultHandler="sailpoint.iiqda.handlers.RunTaskCommandHandler"
+      id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.commands.runTaskCommand" name="Run Task">
+      <commandParameter id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.commands.targetEnvironment" name="target"/>
+      <commandParameter id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.commands.taskName" name="taskName"/>
+    </command>    
+  </extension> 
+
+  <extension
+   point="org.eclipse.core.contenttype.contentTypes">
+    <content-type
+    id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.content.Artifact"
+    name="IdentityIQ Artifact"
+    base-type="org.eclipse.core.runtime.xml"
+    file-extensions="xml">
+    <describer class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber2">
+     <parameter name="dtd" value="sailpoint.dtd"/>
+     <parameter name="element" value="*"/>
+    </describer>
+    </content-type>
+    
+    <!--content-type
+      id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.content.Artifact"
+      name="IdentityIQ Artifact"
+      base-type="org.eclipse.core.runtime.xml"
+      file-extensions="xml">
+      <describer class="sailpoint.iiqda.contenttypes.ContentDescriberForArtifacts"/>
+    </content-type-->
+    <content-type
+      id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.content.WorkflowArtifact"
+      name="IdentityIQ Workflow Artifact"
+      base-type="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.content.Artifact"
+      file-extensions="xml">
+      <describer class="sailpoint.iiqda.contenttypes.ContentDescriberForArtifacts">
+       <parameter name="artifactType" value="Workflow"/>
+      </describer>
+    </content-type>
+  </extension>
+  <extension point="org.eclipse.ui.editors"> 
+    <editor
+      name="Artifact Editor"
+      class="sailpoint.iiqda.editors.ArtifactEditor" 
+      icon="platform:/plugin/sailpoint.IIQ_Deployment_Accelerator.core/icons/sailpoint16x16.gif"
+      id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.content.Artifact.ArtifactEditor">
+      <contentTypeBinding contentTypeId="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.content.Artifact"/>
+    </editor> 
+  </extension>
+
+<extension
+  id="iiqProblem"
+  name="IdentityIQ Plugin Problem"
+  point="org.eclipse.core.resources.markers">
+  <super type="org.eclipse.core.resources.problemmarker"/>
+  <!--super type="org.eclipse.wst.validation.problemmarker"/-->
+</extension>
+<extension
+  id="ruleproblem"
+  name="Rule Problem"
+  point="org.eclipse.core.resources.markers">
+  <super type="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.iiqProblem"/>
+</extension>
+<extension
+  id="mismatchedClosingCDATAProblem"
+  name="Mismatched Closing CDATA Problem"
+  point="org.eclipse.core.resources.markers">
+  <super type="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.iiqProblem"/>
+  <attribute name="previousOpeningElementlocation"/>
+  <attribute name="previousOpeningElementName"/>
+  <attribute name="location"/>
+</extension>
+<extension
+  id="mismatchedClosingElementProblem"
+  name="Mismatched Closing Element Problem"
+  point="org.eclipse.core.resources.markers">
+  <super type="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.iiqProblem"/>
+  <attribute name="expectedElement"/>
+  <attribute name="foundElement"/>
+  <attribute name="location"/>
+</extension>
+<extension
+  id="mismatchedOpeningCDATAProblem"
+  name="Mismatched Opening CDATA Problem"
+  point="org.eclipse.core.resources.markers">
+  <super type="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.iiqProblem"/>
+  <attribute name="previousOpeningElementlocation"/>
+  <attribute name="previousOpeningElementName"/>
+  <attribute name="location"/>
+</extension>
+<extension
+  id="missingReferenceProblem"
+  name="Missing Reference Problem"
+  point="org.eclipse.core.resources.markers">
+  <super type="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.iiqProblem"/>
+  <attribute name="refName"/>
+  <attribute name="refType"/>
+  <attribute name="project"/>
+</extension>
+<extension
+  id="invalidRuleReferenceClassProblem"
+  name="Invalid Reference Class Problem"
+  point="org.eclipse.core.resources.markers">
+  <super type="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.iiqProblem"/>
+</extension>
+<extension
+  id="considerUsingCDATA"
+  name="Consider Using CDATA Problem"
+  point="org.eclipse.core.resources.markers">
+  <super type="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.iiqProblem"/>
+  <!--attribute name="ruleName"/>
+  <attribute name="project"/-->
+</extension>
+<extension
+  id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.referenceproblem"
+  name="Library Reference Problem"
+  point="org.eclipse.core.resources.markers">
+  <super type="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.iiqProblem"/>
+</extension>
+<!--extension
+  point="org.eclipse.ui.propertyPages">
+  <page
+   class="sailpoint.iiqda.preferences.IIQPreferencePage"
+   id="sailpoint.iiqda.preferences.IIQPreferencePage"
+   name="IdentityIQ Preferences">
+    <enabledWhen>
+      <adapt type="org.eclipse.core.resources.IProject">
+       <test property="org.eclipse.core.resources.projectNature" 
+            value="sailpoint.iiqda.iiqNature"/> 
+      </adapt>   
+    </enabledWhen>
+  </page>
+</extension-->
+<extension
+  point="org.eclipse.core.runtime.preferences">
+  <initializer
+   class="sailpoint.iiqda.preferences.PreferenceInitializer">
+  </initializer>
+</extension>
+<extension point="org.eclipse.ui.ide.markerResolution">
+  <markerResolutionGenerator
+  class="sailpoint.iiqda.resolutions.MissingOpenCDATAResolutionGenerator"
+  markerType="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.mismatchedClosingCDATAProblem">
+  </markerResolutionGenerator>
+ </extension>
+<extension point="org.eclipse.ui.ide.markerResolution">
+  <markerResolutionGenerator
+  class="sailpoint.iiqda.resolutions.MissingCloseCDATAResolutionGenerator"
+  markerType="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.mismatchedOpeningCDATAProblem">
+  </markerResolutionGenerator>
+ </extension>
+<extension point="org.eclipse.ui.ide.markerResolution">
+  <markerResolutionGenerator
+  class="sailpoint.iiqda.resolutions.MissingCloseElementResolutionGenerator"
+  markerType="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.mismatchedClosingElementProblem">
+  </markerResolutionGenerator>
+ </extension>
+<extension point="org.eclipse.ui.ide.markerResolution">
+  <markerResolutionGenerator
+  class="sailpoint.iiqda.resolutions.MissingReferenceResolutionGenerator"
+  markerType="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.missingReferenceProblem">
+  </markerResolutionGenerator>
+ </extension>
+<extension point="org.eclipse.ui.ide.markerResolution">
+  <markerResolutionGenerator
+  class="sailpoint.iiqda.resolutions.ConsiderUsingCDATAResolutionGenerator"
+  markerType="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.considerUsingCDATA">
+  </markerResolutionGenerator>
+ </extension>
+ 
+ 
+<extension point="org.eclipse.wst.sse.ui.sourcevalidation">
+  <validator scope="partial" class="sailpoint.iiqda.editors.ArtifactValidator"
+    id="sailpoint.IIQ_Deployment_Accelerator.validation.artifactValidator">
+    <contentTypeIdentifier  id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.content.Artifact">
+      <partitionType id="org.eclipse.wst.xml.XML_DEFAULT"/>
+      <partitionType id="sailpoint.IIQ_Deployment_Accelerator.content.BEANSHELL_SOURCE"/>
+      <partitionType id="org.eclipse.wst.xml.XML_CDATA"/>
+    </contentTypeIdentifier>
+  </validator>
+</extension>
+  <extension
+  point="org.eclipse.core.filebuffers.documentCreation"
+  id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.content.Artifact.documentFactories"
+  name="IIQ Plugin Documentfactories">
+  <factory
+    contentTypeId="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.content.Artifact"
+    class="org.eclipse.wst.sse.core.internal.filebuffers.BasicStructuredDocumentFactory" />
+  </extension>
+  <extension point="org.eclipse.wst.sse.core.modelHandler">
+    <modelHandler
+      class="sailpoint.iiqda.artifactmodel.ModelHandlerForArtifact"
+      associatedContentTypeId="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.content.Artifact"
+      id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.content.Artifact.modelhandler">
+    </modelHandler>
+  </extension>
+<!-- Disabled this since Adam found some 'inconsistencies' if you don't use the SERI naming strategy -->
+<!-- Even then, it can cause some problems. Leaving the code there so we can revisit if required -->
+<!--extension point="org.eclipse.ltk.core.refactoring.renameParticipants">
+  <renameParticipant class="sailpoint.iiqda.refactoring.ArtifactRenameParticipant" 
+      id="sailpoint.IIQ_Deployment_Accelerator.refactoring.ArtifactRenameParticipant" name="ArtifactRenameParticipant">
+    <enablement>
+      <with variable="element">
+        <adapt type="org.eclipse.core.resources.IResource">
+          <test property="org.eclipse.core.resources.contentTypeId"
+                value="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.content.Artifact"/>
+        </adapt>
+      </with>
+    </enablement>
+  </renameParticipant>
+</extension-->
+
+  <!-- **************************************************** -->
+  <extension point="org.eclipse.wst.sse.ui.editorConfiguration">
+    <sourceViewerConfiguration
+      class="sailpoint.iiqda.editors.ArtifactSourceViewerConfiguration"
+      target="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.content.Artifact" />
+    <contentOutlineConfiguration
+      class="sailpoint.iiqda.editors.WorkflowContentOutlineConfiguration"
+      target="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.content.Artifact" />
+  </extension>
+  <extension
+        point="org.eclipse.ui.preferencePages">
+     <page
+           class="sailpoint.iiqda.preferences.IIQDAPreferencePage"
+           id="sailpoint.IIQ_Deployment_Accelerator.preferences.IIQDAPreferencePage"
+           name="IdentityIQ Preferences">
+     </page>
+     <page
+           class="sailpoint.iiqda.preferences.IIQDAImportPreferencePage"
+           id="sailpoint.IIQ_Deployment_Accelerator.preferences.IIQDAImportPreferencePage"
+           name="IdentityIQ Import Preferences"
+           category="sailpoint.IIQ_Deployment_Accelerator.preferences.IIQDAPreferencePage">
+     </page>
+  </extension>
+  <extension
+        point="org.eclipse.help.contexts">
+     <contexts
+           file="contexts.xml">
+     </contexts>
+  </extension>
+
+  <extension point="org.eclipse.ui.propertyPages">
+     <page
+           class="sailpoint.iiqda.properties.IIQProjectPropertyPage"
+           id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.properties.propertyPage"
+           name="IdentityIQ Project Properties">
+      <enabledWhen>
+        <adapt type="org.eclipse.core.resources.IProject">
+         <test property="org.eclipse.core.resources.projectNature" 
+              value="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.iiqNature"/> 
+        </adapt>   
+      </enabledWhen>
+    </page>     
+  </extension>
+  
+    
+  <!-- This is a possible future extension to put custom icons in the outline view
+  <extension
+    point="org.eclipse.wst.sse.ui.adapterFactoryDescription">
+    <adapterFactoryDescription
+      class="org.eclipse.wst.xml.ui.internal.registry.AdapterFactoryProviderForArtifacts">
+      <contentType id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.content.WorkflowArtifact" />
+    </adapterFactoryDescription>
+  </extension>
+  -->
+  <extension point="org.eclipse.compare.compareFilters">
+    <filter id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.compare.hibernateAttribute"
+            class="sailpoint.iiqda.comparison.HibernateComparator"
+            extensions="xml"
+            filter.description="Ignore Hibernate Attributes"
+            filter.image="icons/diff_toggle_id.gif"
+            filter.label="Hibernate"
+            filter.tooltip="Ignore Hibernate Attributes"
+    />
+    <contentTypeBinding
+          contentTypeId="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.ifact"
+          filterId="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.compare.hibernateAttribute"/>
+          
+    <filter id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.compare.quoteTypes"
+            class="sailpoint.iiqda.comparison.QuoteComparator"
+            extensions="xml"
+            filter.description="Ignore Quote Types"
+            filter.image="icons/diff_toggle_quotes.gif"
+            filter.label="Quotes"
+            filter.tooltip="Ignore Quote Types"
+    />
+    <contentTypeBinding
+          contentTypeId="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.content.Artifact"
+          filterId="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.compare.quoteTypes"/>
+          
+    <filter id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.compare.entity"
+            class="sailpoint.iiqda.comparison.EntityComparator"
+            extensions="xml"
+            filter.description="Ignore Entity references"
+            filter.image="icons/diff_toggle_entity.gif"
+            filter.label="Entity"
+            filter.tooltip="Ignore Entity references"
+    />
+    <contentTypeBinding
+          contentTypeId="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.content.Artifact"
+          filterId="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.compare.entity"/>
+          
+    <filter id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.compare.cdata"
+            class="sailpoint.iiqda.comparison.CDATAComparator"
+            extensions="xml"
+            filter.description="Ignore CDATA tags"
+            filter.image="icons/diff_toggle_cdata.gif"
+            filter.label="CDATA"
+            filter.tooltip="Ignore CDATA tags"
+    />
+    <contentTypeBinding
+          contentTypeId="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.content.Artifact"
+          filterId="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.compare.cdata"/>
+  </extension>
+  <extension
+        id="id1"
+        point="org.eclipse.core.resources.natures">
+  </extension>
+  
+  <!--extension
+    id="sailpoint.iiqda.content.Artifact.completion"
+    point="org.eclipse.wst.sse.ui.completionProposal">         
+    <proposalCategory
+      id="sailpoint.iiqda.content.Artifact.completion.category"
+      name="Fruits completion proposals">
+    </proposalCategory>
+    <proposalComputer
+      activate="true"
+      categoryId="sailpoint.iiqda.content.Artifact.completion.category"
+      class="sailpoint.iiqda.completion.Comp"
+      id="sailpoint.iiqda.content.Artifact.completion.proposalcomputer">      
+      <!contentType id="sailpoint.iiqda.content.Artifact"/>      
+      <contentType id="sailpoint.iiqda.content.BEANSHELL_SOURCE"/>      
+    </proposalComputer>         
+  </extension-->
+  
+</plugin>

@@ -1,0 +1,49 @@
+<plugin>
+
+  <extension point="org.eclipse.core.resources.natures" id="ipfNature"
+   name="IdentityIQ Plugin Framework Project Nature">
+    <runtime>
+      <run class="sailpoint.iiqda.builder.IPFNature"/>
+    </runtime>
+  </extension>
+  
+  <extension point="org.eclipse.ui.newWizards">
+    <wizard
+      category="sailpoint.IIQ_Deployment_Accelerator.wizards.category.sailpoint"
+      class="sailpoint.iiqda.wizards.project.ipf.NewIPFProjectWizard"
+      icon="platform:/plugin/sailpoint.IIQ_Deployment_Accelerator.core/icons/sailpoint16x16.gif"
+      id="sailpoint.IIQ_Deployment_Accelerator.newIPFProjectWizard"
+      name="IdentityIQ Plugin Framework Project"
+      project="true">
+    </wizard>
+  </extension>
+  
+  <extension point="org.eclipse.ui.ide.projectNatureImages">
+    <image
+      icon="icons/spIPFOverlay-sml.gif"
+      id="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.Plugins.ipfNatureIcon"
+      natureId="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.Plugins.ipfNature">
+    </image>
+  </extension>
+
+  <!-- kmj 23-11-17 I've disabled the property page for now, since it was only really allowing us to move around the install.setup.xml file
+       and that doesn't exist any more - all files in the install/upgrade/remove folder are imported in alphabetical order.
+       Maybe we'll do something with this in future.
+  <extension
+        point="org.eclipse.ui.propertyPages">
+     <page
+           class="sailpoint.iiqda.properties.IPFProjectPropertyPage"
+           id="sailpoint.IIQ_Deployment_Accelerator.properties.ipfProjectInstallationPage"
+           name="IIQ Plugin Framework">
+      <enabledWhen>
+        <adapt type="org.eclipse.core.resources.IProject">
+         <test property="org.eclipse.core.resources.projectNature" 
+              value="sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.Plugins.ipfNature"/> 
+        </adapt>   
+      </enabledWhen>
+    </page>
+  </extension>
+  -->
+
+ </plugin>
+ 

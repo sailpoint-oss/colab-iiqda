@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>sailpoint.IIQ_Deployment_Accelerator</groupId>
+    <artifactId>sailpoint.IIQ_Deployment_Accelerator.features</artifactId>
+    <version>4.0.3-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+<repositories>
+    <repository>
+      <id>kevsRepo</id>
+      <name>Kev's custom repo</name>
+      <url>http://10.10.10.10/repository</url>
+    </repository>
+    <repository>
+        <id>kevSnapshot</id>
+        <name>Kev's custom snapshots</name>
+        <url>http://10.10.10.10/snapshots</url>
+        <layout>default</layout>
+    </repository>
+  </repositories>
+  
+    <parent>
+        <groupId>sailpoint.IIQ_Deployment_Accelerator</groupId>
+        <artifactId>IIQ_Deployment_Accelerator</artifactId>
+        <version>4.0.3-SNAPSHOT</version>
+    </parent>
+    
+    <modules>
+        <module>sailpoint.IIQ_Deployment_Accelerator.feature</module>
+    </modules>
+</project>

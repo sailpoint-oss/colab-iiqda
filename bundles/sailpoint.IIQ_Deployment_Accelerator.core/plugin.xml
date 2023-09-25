@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>  
+  <extension
+    point="org.eclipse.ui.newWizards">
+    <category
+      id="sailpoint.IIQ_Deployment_Accelerator.wizards.category.sailpoint"
+      name="SailPoint">
+    </category>
+  </extension>
+
+</plugin>

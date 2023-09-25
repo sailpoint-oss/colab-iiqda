@@ -1,0 +1,53 @@
+{
+    "useForProvisioning": false,
+    "icon": "sprite:gensrc-default",
+    "description": "IdN Admins",
+    "supportsEntitlementAggregation": "true",
+    "hasValidAccountProfile": false,
+    "lastUpdated": "2017-03-07T21:05:40Z",
+    "entitlementsCount": 0,
+    "connector_featuresString": "DIRECT_PERMISSIONS, NO_RANDOM_ACCESS, DISCOVER_SCHEMA",
+    "accountsCount": 47,
+    "id": "38946",
+    "owner": {
+        "name": "SailPoint Support",
+        "id": "178097"
+    },
+    "appCount": 0,
+    "sourceConnected": false,
+    "definitionName": "Generic",
+    "passwordPolicy": "ff808181518f9a3601518f9ae5690313",
+    "correlationConfig": {    
+ 
+      "attributeAssignments": null,
+      "name": null,
+      "id": null
+    }, 
+    "externalId": "ff808181518f9e9a015192fc0abb02f5",
+    "health": {
+        "hostname": "cc3",
+        "lastSeen": "1488920740512",
+        "org": "enterprise104",
+        "healthy": true,
+        "lastChanged": "1449869986740",
+        "isAuthoritative": "false",
+        "externalId": "ff808181518f9e9a015192fc0abb02f5",
+        "id": "38946",
+        "type": "C:1-generic",
+        "status": "SOURCE_STATE_HEALTHY",
+        "since": 48950481371
+    },
+    "useForAccounts": true,
+    "isAuthoritative": true,
+    "iqServiceDownloadUrl": "https://files.accessiq.sailpoint.com/integrations/iqservice/IQService.zip",
+    "accessProfilesCount": 0,
+    "applicationTemplate": "Generic",
+    "useForPasswordManagement": false,
+    "version": 7,
+    "passwordPolicyName": "Default",
+    "userCount": 47,
+    "sourceType": "DELIMITED_FILE",
+    "name": "IdN Admins",
+    "scriptName": "generic",
+    "useForAuthentication": false
+}

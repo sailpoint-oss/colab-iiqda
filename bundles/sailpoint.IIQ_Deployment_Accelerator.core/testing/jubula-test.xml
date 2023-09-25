@@ -1,0 +1,156 @@
+<project name="plugin-test" default="run">
+
+    <!-- required passed in properties -->
+    <!-- test.project - name of test project -->
+    <!-- test.suite - name of the test suite to run -->
+    <!-- aut.name - name of the AUT to use -->
+    <!-- application.archive - eclipse zip file -->
+
+    <!-- Locations -->
+    <property name="jubula.home" value="D:/Program Files/jubula_8.4.1.123"/>
+    <property name="ite" value="${jubula.home}/ite"/>
+    <property name="jubula.plugin.archive" value="${jubula.home}/development/rcp-support.zip"/>
+    <property name="testdata.dir" value="testdata" />
+    <property name="report.dir" value="${jenkins_workspace}/report/jubula"/>
+    <property name="application.dir" value="plugin-test/runtime"/>
+    <property name="workspace.dir" value="plugin-test/workspace"/>
+    <property name="artifact.dir" value="../Repository/target/repository/plugins"/><!-- Location of plugins under test -->
+    <property name="testexec" value="${ite}/testexec"/>
+    <property name="aut.agent" value="${ite}/autagent.exe"/>
+    <property name="autrun" value="${ite}/autrun"/>
+    <!-- Derived properties -->
+    <property name="deploy.dir" value="${application.dir}/eclipse/plugins"/>
+    <property name="report.index" value="${report.dir}/index.html"/>
+ 
+    <!-- set this to keep the eclipse environment, and not make a new one -->
+    <!--property name="noprep" value="true"/-->
+
+    <!-- Taskdefs -->
+    <taskdef resource="net/sf/antcontrib/antcontrib.properties" classpath="ant-contrib-1.0b3.jar"/>
+ 
+    <!-- Main target -->
+    <target name="run" depends="check, setup, prepare-runtime, test, report" />
+ 
+    <target name="check" unless="application.archive" description="Check configuration">
+        <fail message="The mandatory property application.archive pointing to a zipped Eclipse runtime is missing"/>
+    </target>
+ 
+    <target name="setup" description="Prepare directories">
+        <delete dir="${report.dir}"/>
+        <mkdir dir="${report.dir}"/>
+        <delete dir="${testdata.dir}"/>
+        <mkdir dir="${testdata.dir}"/>
+        <exec executable="${aut.agent}" spawn="true" failonerror="false"/>
+    </target>
+
+    <target name="prepare-runtime" unless="noprep" description="Unpack the runtime application to a working directory">
+
+        <delete dir="${application.dir}"/>
+        <mkdir dir="${application.dir}"/>
+        <delete dir="${basedir}/${workspace.dir}"/>
+
+        <!-- Extract Eclipse -->
+        <unzip dest="${application.dir}" src="${application.archive}" overwrite="true"/>
+        <chmod perm="a+x" file="${application.dir}/eclipse/eclipse"/>
+         
+        <!-- Extract Jubula instrumentation plugin -->
+        <unzip dest="${application.dir}/eclipse/plugins" src="${jubula.plugin.archive}" overwrite="true"/>
+
+        <!-- Update eclipse's config.ini -->
+        <propertyfile file="${application.dir}/eclipse/configuration/config.ini">
+          <entry  key="osgi.bundles" operation="+" value=",org.eclipse.jubula.rc.rcp@start"/>
+        </propertyfile>
+
+        <!-- Copy all plugins (target/*.jar) directory to the runtime application's plugins directory -->
+        <copy todir="${deploy.dir}">
+            <fileset dir="${artifact.dir}" includes="*.jar"/>
+        </copy>
+      
+        <!-- remove the welcome page -->
+        <delete>
+          <fileset dir="${application.dir}/eclipse/plugins" includes="org.eclipse.ui.intro.universal*"/>
+          <dirset dir="${application.dir}/eclipse/plugins" includes="org.eclipse.ui.intro.universal*"/>          
+        </delete>
+      
+        <!-- initialize eclipse -->
+        <echo>Initializing eclipse</echo>
+        <exec executable="${basedir}/${application.dir}/eclipse/eclipse">
+          <arg line='-initialize'/>
+        </exec>
+        <echo>Done</echo>
+
+    </target>
+ 
+<target name="test" description="Run the tests using testexec against an autagent">
+    <property name="test.project" value="IIQDA Testing"/>
+    <property name="test.project.version" value="1.0"/>
+    <property name="test.suite" value="${test.suite}"/>
+    <property name="test.aut.config" value="${aut.config}"/>
+    <property name="autagent.host" value="localhost"/>
+    <property name="autagent.port" value="60000"/>
+    <!--property name="db.scheme" value="_your DB scheme_"/-->
+    <property name="db.url" value="jdbc:mysql://localhost:3306/jubula"/>
+    <property name="db.user" value="jubula"/>
+    <property name="db.pwd" value="jubula"/>
+ 
+    <echo>resultdir=${report.dir}</echo>
+    <echo>basedir=${basedir}</echo>
+  
+    <echo>executing ${autrun} -rcp -i test_${aut.name} -e ${basedir}/${application.dir}/eclipse/eclipse</echo>
+    <echo file="autrunproxy.cmd">echo StartingEclipse
+start "jenkins-eclipse" "${basedir}/${application.dir}/eclipse/eclipse" -data "${basedir}/${workspace.dir}"
+timeout 30
+echo STarted eclipse
+</echo>
+      
+    <exec executable="${autrun}" spawn="true">
+      <arg line='-rcp -i test_${aut.name}'/>
+      <arg line='-e "${basedir}/autrunproxy.cmd"'/>
+      <arg line='-k en_US'/>
+    </exec>
+    
+    <echo>executing ${testexec} result path=${report.dir}</echo>
+    <exec executable="${testexec}" failonerror="true">
+        <arg line='-project ${test.project} -version ${test.project.version} -testsuite ${test.suite}'/>
+        <arg line='-server ${autagent.host} -port ${autagent.port} -autid test_${aut.name}'/>
+        <arg line='-datadir "${testdata.dir}" -resultdir "${report.dir}"'/>
+        <!--arg line='-data "${workspace.dir}"'/-->
+        <!--arg line='-language en_US'/-->
+        <!--arg line='-dbscheme "${db.scheme}"'/-->
+        <arg line='-dburl "${db.url}"'/>
+        <arg line="-dbuser ${db.user} -dbpw ${db.pwd}"/>
+    </exec>
+</target>
+<target name="report" description="Create report index HTML page">
+        <!-- Find report files -->
+        <fileset id="html.fileset" dir="${report.dir}">
+            <include name="*.htm*" />
+            <exclude name="index.html"/>
+        </fileset>
+ 
+        <pathconvert pathsep=";" property="html.filelist" refid="html.fileset">
+            <mapper type="flatten" />
+        </pathconvert>
+ 
+        <!-- Create index page header -->
+        <echo file="${report.index}">
+            &lt;html&gt;&lt;body&gt;&lt;ul&gt;
+        </echo>
+ 
+        <!-- Add links to all files -->
+        <foreach list="${html.filelist}" delimiter=";" target="-print-report-link" param="report.file.name"/>
+ 
+        <!-- Footer -->
+        <echo file="${report.index}" append="true">
+            &lt;/ul&gt;&lt;/body&gt;&lt;html&gt;
+        </echo>
+    </target>
+ 
+    <target name="-print-report-link" description="Print a link to a Jubula report file into the index page">
+        <!-- Strip file prefix -->
+        <propertyregex input="${report.file.name}" property="report.file.title" regexp="executionLog-" replace=""/>
+        <!-- Create file link in list -->
+        <echo file="${report.index}" append="true" message="&lt;li&gt;  &lt;a href=${report.file.name}&gt; ${report.file.title}  &lt;/a&gt;  &lt;/li&gt;"/>
+    </target>
+ 
+</project>

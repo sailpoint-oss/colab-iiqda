@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>sailpoint.IIQ_Deployment_Accelerator</groupId>
+  <artifactId>IIQ_Deployment_Accelerator</artifactId>
+  <version>4.0.3-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <properties>
+    <tycho.version>1.3.0</tycho.version>
+    <kevtest>Something</kevtest>
+  </properties>
+
+  <modules>
+    <module>bundles</module>
+    <module>features</module>
+    <module>releng</module>
+    <module>testing</module>
+  </modules>
+
+  <scm>
+    <connection>scm:git:https://github.com/sailpoint/epiiq</connection>
+    <developerConnection>scm:git:https://github.com/sailpoint/epiiq</developerConnection>
+    <tag>HEAD</tag>
+  </scm>
+
+  <build>
+
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-maven-plugin</artifactId>
+        <version>1.3.0</version>
+        <extensions>true</extensions>
+      </plugin>
+    </plugins>
+
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>com.itemis.maven.plugins</groupId>
+          <artifactId>unleash-maven-plugin</artifactId>
+          <version>2.9.3</version>
+          <dependencies>
+            <dependency>
+              <groupId>com.itemis.maven.plugins</groupId>
+              <artifactId>unleash-scm-provider-git</artifactId>
+              <version>2.2.0</version>
+            </dependency>
+            <!-- dependency>
+              <groupId>sailpoint.kjames</groupId>
+              <artifactId>p2composite-cdi-step</artifactId>
+              <version>1.4</version>
+            </dependency-->
+            <dependency>
+              <groupId>com.itemis.maven.plugins</groupId>
+              <artifactId>cdi-plugin-hooks</artifactId>
+              <version>0.1.1</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
+  </build>
+
+  <repositories>
+
+    <repository>
+      <id>neon</id>
+      <layout>p2</layout>
+      <url>http://download.eclipse.org/releases/neon</url>
+    </repository>
+    <repository>
+      <id>neon-updates</id>
+      <layout>p2</layout>
+      <url>http://download.eclipse.org/eclipse/updates/4.6</url>
+    </repository>
+    <repository>
+      <id>swtbot</id>
+      <layout>p2</layout>
+      <url>http://download.eclipse.org/technology/swtbot/releases/latest</url>
+    </repository>
+
+  </repositories>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <version>2.11.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>2.11.1</version>
+    </dependency>
+  </dependencies>
+
+
+  <distributionManagement>
+    <repository>
+      <id>internal.repo</id>
+      <name>Temporary Staging Repository</name>
+      <url>file://${project.build.directory}/repository</url>
+    </repository>
+  </distributionManagement>
+
+</project>

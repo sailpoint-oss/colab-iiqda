@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>sailpoint.IIQ_Deployment_Accelerator</groupId>
+    <artifactId>sailpoint.IIQ_Deployment_Accelerator.bundles</artifactId>
+    <version>4.0.3-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <parent>
+        <groupId>sailpoint.IIQ_Deployment_Accelerator</groupId>
+        <artifactId>IIQ_Deployment_Accelerator</artifactId>
+        <version>4.0.3-SNAPSHOT</version>
+    </parent>
+
+    <modules>
+        <module>sailpoint.IIQ_Deployment_Accelerator.core</module>
+        <module>sailpoint.IIQ_Deployment_Accelerator.identityiq</module>
+        <module>sailpoint.IIQ_Deployment_Accelerator.identitynow</module>
+        <module>sailpoint.IIQ_Deployment_Accelerator.plugins</module>
+        <module>sailpoint.IIQ_Deployment_Accelerator.logview</module>
+    </modules>
+</project>

@@ -1,0 +1,23 @@
+storeScmRevision
+checkProjectVersions
+checkParentVersions
+checkDependencies
+checkPlugins
+checkPluginDependencies
+prepareVersions
+checkAether
+setReleaseVersionsTycho
+addSpyPlugin
+buildReleaseArtifacts
+removeSpyPlugin
+checkForScmChanges
+tagScm
+detectReleaseArtifacts
+setDevVersionTycho
+serializeMetadata
+installArtifacts
+#deployArtifacts
+#updateCompositeDescriptors
+mvn[toGitHub] {
+  data=-f toGitHub.pom.xml deploy
+}

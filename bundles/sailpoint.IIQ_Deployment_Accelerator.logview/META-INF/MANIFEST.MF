@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: IdentityIQ Remote Log Viewer
+Bundle-SymbolicName: sailpoint.IIQ_Deployment_Accelerator.LogView;singleton:=true
+Bundle-Version: 4.0.3.qualifier
+Bundle-Vendor: SailPoint Technologies
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.apache.log4j;bundle-version="1.2.15",
+ org.eclipse.core.runtime;bundle-version="3.11.1",
+ org.eclipse.jface;bundle-version="3.11.1",
+ org.eclipse.ui.workbench;bundle-version="3.107",
+ sailpoint.IIQ_Deployment_Accelerator.core;bundle-version="0.0.0"
+Bundle-ClassPath: lib/ssappender-0.0.1-SNAPSHOT.jar,
+ .

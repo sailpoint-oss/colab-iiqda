@@ -1,0 +1,55 @@
+{
+	"id": "Calculate Email - and change to bblabs",
+
+  "type": "replace",  
+  "attributes": {  
+    "regex": "blackbaud.com",  
+    "replacement": "blackbaudlabs.com",
+    "input": {
+      "type": "lower",  
+        "attributes": {  
+          "input": {
+            "type": "firstValid",
+            "attributes": {
+              "values": [
+                  {
+                      "attributes": {
+                          "attributeName": "userPrincipalName",
+                          "sourceName": "Azure Active Directory"
+                      },
+                      "type": "accountAttribute"
+                  },
+                  {
+                      "attributes": {
+                          "attributeName": "mail",
+                          "sourceName": "AD - BlackbaudLab"
+                      },
+                      "type": "accountAttribute"
+                  },
+                  {
+                      "attributes": {
+                          "attributeName": "EMAIL_ADDRESS_WORK",
+                          "sourceName": "Workday - Sandbox"
+                      },
+                      "type": "accountAttribute"
+                  },
+                            {
+                      "attributes": {
+                          "attributeName": "email",
+                          "sourceName": "IDN Admins"
+                      },
+                      "type": "accountAttribute"
+                  },
+                  {
+                      "attributes": {
+                          "value": "(none)"
+                      },
+                      "type": "static"
+                  }
+            ]                    
+          }
+        }        
+      }
+    } 
+  }
+}			
