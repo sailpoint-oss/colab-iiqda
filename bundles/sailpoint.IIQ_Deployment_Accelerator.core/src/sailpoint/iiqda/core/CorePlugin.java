@@ -78,6 +78,10 @@ public class CorePlugin extends AbstractUIPlugin {
   public static void logTrace(String msg) {
     log(Status.INFO, msg, null);
   }
+  
+  public static void logWarning(String msg) {
+	log(Status.WARNING, msg, null);
+  }
 
   public static void logError(String msg) {
     log(Status.ERROR, msg, null);

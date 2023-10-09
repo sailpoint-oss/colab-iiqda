@@ -171,12 +171,16 @@ public class RESTClient {
         f.close();
       } catch (Exception e) {}
     }
+    
+    if (timeout < 1000) {
+    	CorePlugin.logWarning("Timeout of " + timeout + " appears to be specified in seconds, but IIQDA needs milliseconds");
+    }
 
     //    X509HostnameVerifier hostnameVerifier = new AllowAllHostnameVerifier();
     RequestConfig config = RequestConfig.custom()
-        .setSocketTimeout((int) TimeUnit.MILLISECONDS.convert(timeout, TimeUnit.SECONDS))
-        .setConnectTimeout((int) TimeUnit.MILLISECONDS.convert(timeout, TimeUnit.SECONDS))
-        .setConnectionRequestTimeout((int) TimeUnit.MILLISECONDS.convert(timeout, TimeUnit.SECONDS))
+        .setSocketTimeout(timeout)
+        .setConnectTimeout(timeout)
+        .setConnectionRequestTimeout(timeout)
         .setCircularRedirectsAllowed(true)
         .build();
 
