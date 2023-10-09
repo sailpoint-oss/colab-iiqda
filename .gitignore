@@ -1,3 +1,6 @@
 target
 *.bak
 checkout
+**/.classpath
+**/.project
+**/*.prefs
