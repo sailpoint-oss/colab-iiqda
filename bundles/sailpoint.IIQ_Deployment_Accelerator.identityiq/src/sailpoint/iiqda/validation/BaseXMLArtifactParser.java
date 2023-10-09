@@ -15,6 +15,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 
+import com.ctc.wstx.osgi.InputFactoryProviderImpl;
 import org.codehaus.stax2.XMLInputFactory2;
 import org.codehaus.stax2.XMLStreamReader2;
 import org.eclipse.core.resources.IFolder;
@@ -101,7 +102,7 @@ public abstract class BaseXMLArtifactParser {
     VALIDATIONSCRIPT("ValidationScript"),
     VALIDATORSCRIPT("ValidatorScript"),
     VARIABLE("Variable"),
-    VALUE("value"),
+    VALUE("Value"),
     VALUESCRIPT("ValueScript"),
     WORKFLOW("Workflow"),
     NONE("none");
@@ -192,10 +193,10 @@ public abstract class BaseXMLArtifactParser {
   }
 
   public void parse(boolean endAtRoot) throws XMLArtifactParserException {
-
     artifacts = new ArrayList<IArtifactRootElement>();
-
-    XMLInputFactory2 fac = (XMLInputFactory2)XMLInputFactory2.newInstance();
+    
+    InputFactoryProviderImpl iprovider = new InputFactoryProviderImpl();
+    XMLInputFactory2 fac = iprovider.createInputFactory();
     XMLStreamReader2 stream = null;
     fac.setProperty(XMLInputFactory.IS_VALIDATING, Boolean.FALSE);
     fac.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES,
