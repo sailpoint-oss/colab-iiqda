@@ -7,6 +7,8 @@
 
   <properties>
     <tycho.version>1.3.0</tycho.version>
+    <eclipse.version.name>photon</eclipse.version.name>
+    <eclipse.version.number>4.8</eclipse.version.number>
     <kevtest>Something</kevtest>
   </properties>
 
@@ -68,12 +70,12 @@
     <repository>
       <id>neon</id>
       <layout>p2</layout>
-      <url>http://download.eclipse.org/releases/neon</url>
+      <url>http://download.eclipse.org/releases/${eclipse.version.name}</url>
     </repository>
     <repository>
       <id>neon-updates</id>
       <layout>p2</layout>
-      <url>http://download.eclipse.org/eclipse/updates/4.6</url>
+      <url>http://download.eclipse.org/eclipse/updates/${eclipse.version.number}</url>
     </repository>
     <repository>
       <id>swtbot</id>
