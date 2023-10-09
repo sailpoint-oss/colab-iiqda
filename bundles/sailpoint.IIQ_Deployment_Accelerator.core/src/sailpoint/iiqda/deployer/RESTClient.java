@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -173,8 +174,9 @@ public class RESTClient {
 
     //    X509HostnameVerifier hostnameVerifier = new AllowAllHostnameVerifier();
     RequestConfig config = RequestConfig.custom()
-        .setSocketTimeout(timeout)
-        .setConnectTimeout(timeout)
+        .setSocketTimeout((int) TimeUnit.MILLISECONDS.convert(timeout, TimeUnit.SECONDS))
+        .setConnectTimeout((int) TimeUnit.MILLISECONDS.convert(timeout, TimeUnit.SECONDS))
+        .setConnectionRequestTimeout((int) TimeUnit.MILLISECONDS.convert(timeout, TimeUnit.SECONDS))
         .setCircularRedirectsAllowed(true)
         .build();
 
