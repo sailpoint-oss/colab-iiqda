@@ -622,229 +622,225 @@ return objects;
   <Step icon="Default" name="Get Latest Objects" posX="360" posY="599" resultVariable="payload">
     <Script>
       <Source><![CDATA[
+        import java.text.*;
+        import java.util.Collections;
 
-import java.text.*;
-import sailpoint.object.*;
+        import org.apache.commons.logging.Log;
+        import sailpoint.object.*;
 
 // Expect: java.lang.String classes
 // classes is a CSV list of the selected classes in the UI
 
 
 // Declare a logger class for us to isolate these messages during aggregation.
-serilog=org.apache.commons.logging.LogFactory.getLog("sailpoint.iiqda.importer.getLatestObjects");
-// log.setLevel(Level.DEBUG);
+          Logserilog = org.apache.commons.logging.LogFactory.getLog("sailpoint.iiqda.importer.getLatestObjects");
+          // log.setLevel(Level.DEBUG);
 
-// The maximuim number of objects to return back to the querying item.
-int maxObjectsToReturn = 100;
+          // The maximuim number of objects to return back to the querying item.
+          int maxObjectsToReturn = 100;
 
-// We return back a sorted array list of objects that were recently modified.
-// Format of each CSV entry, with exampels below a header line:
-//    objectType,  objectName,     modifiedDate
-//    Application, AD-CorpDomain,  2014-09-17 14:35:15
-//    Rule,        AD-Correlation, 2014-09-16 14:34:46
-// etc.
-// This workflow passes this list back to the caller.
-ArrayList recentlyModifiedCSVStrings = new ArrayList();
+          // We return back a sorted array list of objects that were recently modified.
+          // Format of each CSV entry, with exampels below a header line:
+          //    objectType,  objectName,     modifiedDate
+          //    Application, AD-CorpDomain,  2014-09-17 14:35:15
+          //    Rule,        AD-Correlation, 2014-09-16 14:34:46
+          // etc.
+          // This workflow passes this list back to the caller.
+          ArrayList recentlyModifiedCSVStrings = new ArrayList();
 
-// We decalre a TreeSet to store the recently modified records.  This allows
-// us to keep track of the "maxObjectsToReturn" most recently modified objects.
-TreeSet objStrTreeSet = new TreeSet();
-
-
-// Certain classes do not contain modified dates, which is yucky.
-// Mainually maintain a list of classes here that we know do not have
-// modified dates.  We skip these classes from the import/export list.
-// Some are missing the 'name' property as well, those get added here too.
-ArrayList skipClasses = new ArrayList();
-skipClasses.add("ApplicationActivity");
-skipClasses.add("ApplicationScorecard");
-skipClasses.add("AuditEvent");
-skipClasses.add("AuthenticationQuestion");
-skipClasses.add("BatchRequest");
-skipClasses.add("DatabaseVersion");
-skipClasses.add("GroupIndex");
-skipClasses.add("Identity");             // We don't want to export each Id.
-skipClasses.add("IdentityEntitlement");
-skipClasses.add("IdentityHistoryItem");
-skipClasses.add("IdentitySnapshot");     // We don't export Identity Snapshots.
-skipClasses.add("JasperTemplate");
-skipClasses.add("JasperResult");
-skipClasses.add("ManagedAttribute");
-skipClasses.add("MitigationExpiration");
-skipClasses.add("PolicyViolation");      // We don't export Policy Violations.
-skipClasses.add("Profile");
-skipClasses.add("ProcessLog");
-skipClasses.add("ProvisioningRequest");
-skipClasses.add("QuickLinkOptions");
-skipClasses.add("ResourceEvent");
-skipClasses.add("RoleChangeEvent");
-skipClasses.add("RoleIndex");
-skipClasses.add("RoleMetadata");
-skipClasses.add("RoleScorecard");
-skipClasses.add("Scorecard");
-skipClasses.add("Server");              // Skip the Server objects.
-skipClasses.add("SyslogEvent");
-skipClasses.add("TargetAssociation");
-skipClasses.add("TaskSchedule");        // Included for invalid query options.
-skipClasses.add("TaskResult");          // We don't export TaskResult.
-skipClasses.add("UIPreferences");
+          // We decalre a TreeSet to store the recently modified records.  This allows
+          // us to keep track of the "maxObjectsToReturn" most recently modified objects.
+          TreeSet objStrTreeSet = new TreeSet();
 
 
-List majClasses = new ArrayList();
-
-if (classes==null) {
-  // Ask sailpoint.object.ClassLists for what major classes are defined.
-  for (Class clazz: ClassLists.MajorClasses) {  
-    String simpleName = clazz.getSimpleName();
-    if ( !skipClasses.contains(simpleName) ) {
-       majClasses.add(clazz.getSimpleName());   
-    }  
-  }
-  majClasses.add("Workgroup");
-} else {
-  String[] strClasses=classes.split(",");
-  majClasses=Arrays.asList(strClasses);
-}
-
-Collections.sort(majClasses);
- 
-
-
-
-// We now have a list of all the major configurable IdentityIQ classes.
-// Next we need to projection query pull back name, created, modified time 
-// for each item.
-
-// Use a projection query to initially pull back only the columns we need.
-ArrayList resultColumns = new ArrayList();
-resultColumns.add("id");
-resultColumns.add("name");
-resultColumns.add("created");
-resultColumns.add("modified");
-
-QueryOptions qo = new QueryOptions();
-qo.setResultLimit(maxObjectsToReturn);
-ArrayList orderings = new ArrayList();
-orderings.add( new QueryOptions.Ordering( "modified", false ) );
-orderings.add( new QueryOptions.Ordering( "created",  false ) );
-qo.setOrderings(orderings);
-
-for (String className : majClasses) {
-
-    boolean isWorkgroup=false;    
-    String fullClassName = "sailpoint.object." + className;
-    
-    if("Workgroup".equals(className)) {
-      isWorkgroup=true;
-    }
-
-    serilog.debug("Examining class: " + fullClassName);
-    
+          // Certain classes do not contain modified dates, which is yucky.
+          // Manually maintain a list of classes here that we know do not have
+          // modified dates.  We skip these classes from the import/export list.
+          // Some are missing the 'name' property as well, those get added here too.
+          ArrayList skipClasses = new ArrayList();
+          skipClasses.add("ApplicationActivity");
+          skipClasses.add("ApplicationScorecard");
+          skipClasses.add("AuditEvent");
+          skipClasses.add("AuthenticationQuestion");
+          skipClasses.add("BatchRequest");
+          skipClasses.add("DatabaseVersion");
+          skipClasses.add("GroupIndex");
+          skipClasses.add("Identity");             // We don't want to export each Id.
+          skipClasses.add("IdentityEntitlement");
+          skipClasses.add("IdentityHistoryItem");
+          skipClasses.add("IdentitySnapshot");     // We don't export Identity Snapshots.
+          skipClasses.add("JasperTemplate");
+          skipClasses.add("JasperResult");
+          skipClasses.add("ManagedAttribute");
+          skipClasses.add("MitigationExpiration");
+          skipClasses.add("PolicyViolation");      // We don't export Policy Violations.
+          skipClasses.add("Profile");
+          skipClasses.add("ProcessLog");
+          skipClasses.add("ProvisioningRequest");
+          skipClasses.add("QuickLinkOptions");
+          skipClasses.add("ResourceEvent");
+          skipClasses.add("RoleChangeEvent");
+          skipClasses.add("RoleIndex");
+          skipClasses.add("RoleMetadata");
+          skipClasses.add("RoleScorecard");
+          skipClasses.add("Scorecard");
+          skipClasses.add("Server");              // Skip the Server objects.
+          skipClasses.add("SyslogEvent");
+          skipClasses.add("TargetAssociation");
+          skipClasses.add("TaskSchedule");        // Included for invalid query options.
+          skipClasses.add("TaskResult");          // We don't export TaskResult.
+          skipClasses.add("UIPreferences");
 
 
-    Iterator it=null;
-   
-    if (isWorkgroup) {
-      QueryOptions wgQo=new QueryOptions(qo);
-      wgQo.addFilter(Filter.eq("workgroup", Boolean.TRUE));
-      it = context.search(Identity.class, wgQo, resultColumns);
-    } else {
-      Class clazz = Class.forName(fullClassName);
-      if (null == clazz) {
-        serilog.error("could not load class forName: " + fullClassName);
-        continue;
-      }
-      it = context.search(clazz, qo, resultColumns);
-    }
+          List majClasses = new ArrayList();
 
-   while (it.hasNext()) {
-      Object [] result = it.next();
-      String id         = (String) result[0];
-      String name       = (String) result[1];
-      Date createdDate  = (java.util.Date) result[2];
-      Date modifiedDate = (java.util.Date) result[3];
-      
-      // If no modified date substituting 
-      if (null == createdDate) {
-         createdDate = new Date();
-      } 
+          if (classes == null) {
+            // Ask sailpoint.object.ClassLists for what major classes are defined.
+            for (Class clazz : ClassLists.MajorClasses) {
+              String simpleName = clazz.getSimpleName();
+              if (!skipClasses.contains(simpleName)) {
+                majClasses.add(clazz.getSimpleName());
+              }
+            }
+            majClasses.add("Workgroup");
+          } else {
+            String[] strClasses = classes.split(",");
+            majClasses = Arrays.asList(strClasses);
+          }
 
-      // If no modified date substituting 
-      if (null == modifiedDate) {
-         modifiedDate = createdDate;
-      } 
-       
-      String created  = createdDate.toString();
-      String modified = modifiedDate.toString();
-      
-      // Create a date string sortable by string operations.
-      DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-      String createdSortable  = formatter.format(createdDate);
-      String modifiedSortable = formatter.format(modifiedDate);
-      
-      // We buld a sortable delimited string, with the modified date first so 
-      // that the date primarily controls the sorting.  The format of the string:
-      //     modifiedDate,className,objectName,objectId
-      // Once we have the sortable string we put that in a TreeSet so that
-      // we can monitor the size of the tree set and only keep the N most 
-      // recently created/modified objects in the tree.
-      String sortableString = 
-         modifiedSortable + "," + className + "," + name + "," + id;
-      
-      serilog.debug("object:" + sortableString);
-       
-      // serilog.debug("Class: " + className + " id:" + id + " modified:" + modifiedSortable + "  name:" + name);
-      
-      serilog.debug("objStrTreeSet.size(): " + objStrTreeSet.size());
-      
-      if (objStrTreeSet.size() < maxObjectsToReturn) {
-      
-         // We have not added the max objects to the tree set, add this one.
-         objStrTreeSet.add(sortableString);
-               
-      } else {
-      
-         // The tree set has the full number of objects.  If this new
-         // object's modified date is older than the oldest in the tree set 
-         // then do not add it.   Otherwise, add it to the tree set
-         // and then remove the lowest modified date from the tree set.
-         
-         String leastRecentlyModified = objStrTreeSet.first();
-         if ( 0 > sortableString.compareTo(leastRecentlyModified) ) {
-            serilog.debug("older than oldest: skipping");
-            // The current objects modified date is earlier than the oldest
-            // in the tree set.  Do not add the current object to the tree set.
-         } else {
-         
-            serilog.debug("newer than oldest: adding to list");
-            // The current object is more recently modified than at least one
-            // object in the tree set.  Add the current object to the tree set
-            // and remove the lowest object in the tree set.
-            objStrTreeSet.add(sortableString);
-            objStrTreeSet.remove(leastRecentlyModified);            
-         
-         }
-      
-      }
-      
-   }   
+          Collections.sort(majClasses);
 
-}
 
-// At this point we have a populated TreeSet of objStrTreeSet size.  This
-// has the objStrTreeSet most recently modified objects in the IdentityIQ 
-// system.  Convert that to an ArrayList of strings and return that to 
-// the caller for passing back to Eclipse or other external tooling.
-while ( 0 != objStrTreeSet.size() ) {
-  String mostRecentlyModified = objStrTreeSet.last();
-  recentlyModifiedCSVStrings.add(mostRecentlyModified);
-  objStrTreeSet.remove(mostRecentlyModified);  
-}
 
-workflow.put("result", "success");
-return recentlyModifiedCSVStrings;
 
-      ]]></Source>
+          // We now have a list of all the major configurable IdentityIQ classes.
+          // Next we need to projection query pull back name, created, modified time
+          // for each item.
+
+          // Use a projection query to initially pull back only the columns we need.
+          ArrayList resultColumns = new ArrayList();
+          resultColumns.add("id");
+          resultColumns.add("name");
+          resultColumns.add("created");
+          resultColumns.add("modified");
+
+          QueryOptions qo = new QueryOptions();
+          qo.setResultLimit(maxObjectsToReturn);
+          ArrayList orderings = new ArrayList();
+          orderings.add(new QueryOptions.Ordering("modified", false));
+          orderings.add(new QueryOptions.Ordering("created", false));
+          qo.setOrderings(orderings);
+
+          for (String className : majClasses) {
+
+            boolean isWorkgroup = false;
+            String fullClassName = "sailpoint.object." + className;
+
+            if ("Workgroup".equals(className)) {
+              isWorkgroup = true;
+            }
+
+            serilog.debug("Examining class: " + fullClassName);
+
+
+            Iterator it = null;
+
+            if (isWorkgroup) {
+              QueryOptions wgQo = new QueryOptions(qo);
+              wgQo.addFilter(Filter.eq("workgroup", Boolean.TRUE));
+              it = context.search(Identity.class, wgQo, resultColumns);
+            } else {
+              Class clazz = Class.forName(fullClassName);
+              if (null == clazz) {
+                serilog.error("could not load class forName: " + fullClassName);
+                continue;
+              }
+              it = context.search(clazz, qo, resultColumns);
+            }
+
+            while (it.hasNext()) {
+              Object[] result = it.next();
+              String id = (String) result[0];
+              String name = (String) result[1];
+              Date createdDate = (java.util.Date) result[2];
+              Date modifiedDate = (java.util.Date) result[3];
+
+              // If no modified date substituting
+              if (null == createdDate) {
+                createdDate = new Date();
+              }
+
+              // If no modified date substituting
+              if (null == modifiedDate) {
+                modifiedDate = createdDate;
+              }
+
+              String created = createdDate.toString();
+              String modified = modifiedDate.toString();
+
+              // Create a date string sortable by string operations.
+              DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+              String modifiedSortable = formatter.format(modifiedDate);
+
+              // We build a sortable delimited string, with the modified date first so
+              // that the date primarily controls the sorting.  The format of the string:
+              //     modifiedDate,className,objectName,objectId
+              // Once we have the sortable string we put that in a TreeSet so that
+              // we can monitor the size of the tree set and only keep the N most
+              // recently created/modified objects in the tree.
+              String sortableString =
+                      modifiedSortable + "," + className + "," + name + "," + id;
+
+              serilog.debug("object:" + sortableString);
+
+              // serilog.debug("Class: " + className + " id:" + id + " modified:" + modifiedSortable + "  name:" + name);
+
+              serilog.debug("objStrTreeSet.size(): " + objStrTreeSet.size());
+
+              if (objStrTreeSet.size() < maxObjectsToReturn) {
+                // We have not added the max objects to the tree set, add this one.
+                objStrTreeSet.add(sortableString);
+              } else {
+                // The tree set has the full number of objects.  If this new
+                // object's modified date is older than the oldest in the tree set
+                // then do not add it.   Otherwise, add it to the tree set
+                // and then remove the lowest modified date from the tree set.
+
+                String leastRecentlyModified = objStrTreeSet.first();
+                if (0 > sortableString.compareTo(leastRecentlyModified)) {
+                  serilog.debug("older than oldest: skipping");
+                  // The current objects modified date is earlier than the oldest
+                  // in the tree set.  Do not add the current object to the tree set.
+                } else {
+
+                  serilog.debug("newer than oldest: adding to list");
+                  // The current object is more recently modified than at least one
+                  // object in the tree set.  Add the current object to the tree set
+                  // and remove the lowest object in the tree set.
+                  objStrTreeSet.add(sortableString);
+                  objStrTreeSet.remove(leastRecentlyModified);
+
+                }
+              }
+            }
+          }
+
+          // At this point we have a populated TreeSet of objStrTreeSet size.  This
+          // has the objStrTreeSet most recently modified objects in the IdentityIQ
+          // system.  Convert that to an ArrayList of strings and return that to
+          // the caller for passing back to Eclipse or other external tooling.
+
+          // The TreeSet is ordered from least to most recent, so we need to reverse it
+          List items = new ArrayList(objStrTreeSet);
+          Collections.reverse(items);
+
+          for(String mostRecentlyModified : items) {
+            recentlyModifiedCSVStrings.add(mostRecentlyModified);
+          }
+
+          workflow.put("result", "success");
+          return recentlyModifiedCSVStrings;
+        ]]></Source>
     </Script>
     <Transition to="Stop"/>
   </Step>
