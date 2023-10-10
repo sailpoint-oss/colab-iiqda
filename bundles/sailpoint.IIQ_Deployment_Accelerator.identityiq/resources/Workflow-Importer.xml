@@ -292,269 +292,330 @@ return objects;
   <Step icon="Default" name="Run Task" posX="355" posY="272" resultVariable="payload">
     <Script>
       <Source><![CDATA[
-import sailpoint.object.TaskDefinition;
-import sailpoint.api.TaskManager;
-import sailpoint.object.TaskSchedule;
-import sailpoint.object.TaskResult;
+        import org.apache.commons.logging.Log;
+        import sailpoint.object.TaskDefinition;
+        import sailpoint.api.TaskManager;
+        import sailpoint.object.TaskSchedule;
+        import sailpoint.object.TaskResult;
+        import sailpoint.object.AuditEvent;
+        import sailpoint.server.Auditor;
 
-// Expect: java.lang.String taskName
+        // Expect: java.lang.String taskName
 
-serilog=org.apache.commons.logging.LogFactory.getLog("sailpoint.iiqda.Importer.RunTask");
-serilog.debug("Run Task: "+taskName);
+          Log serilog = org.apache.commons.logging.LogFactory.getLog("sailpoint.iiqda.Importer.RunTask");
+          serilog.debug("Run Task: " + taskName);
 
-TaskManager tm = new TaskManager(context);
-Map args=new HashMap();
-TaskDefinition td=context.getObjectByName(TaskDefinition.class, taskName);
-if(td==null) {
-  workflow.put("result", "failure");
-  return "Task '"+taskName+"' not found";
-}
+          AuditEvent ae = new AuditEvent();
+          ae.setAction("IIQDA Run Task");
+          ae.setSource(launcher);
+          ae.setTarget(taskName);
 
-TaskSchedule ts=tm.run(td, args);
-TaskResult tr=null;
-while (tr==null) {
-  tr=ts.getLatestResult();
-  serilog.debug("task result="+tr);
-}
+          Auditor.log(ae);
+          context.commitTransaction();
 
-workflow.put("result", "success");
-return tr.getId();
-      ]]></Source>
+          TaskManager tm = new TaskManager(context);
+          Map args = new HashMap();
+          TaskDefinition td = context.getObjectByName(TaskDefinition.class, taskName);
+          if (td == null) {
+            workflow.put("result", "failure");
+            return "Task '" + taskName + "' not found";
+          }
+
+          serilog.warn("IIQDA running task: " + taskName);
+
+          TaskSchedule ts = tm.run(td, args);
+          TaskResult tr = null;
+          while (tr == null) {
+            tr = ts.getLatestResult();
+            if (serilog.isDebugEnabled()) {
+              serilog.debug("task result=" + tr.toXml());
+            }
+          }
+
+          workflow.put("result", "success");
+          return tr.getId();
+        ]]></Source>
     </Script>
     <Transition to="Stop"/>
   </Step>
    <Step icon="Default" name="Terminate Task" posX="355" posY="272" resultVariable="payload">
     <Script>
       <Source><![CDATA[
-import sailpoint.api.TaskManager;
-import sailpoint.object.TaskResult;
+        import org.apache.commons.logging.Log;
+        import sailpoint.api.TaskManager;
+        import sailpoint.object.TaskResult;
 
-// Expect: java.lang.String taskName
-// Expect: java.lang.String taskId
+          // Expect: java.lang.String taskName
+          // Expect: java.lang.String taskId
 
-serilog=org.apache.commons.logging.LogFactory.getLog("sailpoint.iiqda.Importer.TerminateTask");
-serilog.debug("Terminate Task: "+taskId);
+          Log serilog = org.apache.commons.logging.LogFactory.getLog("sailpoint.iiqda.Importer.TerminateTask");
+          serilog.debug("Terminate Task: " + taskId);
 
-TaskResult tr=context.getObjectById(TaskResult.class, taskId);
-if(tr==null) {
-  workflow.put("result", "failure");
-  return "taskId "+taskId+" not found";
-}
-TaskManager tm=new TaskManager(context);
-tm.terminate(tr);
 
-workflow.put("result", "success");
-return tr.getId();
-      ]]></Source>
+          TaskResult tr = context.getObjectById(TaskResult.class, taskId);
+          if (tr == null) {
+            workflow.put("result", "failure");
+            return "taskId " + taskId + " not found";
+          }
+
+          AuditEvent ae = new AuditEvent();
+          ae.setAction("IIQDA Terminate Task");
+          ae.setSource(launcher);
+          ae.setTarget(tr.getName());
+
+          Auditor.log(ae);
+          context.commitTransaction();
+
+          serilog.warn("IIQDA terminating task: " + tr.getName());
+
+          TaskManager tm = new TaskManager(context);
+          tm.terminate(tr);
+
+          workflow.put("result", "success");
+          return tr.getId();
+        ]]></Source>
     </Script>
     <Transition to="Stop"/>
   </Step>
   <Step icon="Default" name="Get Task Result" posX="355" posY="272" resultVariable="payload">
     <Script>
       <Source><![CDATA[
-import sailpoint.object.Attributes;
-import sailpoint.object.TaskResult;
-import sailpoint.tools.Internationalizer;
-import sailpoint.tools.Message;
+        import org.apache.commons.logging.Log;
+        import sailpoint.object.Attributes;
+        import sailpoint.object.TaskResult;
+        import sailpoint.tools.Internationalizer;
+        import sailpoint.tools.Message;
 
-// Expect: java.lang.String taskId
+          // Expect: java.lang.String taskId
 
-serilog=org.apache.commons.logging.LogFactory.getLog("sailpoint.iiqda.Importer.GetTaskResult");
-serilog.debug("Get Task Result: "+taskId);
+          Log serilog = org.apache.commons.logging.LogFactory.getLog("sailpoint.iiqda.Importer.GetTaskResult");
+          serilog.debug("Get Task Result: " + taskId);
 
-if(taskId==null) {
-  workflow.put("result", "failure");
-  return "Must specify taskId";
-}
-TaskResult tr=context.getObjectById(TaskResult.class, taskId);
-if(tr==null) {
-  workflow.put("result", "failure");
-  return "taskId "+taskId+" not found";
-}
-Map result=new HashMap();
-result.put("name", tr.getName());
-result.put("description", tr.getDefinition().getDescription().trim());
-if (tr.getCompletionStatus()==null) {
-  result.put("status", "pending..");
-} else {
-  String statusKey=tr.getCompletionStatus().getMessageKey();
+          if (taskId == null) {
+            workflow.put("result", "failure");
+            return "Must specify taskId";
+          }
+          TaskResult tr = context.getObjectById(TaskResult.class, taskId);
+          if (tr == null) {
+            workflow.put("result", "failure");
+            return "taskId " + taskId + " not found";
+          }
 
-  result.put("status", Internationalizer.getMessage(statusKey, Locale.ENGLISH));
-}
-result.put("progress", tr.getProgress());
-result.put("started", tr.getLaunched().toString());
-if(tr.getCompleted()!=null) {
-  result.put("completed", tr.getCompleted().toString());
-}
-List errors=tr.getMessages();
-if (errors!=null) {
-  List flatErrors=new ArrayList();
-  for (Message message: errors) {
-    flatErrors.add(message.getLocalizedMessage());
-  }
-  result.put("errors", flatErrors);
-}
-Attributes attrs=tr.getAttributes();
-if (attrs!=null) {
-  Map flatAttrs=new HashMap();
-  for (String key: attrs.getKeys()) {
-    flatAttrs.put(key, attrs.getString(key));
-  }
-  result.put("attributes", flatAttrs);
-}
+          AuditEvent ae = new AuditEvent();
+          ae.setAction("IIQDA Get Task Result");
+          ae.setSource(launcher);
+          ae.setTarget(tr.getName());
 
-workflow.put("result", "success");
-return result;
-      ]]></Source>
+          Auditor.log(ae);
+          context.commitTransaction();
+
+
+          Map result = new HashMap();
+          result.put("name", tr.getName());
+          result.put("description", tr.getDefinition().getDescription().trim());
+          if (tr.getCompletionStatus() == null) {
+            result.put("status", "pending..");
+          } else {
+            String statusKey = tr.getCompletionStatus().getMessageKey();
+
+            result.put("status", Internationalizer.getMessage(statusKey, Locale.ENGLISH));
+          }
+          result.put("progress", tr.getProgress());
+          result.put("started", tr.getLaunched().toString());
+          if (tr.getCompleted() != null) {
+            result.put("completed", tr.getCompleted().toString());
+          }
+          List errors = tr.getMessages();
+          if (errors != null) {
+            List flatErrors = new ArrayList();
+            for (Message message : errors) {
+              flatErrors.add(message.getLocalizedMessage());
+            }
+            result.put("errors", flatErrors);
+          }
+          Attributes attrs = tr.getAttributes();
+          if (attrs != null) {
+            Map flatAttrs = new HashMap();
+            for (String key : attrs.getKeys()) {
+              flatAttrs.put(key, attrs.getString(key));
+            }
+            result.put("attributes", flatAttrs);
+          }
+
+          workflow.put("result", "success");
+          return result;
+        ]]></Source>
     </Script>
     <Transition to="Stop"/>
   </Step>
   <Step icon="Default" name="Get Object" posX="353" posY="350" resultVariable="payload">
     <Script>
       <Source><![CDATA[
-// objectType is a 'simple' class name (no package)
+        // objectType is a 'simple' class name (no package)
 // look it up in ClassList
 
-import sailpoint.object.ClassLists;
-import sailpoint.object.SailPointObject;
+        import org.apache.commons.logging.Log;
+        import sailpoint.object.ClassLists;
+        import sailpoint.object.SailPointObject;
 
-// Expect: java.lang.String objectType
-// Expect: java.lang.String objectName
+          // Expect: java.lang.String objectType
+          // Expect: java.lang.String objectName
 
-serilog=org.apache.commons.logging.LogFactory.getLog("sailpoint.iiqda.Importer.getObject");
+          Log serilog = org.apache.commons.logging.LogFactory.getLog("sailpoint.iiqda.Importer.getObject");
 
-serilog.debug("objectType="+objectType);
-serilog.debug("objectName="+objectName);
+          if (serilog.isDebugEnabled()) {
+            serilog.debug("objectType=" + objectType);
+            serilog.debug("objectName=" + objectName);
+          }
 
-Class theClass=null;
-if ("Workgroup".equals(objectType)) {
-  objectType="Identity";
-}
-for (Class clazz: ClassLists.MajorClasses) {
-  if(clazz.getSimpleName().equals(objectType) ){
-    theClass=clazz;
-    break;
-  }
-}
+          Class theClass = null;
+          if ("Workgroup".equals(objectType)) {
+            objectType = "Identity";
+          }
+          for (Class clazz : ClassLists.MajorClasses) {
+            if (clazz.getSimpleName().equals(objectType)) {
+              theClass = clazz;
+              break;
+            }
+          }
 
-if(theClass==null) {
-  workflow.put("result", "failure");
-  return "Could not find object type '"+objectType+"'";
-}
+          if (theClass == null) {
+            workflow.put("result", "failure");
+            return "Could not find object type '" + objectType + "'";
+          }
 
-SailPointObject obj=context.getObjectByName(theClass, objectName);   
-if(obj==null) {
-  workflow.put("result", "failure");
-  return "Could not find "+objectType+" '"+objectName+"'";
-}
-   
-serilog.debug("obj="+obj);
+          SailPointObject obj = context.getObjectByName(theClass, objectName);
+          if (obj == null) {
+            workflow.put("result", "failure");
+            return "Could not find " + objectType + " '" + objectName + "'";
+          }
 
+          if (serilog.isDebugEnabled()) {
+            serilog.debug("obj=" + obj.toXml());
+          }
 
-workflow.put("result", "success");
-return obj.toXml();
-      ]]></Source>
+          workflow.put("result", "success");
+          return obj.toXml();
+        ]]></Source>
     </Script>
     <Transition to="Stop"/>
   </Step>
   <Step icon="Default" name="Get Jar Size" posX="356" posY="434" resultVariable="payload">
     <Script>
       <Source><![CDATA[
-// jarName is the name of a jar in WEB-INF/lib
+        // jarName is the name of a jar in WEB-INF/lib
 // return a JSON string of the binary
 
-import java.io.File;
-import java.io.InputStream;
+        import java.io.File;
+        import java.io.InputStream;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.codec.binary.Base64;
+        import org.apache.commons.io.IOUtils;
+        import org.apache.commons.codec.binary.Base64;
 
-import sailpoint.object.ClassLists;
-import sailpoint.object.SailPointObject;
+        import org.apache.commons.logging.Log;
+        import sailpoint.object.ClassLists;
+        import sailpoint.object.SailPointObject;
 
-serilog=org.apache.commons.logging.LogFactory.getLog("sailpoint.iiqda.Importer.jarSize");
+          Log serilog = org.apache.commons.logging.LogFactory.getLog("sailpoint.iiqda.Importer.jarSize");
 
-serilog.debug("jar="+jar);
+          serilog.debug("jar=" + jar);
 
-if(jar==null||jar==void) {
-  workflow.put("result", "failure");
-  return("No JAR Specified");
-}
+          if (!(jar instanceof String)) {
+            workflow.put("result", "failure");
+            return ("No JAR Specified");
+          }
 
-URL url=this.getClass().getResource("/../lib/"+jar);
-serilog.debug("url="+url);
-if(url==null) {
-  workflow.put("result", "failure");
-  return("JAR '"+jar+"' not found");
-}
-serilog.debug("got URL");
-File file=new File(url.toURI());
+          URL url = this.getClass().getResource("/../lib/" + jar);
+          serilog.debug("url=" + url);
+          if (url == null) {
+            workflow.put("result", "failure");
+            return ("JAR '" + jar + "' not found");
+          }
+          serilog.debug("got URL");
+          File file = new File(url.toURI());
 
-workflow.put("result", "success");
-String ret=Long.toString(file.length());
-serilog.debug("returning "+ret);
-return ret
-      ]]></Source>
+          workflow.put("result", "success");
+          String ret = Long.toString(file.length());
+          serilog.debug("returning " + ret);
+
+          return ret;
+        ]]></Source>
     </Script>
     <Transition to="Stop"/>
   </Step>
   <Step icon="Default" name="Get Jar Data" posX="356" posY="515" resultVariable="payload">
     <Script>
       <Source><![CDATA[
-// jarName is the name of a jar in WEB-INF/lib
-// return a JSON string of the binary
+        // jarName is the name of a jar in WEB-INF/lib
+        // return a JSON string of the binary
 
-import java.io.File;
-import java.io.InputStream;
+        import java.io.File;
+        import java.io.InputStream;
 
-import org.apache.commons.codec.binary.Base64;
+        import org.apache.commons.codec.binary.Base64;
 
-import sailpoint.object.ClassLists;
-import sailpoint.object.SailPointObject;
+        import org.apache.commons.logging.Log;
+        import sailpoint.object.ClassLists;
+        import sailpoint.object.SailPointObject;
 
-serilog=org.apache.commons.logging.LogFactory.getLog("sailpoint.iiqda.Importer.getJarData");
+          Log serilog = org.apache.commons.logging.LogFactory.getLog("sailpoint.iiqda.Importer.getJarData");
 
-serilog.trace("jar="+jar);
-serilog.trace("start="+start);
-serilog.trace("length="+length);
+          if (!(jar instanceof String)) {
+            workflow.put("result", "failure");
+            return ("No JAR Specified");
+          }
 
-iStart=Integer.parseInt(start);
-iLength=Integer.parseInt(length);
+          if (serilog.isTraceEnabled()) {
+            serilog.trace("jar=" + jar);
+            serilog.trace("start=" + start);
+            serilog.trace("length=" + length);
+          }
+          iStart = Integer.parseInt(start);
+          iLength = Integer.parseInt(length);
 
-if(jar==null||jar==void) {
-  workflow.put("result", "failure");
-  return("No JAR Specified");
-}
 
-URL url=this.getClass().getResource("/../lib/"+jar);
-serilog.trace("url="+url);
-if(url==null) {
-  workflow.put("result", "failure");
-  return("JAR '"+jar+"' not found");
-}
-File file=new File(url.toURI());
+          URL url = this.getClass().getResource("/../lib/" + jar);
+          serilog.trace("url=" + url);
+          if (url == null) {
+            workflow.put("result", "failure");
+            return ("JAR '" + jar + "' not found");
+          }
+          File file = new File(url.toURI());
 
-RandomAccessFile raFile=new RandomAccessFile(file, "r");
-serilog.debug("skipping "+iStart+" bytes");
-raFile.skipBytes(iStart);
+          logger.warn("Exporting JAR file " + url);
 
-byte[] buffer=new byte[iLength];
+          AuditEvent ae = new AuditEvent();
+          ae.setAction("IIQDA Get JAR Data");
+          ae.setSource(launcher);
+          ae.setTarget(url.toString());
 
-int bytesRead=raFile.read(buffer, 0, iLength);
-serilog.trace("read "+bytesRead+" bytes");
-if(bytesRead<iLength) {
-  serilog.debug("eof: found "+bytesRead+" bytes, not "+iLength);
-  byte[] buf=new byte[bytesRead];
-  System.arraycopy(buffer, 0, buf, 0, bytesRead);
-  buffer=buf;
-}
+          Auditor.log(ae);
+          context.commitTransaction();
 
-String out=Base64.encodeBase64String(buffer);
+          RandomAccessFile raFile = new RandomAccessFile(file, "r");
+          serilog.debug("skipping " + iStart + " bytes");
+          raFile.skipBytes(iStart);
 
-workflow.put("result", "success");
-serilog.trace("returning "+out);
-return out;
-      ]]></Source>
+          byte[] buffer = new byte[iLength];
+
+          int bytesRead = raFile.read(buffer, 0, iLength);
+          serilog.trace("read " + bytesRead + " bytes");
+
+          if (bytesRead < iLength) {
+            serilog.debug("eof: found " + bytesRead + " bytes, not " + iLength);
+            byte[] buf = new byte[bytesRead];
+            System.arraycopy(buffer, 0, buf, 0, bytesRead);
+            buffer = buf;
+          }
+
+          String out = Base64.encodeBase64String(buffer);
+
+          workflow.put("result", "success");
+          if (serilog.isTraceEnabled()) {
+            serilog.trace("returning " + out);
+          }
+          return out;
+        ]]></Source>
     </Script>
     <Transition to="Stop"/>
   </Step>
