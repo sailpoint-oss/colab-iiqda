@@ -38,35 +38,149 @@ serilog.debug("operation="+operation);
   <Step icon="Provision" name="Import" posX="352" posY="121" resultVariable="payload">
     <Script>
       <Source><![CDATA[
-import sailpoint.server.Importer;
-import sailpoint.tools.GeneralException;
-import sailpoint.web.system.ImportBean.ImportMonitor;
+        import org.w3c.dom.NodeList;
+        import sailpoint.api.ObjectUtil;
+        import sailpoint.object.SailPointObject;
+        import sailpoint.object.Source;
+        import sailpoint.server.Importer;
+        import sailpoint.object.AuditEvent;
+        import sailpoint.server.Auditor;
+        import sailpoint.tools.Compressor;
+        import sailpoint.tools.GeneralException;
+        import sailpoint.tools.Util;
+        import sailpoint.tools.XmlUtil;
+        import sailpoint.web.system.ImportBean.ImportMonitor;
+        import org.apache.commons.logging.Log;
+        import org.apache.commons.logging.LogFactory;
+        import org.w3c.dom.Element;
+        import org.w3c.dom.Node;
+        import org.w3c.dom.NodeList;
 
-serilog=org.apache.commons.logging.LogFactory.getLog("sailpoint.iiqda.Importer");
-serilog.debug("--");
+          Log serilog = LogFactory.getLog("sailpoint.iiqda.Importer");
 
-String fileData = workflow.get("resource");
-serilog.debug("fileData="+fileData);
+          /**
+           * Appends the details of the given object to the AuditEvent.
+           *
+           * TODO track the before/after of the object
+           *
+           * @param ae The audit event to modify
+           * @param type The type of the object (string1)
+           * @param name The name of the object (target)
+           */
+          void appendObjectDetails(AuditEvent ae, String type, String name) {
+            ae.setTarget(name);
+            ae.setString1(type);
 
-ImportMonitor _monitor = new ImportMonitor();
-Importer importer = new Importer(context, _monitor);
-serilog.debug("got importer");
-try {
-    importer.importXml(fileData);
-    context.commitTransaction();
-    workflow.put("result", "success");
-} catch (Exception ex) {
-  serilog.error("Exception :"+ex);
-  workflow.put("result", "failure");
-  if (ex instanceof GeneralException) {
-	GeneralException ge = (GeneralException) ex;
-	return ge.getMessageInstance();
-  } else {
-	return ex.getLocalizedMessage();
-  }
-}
-return "";
-      ]]></Source>
+            ae.setString2("new");
+
+            Class<SailPointObject> spoClass = ObjectUtil.getMajorClass(type);
+            if (spoClass != null) {
+              SailPointObject spo = context.getObject(spoClass, name);
+              if (spo != null) {
+                ae.setString2("existing");
+              }
+            } else {
+              serilog.warn("Attempting to import an unrecognized major class: " + type);
+            }
+          }
+
+          /**
+           * Return the first element that is a child of the given Node. The Node
+           * may have other children first, such as text nodes.
+           * @param node The node to check
+           * @return The element, if one is found
+           */
+          Element findFirstChild(Node node) {
+            NodeList children = node.getChildNodes();
+            for (int i = 0; i < children.getLength(); i++) {
+              Node childNode = children.item(i);
+              if (childNode instanceof Element) {
+                return (Element) childNode;
+              }
+            }
+
+            return null;
+          }
+
+          //////////////
+          // ENTRY POINT
+          String fileData = workflow.get("resource");
+          if (serilog.isDebugEnabled()) {
+            serilog.debug("fileData=" + fileData);
+          }
+
+          ImportMonitor _monitor = new ImportMonitor();
+          Importer importer = new Importer(context, _monitor);
+
+          try {
+            AuditEvent ae = new AuditEvent();
+            ae.setAction("IIQDA Import");
+            ae.setSource(launcher);
+
+            // Verify: was this added in 8.0 or 8.1?
+            ae.setServerHost(Util.getHostName());
+
+            String compressedData = Compressor.compress(fileData);
+            ae.setAttribute("file", compressedData);
+
+            Element elem = XmlUtil.parse(fileData);
+            if (!Util.nullSafeEq("sailpoint", elem.getTagName())) {
+              // This is a single object
+              String type = elem.getTagName();
+              String name = elem.getAttribute("name");
+              appendObjectDetails(ae, type, name);
+            } else {
+              // This is something other than a single object.
+              // It could be a 'merge' or a file include (not supported) or a collection of objects
+              List objects = new ArrayList();
+              NodeList children = elem.getChildNodes();
+              for (int i = 0; i < children.getLength(); i++) {
+                Node childNode = children.item(i);
+                if (childNode instanceof Element) {
+                  Element childElem = (Element) childNode;
+                  if (childElem.getTagName().equals("ImportAction")) {
+                    if (Util.nullSafeEq("merge", childElem.getAttribute("name"))) {
+                      // Merge case, actual element is buried beneath this one
+                      Element actualElem = findFirstChild(childElem);
+                      String type = actualElem.getTagName();
+                      String name = actualElem.getAttribute("name");
+
+                      appendObjectDetails(ae, type, name);
+                    } else {
+                      // Something else; cannot handle this for now
+                      serilog.info("Importing XML object with ImportAction = " + childElem.getAttribute("name"));
+                    }
+                  } else {
+                    // More than one object
+                    String type = childElem.getTagName();
+                    String name = childElem.getAttribute("name");
+
+                    objects.add(type + ":" + name);
+                  }
+                }
+              }
+
+              ae.setAttribute("objects", objects);
+            }
+
+            Auditor.log(ae);
+            context.commitTransaction();
+
+            importer.importXml(fileData);
+            context.commitTransaction();
+            workflow.put("result", "success");
+          } catch (Exception ex) {
+            serilog.error("Exception on import", ex);
+            workflow.put("result", "failure");
+            if (ex instanceof GeneralException) {
+              GeneralException ge = (GeneralException) ex;
+              return ge.getMessageInstance();
+            } else {
+              return ex.getLocalizedMessage();
+            }
+          }
+          return "";
+        ]]></Source>
     </Script>
     <Transition to="Stop"/>
   </Step>
