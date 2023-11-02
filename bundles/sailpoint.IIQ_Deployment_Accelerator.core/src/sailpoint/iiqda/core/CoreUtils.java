@@ -241,7 +241,8 @@ public class CoreUtils {
       // knows to format whitespace appropriately.
       dbfact.setAttribute("http://apache.org/xml/features/nonvalidating/load-external-dtd", true);
       dbfact.setAttribute("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", true);
-      
+      dbfact.setIgnoringElementContentWhitespace(true);
+
       DocumentBuilder builder = dbfact.newDocumentBuilder();
       builder.setEntityResolver(new DTDEntityResolver());
       
