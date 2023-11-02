@@ -113,46 +113,6 @@
           </execution>
         </executions>
       </plugin>
-      <!-- Update compositeContent.xml and compositeArtifacts -->
-      <plugin>
-        <groupId>sailpoint.kjames</groupId>
-        <artifactId>p2composite-maven-plugin</artifactId>
-        <version>1.2.2</version>
-        <executions>
-          <execution>
-            <id>make p2composite</id>
-            <phase>install</phase>
-            <goals>
-              <goal>p2composite</goal>
-            </goals>
-            <configuration>
-              <folder>${project.build.directory}/checkout/beta</folder>
-              <repositoryName>IdentityIQ Deployment Accelerator (Beta)</repositoryName>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <!-- Update description with point-release notes -->
-      <plugin>
-        <groupId>sailpoint.kjames</groupId>
-        <artifactId>xmlinjector-maven-plugin</artifactId>
-        <version>1.3</version>
-        <executions>
-          <execution>
-            <id>update description</id>
-            <phase>install</phase>
-            <goals>
-              <goal>xmlinject</goal>
-            </goals>
-            <configuration>
-              <targetJar>${project.build.directory}/checkout/beta/${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}-${buildQualifier}/features/sailpoint.IIQ_Deployment_Accelerator.feature_${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}.${buildQualifier}.jar</targetJar>
-              <targetFile>/feature.xml</targetFile>
-              <xpath>/feature/description</xpath>
-              <contentFile>${project.basedir}/point-release-notes.txt</contentFile>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

@@ -2,6 +2,7 @@ package sailpoint.iiqda.deployer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -41,9 +42,21 @@ public class IIQRESTClient extends RESTClient {
   public IIQRESTClient(IProject project, String environment) throws CoreException {
     try {
       this.fProject=project;
-      IFile f=project.getFile(environment+IIQDAConstants.TARGET_SUFFIX);
       Properties props=new Properties();
-      props.load(f.getContents());
+      
+      IFile secretProps = project.getFile(environment+IIQDAConstants.SECRET_SUFFIX);
+      if (secretProps.exists()) {
+    	  try (InputStream contents = secretProps.getContents()) {
+    		  props.load(contents);
+    	  }
+      }
+      
+      if (!props.containsKey(IIQPreferenceConstants.P_URL)) {
+          IFile targetProps = project.getFile(environment+IIQDAConstants.TARGET_SUFFIX);
+          try (InputStream contents = targetProps.getContents()) {
+        	  props.load(contents);
+          }
+      }
 
       // Get connection details
       String iUrl = (String)props.get(IIQPreferenceConstants.P_URL);
