@@ -189,7 +189,7 @@ public class CoreUtils {
         transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, doctype.getSystemId());
       }
       if(shouldCDATASource) {
-        transformer.setOutputProperty(OutputKeys.CDATA_SECTION_ELEMENTS, "Source");
+        transformer.setOutputProperty(OutputKeys.CDATA_SECTION_ELEMENTS, "Source Body FilterString");
       }
       // TODO: Should be able to do this here:
       // transformer.setOutputProperty("{http://xml.apache.org/xalan}line-separator","\n");
@@ -290,7 +290,7 @@ public class CoreUtils {
           }
         }
       }
-      return documentAsStream(indexname_input, false);
+      return documentAsStream(indexname_input, true);
     } catch (XPathExpressionException | ParserConfigurationException e) {
       IStatus status=toErrorStatus("XPathExpressionException "+e);
       throw new CoreException(status);
