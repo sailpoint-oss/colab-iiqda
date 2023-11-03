@@ -116,28 +116,7 @@ public class CoreUtils {
    * The Sailpoint DTD file, populated on first call to doReverseSubstitution()
    */
   public static IFile SAILPOINT_DTD = null;
-  
-  public static String camelCase(String name) {
 
-    if(name==null) return null;
-
-    StringBuffer camel=new StringBuffer();
-    boolean upper=false;
-    for(int i=0;i<name.length();i++) {
-      char c=name.charAt(i);
-      if(c==' ') upper=true;
-      else {
-        if(upper) {
-          camel.append(Character.toUpperCase(c));
-          upper=false;
-        } else {
-          camel.append(Character.toLowerCase(c));
-        }
-      }
-    }
-    return camel.toString();
-  }
-  
   public static String capitalize(String str) {
     return str.substring(0,1).toUpperCase()+str.substring(1);
   }
@@ -202,15 +181,8 @@ public class CoreUtils {
       xml = xml.replaceAll("(?s)<Source>.+?<!\\[CDATA", "<Source><![CDATA");
       xml = xml.replaceAll("(?s)]]>.+?</Source>", "]]></Source>");
       return new StringReader(xml);
-    } catch (TransformerConfigurationException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (IllegalArgumentException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (TransformerException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+    } catch (IllegalArgumentException | TransformerException e) {
+      CorePlugin.logException("Exception during XML rendering", e);
     }
     return null;
   
@@ -257,33 +229,24 @@ public class CoreUtils {
         String xpathValue=props.getProperty((String)xp);
         // Set up the input
         Object result=xpath.evaluate(sXPathExpr, indexname_input.getDocumentElement(), XPathConstants.NODESET);
-        if (DEBUG_UTILS) CorePlugin.logDebug("result="+result.getClass().getName());
-        if(result instanceof NodeList) {
-          NodeList nl=(NodeList)result;
-          if (DEBUG_UTILS) CorePlugin.logDebug(sXPathExpr+" : found "+nl.getLength()+" nodes");
-          for(int i=0;i<nl.getLength();i++) {
-            if (DEBUG_UTILS) CorePlugin.logDebug(sXPathExpr+" : "+i);
-            
-            Node n=nl.item(i);
+        CorePlugin.logDebug(DEBUG_UTILS, () -> "result=" + result.getClass().getName());
+        if (result instanceof NodeList) {
+          NodeList nl = (NodeList) result;
+          CorePlugin.logDebug(DEBUG_UTILS, () -> sXPathExpr + " : found " + nl.getLength() + " nodes");
+          for (int i = 0; i < nl.getLength(); i++) {
+            final int finalI = i;
+            CorePlugin.logDebug(DEBUG_UTILS, () -> sXPathExpr + " : " + finalI);
 
-            // Issue #175
-            // If XPath ends in /value, replace the <value> element with @value={substitution string} 
-//            if (sXPathExpr.endsWith("/value")) {
-//              if (DEBUG_UTILS) {
-//                CorePlugin.logDebug("Replacing <value> with @value");
-//              }
-//              Node parent = n.getParentNode();
-//              parent.removeChild(n);
-//              ((Element)parent).setAttribute("value", xpathValue);
-            if (n.getNodeType()==Node.ELEMENT_NODE) {
-              if (DEBUG_UTILS) {
-                CorePlugin.logDebug("Replacing Element contents with text");
-              }
-              Text neuContent=n.getOwnerDocument().createTextNode(xpathValue);
-              while (n.hasChildNodes())
+            Node n = nl.item(i);
+
+            if (n.getNodeType() == Node.ELEMENT_NODE) {
+              CorePlugin.logDebug(DEBUG_UTILS, () -> "Replacing Element contents with text");
+              Text neuContent = n.getOwnerDocument().createTextNode(xpathValue);
+              while (n.hasChildNodes()) {
                 n.removeChild(n.getFirstChild());
+              }
               n.appendChild(neuContent);
-              
+
             } else {
               n.setNodeValue(xpathValue);
             }
@@ -439,17 +402,20 @@ public class CoreUtils {
   }
 
   public static String toCamelCase(String name, boolean isUpper) {
-    if(name==null) return null;
+    if (name == null) {
+      return null;
+    }
 
-    StringBuilder camel=new StringBuilder();
-    boolean upper=isUpper;
-    for(int i=0;i<name.length();i++) {
-      char c=name.charAt(i);
-      if(c==' ') upper=true;
-      else {
-        if(upper) {
+    StringBuilder camel = new StringBuilder();
+    boolean upper = isUpper;
+    for (int i = 0; i < name.length(); i++) {
+      char c = name.charAt(i);
+      if (c == ' ') {
+        upper = true;
+      } else {
+        if (upper) {
           camel.append(Character.toUpperCase(c));
-          upper=false;
+          upper = false;
         } else {
           camel.append(Character.toLowerCase(c));
         }
@@ -457,12 +423,12 @@ public class CoreUtils {
     }
     return camel.toString();
   }
+
   public static IStatus toErrorStatus(String message) {
-    IStatus stat=new Status(
+    return new Status(
         IStatus.ERROR,
         "IIQ Plugin",
         message);
-    return stat;
   }
 
   public static IStatus toWarningStatus(String message) {
