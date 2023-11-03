@@ -109,7 +109,7 @@ public class IIQNewRuleWizard extends Wizard implements INewWizard {
       throwCoreException("Container \"" + containerName + "\" does not exist.");
     }
     IContainer container = (IContainer) resource;
-    final IFile file = container.getFile(new Path("Rule-"+CoreUtils.camelCase(ruleName)+".xml"));
+    final IFile file = container.getFile(new Path("Rule-"+CoreUtils.toCamelCase(ruleName)+".xml"));
 
     try {
       InputStream stream = generateSource(ruleName, ruleTemplate);			 
@@ -163,7 +163,7 @@ public class IIQNewRuleWizard extends Wizard implements INewWizard {
     }
     
     StringBuilder contents=new StringBuilder(cb.toString());
-    addSERILog(contents, CoreUtils.camelCase(rule.getName()) );
+    addSERILog(contents, CoreUtils.toCamelCase(rule.getName()) );
 
     return contents.toString();
   }
@@ -223,7 +223,7 @@ public class IIQNewRuleWizard extends Wizard implements INewWizard {
     buf.append("</ReferencedRules-->\n");
 
     buf.append("  <Source><![CDATA[\n");
-    buf.append(getContent(rule, CoreUtils.camelCase(ruleName)));
+    buf.append(getContent(rule, CoreUtils.toCamelCase(ruleName)));
     buf.append("  ]]></Source>\n");
     buf.append("</Rule>\n");
     buf.append("</sailpoint>");

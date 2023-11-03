@@ -1,3 +1,9 @@
 target
 *.bak
 checkout
+**/.classpath
+**/.project
+**/*.prefs
+*.iml
+.idea/
+identityiq.jar

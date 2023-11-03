@@ -16,6 +16,8 @@ import org.codehaus.stax2.DTDInfo;
 import org.codehaus.stax2.XMLInputFactory2;
 import org.codehaus.stax2.XMLStreamReader2;
 
+import com.ctc.wstx.osgi.InputFactoryProviderImpl;
+
 import sailpoint.iiqda.IIQPlugin;
 import sailpoint.iiqda.exceptions.XMLArtifactParserException;
 
@@ -61,8 +63,9 @@ public class SimpleArtifactParser {
   }
   
   public void parse(boolean stopAtFirstArtifact) throws XMLArtifactParserException {
-    XMLInputFactory2 fac = (XMLInputFactory2)XMLInputFactory2.newInstance();
-    XMLStreamReader2 stream = null;
+	InputFactoryProviderImpl iprovider = new InputFactoryProviderImpl();
+	XMLInputFactory2 fac = iprovider.createInputFactory();
+	XMLStreamReader2 stream = null;
     fac.setProperty(XMLInputFactory.IS_VALIDATING, Boolean.FALSE);
     fac.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.FALSE);
     fac.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.FALSE);

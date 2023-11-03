@@ -102,7 +102,7 @@ public class IIQNewRuleLibraryWizard extends Wizard implements INewWizard {
       throwCoreException("Container \"" + containerName + "\" does not exist.");
     }
     IContainer container = (IContainer) resource;
-    final IFile file = container.getFile(new Path("RuleLibrary-"+CoreUtils.camelCase(fileName)+".xml"));
+    final IFile file = container.getFile(new Path("RuleLibrary-"+CoreUtils.toCamelCase(fileName)+".xml"));
 
     try {
       InputStream stream = openContentStream(fileName);

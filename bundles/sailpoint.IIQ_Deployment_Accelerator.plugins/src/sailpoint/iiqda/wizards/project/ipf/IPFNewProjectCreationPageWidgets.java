@@ -192,7 +192,7 @@ public class IPFNewProjectCreationPageWidgets extends WizardPage {
         if (e.getSource()==txtWidgetName ) {
           if (!javaModified 
               && (txtWidgetName.getText()!=null && txtWidgetName.getText().length()>0)) {
-            txtWidgetDescription.setText("sailpoint.server."+CoreUtils.camelCase(txtWidgetName.getText())+"Service");
+            txtWidgetDescription.setText("sailpoint.server."+CoreUtils.toCamelCase(txtWidgetName.getText())+"Service");
           }
         }
         

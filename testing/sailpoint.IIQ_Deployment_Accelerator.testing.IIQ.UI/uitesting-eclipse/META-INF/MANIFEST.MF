@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: NeonUITesting
-Bundle-SymbolicName: uitesting-neon
+Bundle-Name: EclipseUITesting
+Bundle-SymbolicName: uitesting-eclipse
 Bundle-Version: 4.0.3.qualifier
 Bundle-Vendor: SailPoint
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

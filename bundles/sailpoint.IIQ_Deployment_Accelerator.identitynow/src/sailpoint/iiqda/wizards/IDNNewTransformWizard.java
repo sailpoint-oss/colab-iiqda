@@ -103,7 +103,7 @@ public class IDNNewTransformWizard extends Wizard implements INewWizard {
       throwCoreException("Container \"" + containerName + "\" does not exist.");
     }
     IContainer container = (IContainer) resource;
-    final IFile file = container.getFile(new Path(CoreUtils.camelCase(transformName)+".transform"));
+    final IFile file = container.getFile(new Path(CoreUtils.toCamelCase(transformName)+".transform"));
 
     try {
       InputStream stream = generateSource(transformName, type);			 
