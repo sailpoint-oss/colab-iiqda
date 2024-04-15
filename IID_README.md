@@ -1,6 +1,8 @@
 # Instrumental ID readme for IIQDA
 
-To build, use JDK 8 or higher and Maven 3.8.6. (The Maven 3.9 series has [a bug](https://gitlab.eclipse.org/eclipsefdn/helpdesk/-/issues/3014) that breaks the Eclipse "sonatype" packaging tool.)
+To build, use JDK 21 or higher and Maven 3.9.6. The build *will fail* with other versions of Java or Maven. The latest versions of the Eclipse Tycho build tool requires the latest JDKs.
+
+The generated artifacts will still be Java 8 compatible because of the compiler settings used.
 
 Execute `mvn clean package`.
 

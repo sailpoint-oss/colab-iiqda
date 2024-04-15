@@ -7,3 +7,4 @@ checkout
 *.iml
 .idea/
 identityiq.jar
+.java-version
