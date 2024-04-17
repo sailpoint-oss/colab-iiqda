@@ -1,5 +1,10 @@
 target
 *.bak
 checkout
-identityiq.jar
+**/.classpath
+**/.project
+**/*.prefs
+*.iml
 .idea/
+identityiq.jar
+.java-version

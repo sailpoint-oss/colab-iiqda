@@ -16,6 +16,8 @@ public class IIQDAConstants {
   // The plug-in ID
   public static final String PLUGIN_ID = "sailpoint.IIQ_Deployment_Accelerator"; //$NON-NLS-1$
 	
+  public static final String SECRET_SUFFIX = ".secret.properties";
+  
   public static final String TARGET_SUFFIX = ".target.properties";
 
 

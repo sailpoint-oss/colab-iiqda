@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.io.input.ReaderInputStream;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 
@@ -34,9 +35,14 @@ public class ArtifactHelper {
   
   public static void writeObject(IIQRESTClient client, IFile file, String type, String name, 
       boolean shouldInsertCDATA, IProgressMonitor monitor) throws ConnectionException, CoreException, IOException {
+    IFile dtd;
     String obj=client.getObject(type, name);
     Reader stream = null;
-
+    IProject project = file.getProject();
+    if (project != null && (dtd = project.getFile("sailpoint.dtd")).exists()) {
+        CoreUtils.SAILPOINT_DTD = dtd;
+    }
+    
     stream=CoreUtils.stringDocumentAsStream(ArtifactHelper.clean(obj), shouldInsertCDATA);
     Reader  revStream=CoreUtils.doReverseSubstitution(stream, file.getProject());
     if (file.exists()) {
