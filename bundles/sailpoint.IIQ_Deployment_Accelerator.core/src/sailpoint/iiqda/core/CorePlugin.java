@@ -2,6 +2,7 @@ package sailpoint.iiqda.core;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.function.Supplier;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
@@ -75,8 +76,18 @@ public class CorePlugin extends AbstractUIPlugin {
     log(Status.INFO, msg, null);
   }
 
+  public static void logDebug(boolean debugFlag, Supplier<String> msgSupplier) {
+    if (debugFlag) {
+      log(Status.INFO, msgSupplier.get(), null);
+    }
+  }
+
   public static void logTrace(String msg) {
     log(Status.INFO, msg, null);
+  }
+  
+  public static void logWarning(String msg) {
+	log(Status.WARNING, msg, null);
   }
 
   public static void logError(String msg) {

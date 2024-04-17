@@ -1,1 +1,0 @@
-mvn -Dunleash.releaseVersion=4.0.2 -Dunleash.developmentVersion=4.0.3-SNAPSHOT -Dworkflow=tycho-workflow -Dunleash.scmUsername=kevin-james-sp -Dunleash.scmPassword=mpd826L clean unleash:perform-tycho

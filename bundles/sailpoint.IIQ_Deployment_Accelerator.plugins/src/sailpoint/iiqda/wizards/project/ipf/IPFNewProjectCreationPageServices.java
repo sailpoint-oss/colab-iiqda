@@ -219,7 +219,7 @@ public class IPFNewProjectCreationPageServices extends WizardPage {
         if (e.getSource()==txtServiceName ) {
           if (!javaModified 
               && (txtServiceName.getText()!=null && txtServiceName.getText().length()>0)) {
-            txtClazzName.setText("sailpoint.server."+CoreUtils.camelCase(txtServiceName.getText())+"Service");
+            txtClazzName.setText("sailpoint.server."+CoreUtils.toCamelCase(txtServiceName.getText())+"Service");
           }
         }
         
