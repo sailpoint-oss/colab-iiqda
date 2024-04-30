@@ -19,7 +19,7 @@ import sailpoint.iiqda.exceptions.ConnectionException;
 public class ArtifactHelper {
 
 
-  private static String[] attributesToClean=new String[] {"id", "created", "modified"};
+  private static String[] attributesToClean=new String[] {"id", "created", "modified", "significantModified"};
   
   public static String clean(String object) {
     List<String> components = new ArrayList<String>();
@@ -35,6 +35,21 @@ public class ArtifactHelper {
   public static void writeObject(IIQRESTClient client, IFile file, String type, String name, 
       boolean shouldInsertCDATA, IProgressMonitor monitor) throws ConnectionException, CoreException, IOException {
     String obj=client.getObject(type, name);
+    // KCS 2023-12-28
+    String checkfor="\r\n";
+    int beforeLen=obj.length();
+    int afterLen=0;
+    while(beforeLen > afterLen) {
+      beforeLen=obj.length();
+      obj = obj.replace("        "+checkfor,checkfor);
+      obj = obj.replace("    "+checkfor,checkfor);
+      obj = obj.replace("  "+checkfor,checkfor);
+      obj = obj.replace(" "+checkfor,checkfor);
+      afterLen=obj.length();
+    }
+    obj = obj.replace(checkfor+checkfor, checkfor);
+    obj = obj.replace(checkfor+checkfor, checkfor);
+    // KCS 2023-12-28
     Reader stream = null;
 
     stream=CoreUtils.stringDocumentAsStream(ArtifactHelper.clean(obj), shouldInsertCDATA);

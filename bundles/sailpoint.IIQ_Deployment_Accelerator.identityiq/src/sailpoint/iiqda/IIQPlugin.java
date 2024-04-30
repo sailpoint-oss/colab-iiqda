@@ -106,7 +106,11 @@ public class IIQPlugin extends AbstractUIPlugin {
 
   // Object Types that can be imported. We take the list from ClassLists.MajorClasses and exclude a few
   // that we don't care about (or don't have names) e.g. Identity or RoleScorecard
+  // Modified for 4.0.4-SNAPSHOT
+  /*
   public static final String IMPORTABLE_CLASSES="AccountGroup,ActivityDataSource,Application,AuditConfig,Bundle,BundleArchive,Category,Capability,Certification,CertificationArchive,CertificationDefinition,CertificationGroup,Configuration,CorrelationConfig,Custom,DashboardContent,DashboardLayout,Dictionary,DynamicScope,EmailTemplate,Form,FullTextIndex,GroupFactory,GroupDefinition,IdentityArchive,IdentityRequest,IdentityTrigger,IdentityDashboard,IntegrationConfig,LocalizedAttribute,MessageTemplate,MiningConfig,ObjectConfig,PasswordPolicy,Policy,QuickLink,Request,RequestDefinition,RightConfig,RoleMiningResult,Rule,RuleRegistry,Scope,ScoreConfig,SPRight,ServiceDefinition,ServiceStatus,Target,TargetSource,TaskDefinition,TimePeriod,UIConfig,Workflow,WorkflowCase,WorkflowRegistry,WorkflowTestSuite,Workgroup,WorkItem,WorkItemArchive";
+  */
+  public static final String IMPORTABLE_CLASSES="AccountGroup,ActivityDataSource,Application,AuditConfig,Bundle,Category,Capability,CertificationDefinition,Configuration,CorrelationConfig,Custom,Dictionary,DynamicScope,EmailTemplate,Form,GroupFactory,GroupDefinition,IdentityRequest,IdentityTrigger,IntegrationConfig,LocalizedAttribute,MessageTemplate,MiningConfig,ObjectConfig,PasswordPolicy,Policy,QuickLink,Request,RequestDefinition,RightConfig,Rule,RuleRegistry,Scope,ScoreConfig,SPRight,ServiceDefinition,TaskDefinition,TimePeriod,UIConfig,Workflow,Workgroup,WorkItem";
 
 //  private IResourceChangeListener _changeListener;
 

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: SailPoint Core Support
 Bundle-SymbolicName: sailpoint.IIQ_Deployment_Accelerator.core;singleton:=true
-Bundle-Version: 4.0.3.qualifier
+Bundle-Version: 4.0.4.qualifier
 Bundle-Activator: sailpoint.iiqda.core.CorePlugin
 Bundle-ClassPath: .,
  lib/flexjson-3.3.jar

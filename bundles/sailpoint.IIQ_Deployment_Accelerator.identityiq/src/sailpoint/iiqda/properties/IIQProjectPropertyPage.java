@@ -60,9 +60,13 @@ public class IIQProjectPropertyPage extends PropertyPage implements Listener {
   private Composite cmpImport;
   private Button btnOpenOnImport;
   private Button btnSubstitutionOnCompare;
-
   private boolean openOnImport;
   private boolean substitutionOnCompare;
+  // KCS 2023-12-28
+  private Label lblCustomFilenamesOn;
+  private Button btnCustomFilenames;
+  private boolean customFilenames;
+  // KCS 2023-12-28
 
   /**
    * Constructor for SamplePropertyPage.
@@ -131,7 +135,7 @@ public class IIQProjectPropertyPage extends PropertyPage implements Listener {
     lbl=new Label(cmpTimeoutSlider, SWT.NONE);
     lbl.setText("Connection timeout (ms)");
     timeoutBox = new Text(cmpTimeoutSlider, SWT.HORIZONTAL|SWT.BORDER|SWT.FILL);		
-    timeoutBox.setText("10000");
+    timeoutBox.setText("60000");
     timeoutBox.addListener(SWT.Modify, this);
     data=new GridData();
     data.widthHint=100;
@@ -147,6 +151,13 @@ public class IIQProjectPropertyPage extends PropertyPage implements Listener {
     btnOpenOnImport = new Button(cmpImport, SWT.CHECK);
     btnOpenOnImport.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
 
+    // Added KCS 2023-12-28 to get filename format
+    lblCustomFilenamesOn = new Label(cmpImport, SWT.NONE);
+    lblCustomFilenamesOn.setText("Custom filename format");
+    btnCustomFilenames = new Button(cmpImport, SWT.CHECK);
+    btnCustomFilenames.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
+    // KCS 2023-12-28
+    
     lblSubstitutionOnCompare = new Label(cmpImport, SWT.NONE);
     lblSubstitutionOnCompare.setText("Perform macro substitution on compare");
     
@@ -314,7 +325,7 @@ public class IIQProjectPropertyPage extends PropertyPage implements Listener {
       sliderLbl.setText(Integer.toString(numLines));
       slider.setSelection(numLines);
 
-      int timeout=10000;
+      int timeout=60000;
       try {
         timeout=Integer.parseInt(resource.getPersistentProperty(
             new QualifiedName("", IIQPreferenceConstants.P_CONNECTION_TIMEOUT)));
@@ -330,6 +341,17 @@ public class IIQProjectPropertyPage extends PropertyPage implements Listener {
           openOnImport=Boolean.parseBoolean(pOpenOnImport);
         }
         btnOpenOnImport.setSelection(openOnImport);
+      } catch (NumberFormatException nfe) {}
+
+      try {
+        String pCustomFilenames = resource.getPersistentProperty(
+            new QualifiedName("", IIQPreferenceConstants.P_CUSTOM_FILENAMES));
+        if (pCustomFilenames==null) {
+          customFilenames=true;
+        } else {
+          customFilenames=Boolean.parseBoolean(pCustomFilenames);
+        }
+        btnCustomFilenames.setSelection(customFilenames);
       } catch (NumberFormatException nfe) {}
 
       try {
@@ -402,6 +424,10 @@ public class IIQProjectPropertyPage extends PropertyPage implements Listener {
       resource.setPersistentProperty(
           new QualifiedName("", IIQPreferenceConstants.P_OPEN_ON_IMPORT),
           Boolean.toString(btnOpenOnImport.getSelection()));
+
+      resource.setPersistentProperty(
+          new QualifiedName("", IIQPreferenceConstants.P_CUSTOM_FILENAMES),
+          Boolean.toString(btnCustomFilenames.getSelection()));
 
       for(String pref: combos.keySet()) {
         Combo cmb = combos.get(pref);

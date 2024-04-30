@@ -2,7 +2,7 @@
 <feature
       id="sailpoint.IIQ_Deployment_Accelerator.feature"
       label="IdentityIQ Deployment Accelerator Feature"
-      version="4.0.3.qualifier">
+      version="4.0.4.qualifier">
 
    <description url="http://www.example.com/description">
       This feature provides functionality around the SailPoint portfolio

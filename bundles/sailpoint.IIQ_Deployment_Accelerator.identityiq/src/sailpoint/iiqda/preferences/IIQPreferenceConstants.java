@@ -47,4 +47,6 @@ public class IIQPreferenceConstants {
 
   public static final String P_SUBSTITUTION_ON_COMPARE = "substitutionOnCompare";
   
+  public static final String P_CUSTOM_FILENAMES = "customFilenames";
+  
 }

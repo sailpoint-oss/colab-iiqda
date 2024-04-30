@@ -218,7 +218,7 @@ public class IDNRestHandler {
   
   public boolean validateAPICredentials(String apikey, String apisecret) throws ConnectionException {
     
-    RESTClient client=new RESTClient(10000);
+    RESTClient client=new RESTClient(60000);
     String myUrl=StringUtils.replaceEach( url_validate, 
         new String[] {"{{realm}}"},
         new String[] {organisation});
@@ -236,7 +236,7 @@ public class IDNRestHandler {
 
   public Map<String,String> getOrgDetails(String apikey, String apisecret) throws ConnectionException {
     
-    RESTClient client=new RESTClient(10000);
+    RESTClient client=new RESTClient(60000);
     String myUrl=url_orgDetails.replace("{{realm}}", organisation);
     
     Map<String,String> headers=new HashMap<String,String>();
@@ -248,7 +248,7 @@ public class IDNRestHandler {
   }
 
   public List<String> findObjects(String sObjectType, String stub) throws ConnectionException {
-    RESTClient client=new RESTClient(10000);
+    RESTClient client=new RESTClient(60000);
     System.out.println("IDNRestHandler.getObjects:");
 
     String myUrl=StringUtils.replaceEach( url_v1_getObjects, 
@@ -282,7 +282,7 @@ public class IDNRestHandler {
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<IDNObject> getObjects(String sObjectType, Class clazz) throws ConnectionException {
-    RESTClient client=new RESTClient(10000);
+    RESTClient client=new RESTClient(60000);
     System.out.println("IDNRestHandler.getObjects:");
     
     String myUrl=StringUtils.replaceEach( url_v1_getObjects, 
@@ -336,7 +336,7 @@ public class IDNRestHandler {
   }
   
   public String getObject(String sObjectType, String sObjectName, String organisation, String apikey, String apisecret) throws ConnectionException {
-    RESTClient client=new RESTClient(10000);
+    RESTClient client=new RESTClient(60000);
     System.out.println("IDNRestHandler.getObject:");
     
     String myUrl=StringUtils.replaceEach( url_v1_getObject, 
@@ -366,7 +366,7 @@ public class IDNRestHandler {
   }
   
   public String createObject(String sObjectType, String content, String organisation, String apikey, String apisecret) throws ConnectionException {
-    RESTClient client=new RESTClient(10000);
+    RESTClient client=new RESTClient(60000);
     String myUrl=StringUtils.replaceEach( url_v1_createObject, 
         new String[] {"{{realm}}", "{{objectType}}"},
         new String[] {organisation, sObjectType});
@@ -381,7 +381,7 @@ public class IDNRestHandler {
   }
 
   public String updateObject(String sObjectType, String content, String organisation, String apikey, String apisecret) throws ConnectionException {
-    RESTClient client=new RESTClient(10000);
+    RESTClient client=new RESTClient(60000);
     String myUrl=StringUtils.replaceEach( url_v1_updateObject, 
         new String[] {"{{realm}}", "{{objectType}}"},
         new String[] {organisation, sObjectType});

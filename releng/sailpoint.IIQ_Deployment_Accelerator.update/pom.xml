@@ -3,12 +3,12 @@
   <parent>
     <groupId>sailpoint.IIQ_Deployment_Accelerator</groupId>
     <artifactId>IIQ_Deployment_Accelerator</artifactId>
-    <version>4.0.3-SNAPSHOT</version>
+    <version>4.0.4-SNAPSHOT</version>
     <relativePath>../../</relativePath>
   </parent>
   <groupId>sailpoint.IIQ_Deployment_Accelerator</groupId>
   <artifactId>sailpoint.IIQ_Deployment_Accelerator.site</artifactId>
-  <version>4.0.3-SNAPSHOT</version>
+  <version>4.0.4-SNAPSHOT</version>
   <packaging>eclipse-repository</packaging>
 
   <build>

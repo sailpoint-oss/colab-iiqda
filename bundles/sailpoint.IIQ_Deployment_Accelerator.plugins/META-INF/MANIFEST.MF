@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: SailPoint IdentityIQ Plugin Editor
 Bundle-SymbolicName: sailpoint.IIQ_Deployment_Accelerator.IdentityIQ.Plugins;singleton:=true
-Bundle-Version: 4.0.3.qualifier
+Bundle-Version: 4.0.4.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: SailPoint Technologies
 Bundle-Activator: sailpoint.iiqda.IPFPlugin

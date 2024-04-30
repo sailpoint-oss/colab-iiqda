@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: IdentityIQ Remote Log Viewer
 Bundle-SymbolicName: sailpoint.IIQ_Deployment_Accelerator.LogView;singleton:=true
-Bundle-Version: 4.0.3.qualifier
+Bundle-Version: 4.0.4.qualifier
 Bundle-Vendor: SailPoint Technologies
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.apache.log4j;bundle-version="1.2.15",

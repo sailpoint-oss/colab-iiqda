@@ -135,14 +135,24 @@ public class ImportResourceWizard extends Wizard implements INewWizard {
 
     IResource prj=destinationContainer2.getProject();
     String sOpenOnImport=prj.getPersistentProperty(new QualifiedName("", IIQPreferenceConstants.P_OPEN_ON_IMPORT));
-    
+    // KCS 2023-12-28
+    String sCustomFilenames=prj.getPersistentProperty(new QualifiedName("", IIQPreferenceConstants.P_CUSTOM_FILENAMES));
+    // KCS 2023-12-28
     // respect old default functionality
     boolean bOpenOnImport=true;
     if (sOpenOnImport!=null) bOpenOnImport=Boolean.parseBoolean(sOpenOnImport);
-    
+    // KCS 2023-12-28
+    boolean bCustomFilenames=false;
+    if (sCustomFilenames!=null) bCustomFilenames=Boolean.parseBoolean(sCustomFilenames);
+    // KCS 2023-12-28
     
     for (ObjectDefinition objDef: objects) {
       String fileName=objDef.getObjectType()+"-"+CoreUtils.toCamelCase(objDef.getObjectName(), true)+".xml";
+      // KCS 2023-12-28
+      if(bCustomFilenames) {
+        fileName=objDef.getObjectType()+"-"+CoreUtils.toCustomCase(objDef.getObjectName(), true)+".xml";
+      }
+      // KCS 2023-12-28
       // Strip invalid characters from the name
       fileName=fileName.replace("?", "");
       fileName=fileName.replace(":", "_");
