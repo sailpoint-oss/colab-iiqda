@@ -19,7 +19,7 @@ import sailpoint.iiqda.exceptions.ConnectionException;
 public class ArtifactHelper {
 
 
-  private static String[] attributesToClean=new String[] {"id", "created", "modified", "significantModified"};
+  private static String[] attributesToClean=new String[] {"id", "created", "modified"};
   
   public static String clean(String object) {
     List<String> components = new ArrayList<String>();
