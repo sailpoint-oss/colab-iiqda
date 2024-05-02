@@ -1,8 +1,14 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
+<<<<<<< HEAD:testing/sailpoint.IIQ_Deployment_Accelerator.testing.IIQ.UI/uitesting-neon/META-INF/MANIFEST.MF
 Bundle-Name: NeonUITesting
 Bundle-SymbolicName: uitesting-neon
 Bundle-Version: 4.0.4.qualifier
+=======
+Bundle-Name: EclipseUITesting
+Bundle-SymbolicName: uitesting-eclipse
+Bundle-Version: 4.0.3.qualifier
+>>>>>>> upstream/main:testing/sailpoint.IIQ_Deployment_Accelerator.testing.IIQ.UI/uitesting-eclipse/META-INF/MANIFEST.MF
 Bundle-Vendor: SailPoint
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.junit;bundle-version="4.12.0",

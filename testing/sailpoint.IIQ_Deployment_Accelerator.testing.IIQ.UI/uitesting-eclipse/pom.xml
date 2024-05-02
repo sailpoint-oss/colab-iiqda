@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>uitesting-neon</artifactId>
+  <artifactId>uitesting-eclipse</artifactId>
   <packaging>eclipse-test-plugin</packaging>
 
   <build>
@@ -92,12 +92,12 @@
     <repository>
        <id>neon</id>
        <layout>p2</layout>
-       <url>http://download.eclipse.org/releases/neon</url>
+       <url>http://download.eclipse.org/releases/${eclipse.version.name}</url>
      </repository>
     <repository>
        <id>neon-updates</id>
        <layout>p2</layout>
-       <url>http://download.eclipse.org/eclipse/updates/4.6</url>
+       <url>http://download.eclipse.org/eclipse/updates/${eclipse.version.number}</url>
      </repository>
   </repositories>
 

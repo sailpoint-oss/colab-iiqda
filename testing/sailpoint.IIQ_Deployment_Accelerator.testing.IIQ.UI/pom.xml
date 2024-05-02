@@ -9,7 +9,7 @@
      <version>4.0.4-SNAPSHOT</version>
   </parent>
   <modules>
-    <module>uitesting-neon</module>
+    <module>uitesting-eclipse</module>
     <!-- module>uitesting-neon</module-->
   </modules>
 </project>
