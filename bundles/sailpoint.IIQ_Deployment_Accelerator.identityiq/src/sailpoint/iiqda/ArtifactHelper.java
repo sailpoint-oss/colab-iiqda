@@ -37,6 +37,21 @@ public class ArtifactHelper {
       boolean shouldInsertCDATA, IProgressMonitor monitor) throws ConnectionException, CoreException, IOException {
     IFile dtd;
     String obj=client.getObject(type, name);
+    // KCS 2023-12-28
+    String checkfor="\r\n";
+    int beforeLen=obj.length();
+    int afterLen=0;
+    while(beforeLen > afterLen) {
+      beforeLen=obj.length();
+      obj = obj.replace("        "+checkfor,checkfor);
+      obj = obj.replace("    "+checkfor,checkfor);
+      obj = obj.replace("  "+checkfor,checkfor);
+      obj = obj.replace(" "+checkfor,checkfor);
+      afterLen=obj.length();
+    }
+    obj = obj.replace(checkfor+checkfor, checkfor);
+    obj = obj.replace(checkfor+checkfor, checkfor);
+    // KCS 2023-12-28
     Reader stream = null;
     IProject project = file.getProject();
     if (project != null && (dtd = project.getFile("sailpoint.dtd")).exists()) {

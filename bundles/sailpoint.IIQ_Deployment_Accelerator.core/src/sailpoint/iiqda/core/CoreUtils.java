@@ -339,6 +339,74 @@ public class CoreUtils {
     }
     return buf;
   }
+  /**
+   * Custom case conversion
+   * KCS 2023-12-28
+   */
+  public static String toCustomCase(String name, boolean isUpper) {
+    if (name == null) {
+      return null;
+    }
+    boolean containsDash=false;
+    if(name.contains("-")) containsDash=true;
+    boolean nospaces=true;
+    if(name.contains(" ")) nospaces=false;
+    boolean upper = isUpper;
+
+    StringBuilder camel = new StringBuilder();
+    if (name.contains(" ")) {
+      String[] words=name.split(" ");
+      for (int iw=0; iw<words.length; iw++) {
+        if(iw==0)upper=isUpper;
+        else upper=true;
+        String word=words[iw];
+        if(word.equals(word.toUpperCase())) {
+          camel.append(word);
+        }
+        else {
+          for (int i = 0; i < word.length(); i++) {
+            char c = word.charAt(i);
+            if(containsDash) {
+              // if the name contains a dash, do not change case
+              camel.append(c);
+            }
+            else {
+              if (upper) {
+                camel.append(Character.toUpperCase(c));
+                upper = false;
+              }
+              else {
+                camel.append(Character.toLowerCase(c));
+              }
+            }
+          }
+        }
+      }
+    }
+    else {
+      upper=isUpper;
+      for (int i = 0; i < name.length(); i++) {
+        char c = name.charAt(i);
+        if(c==' ') upper=true;
+        else {
+          if(containsDash) {
+            // if the name contains a dash, do not change case
+            camel.append(c);
+          }
+          else {
+            if (upper) {
+              camel.append(Character.toUpperCase(c));
+              upper = false;
+            }
+            else {
+              camel.append(Character.toLowerCase(c));
+            }
+          }
+        }
+      }
+    }
+    return camel.toString();
+  }
 
   public static void showConnectionError(Shell shell, ConnectionException e) {
     IStatus errors=null;      

@@ -104,7 +104,7 @@
   <parent>
     <groupId>sailpoint.IIQ_Deployment_Accelerator</groupId>
     <artifactId>uitesting</artifactId>
-    <version>4.0.3-SNAPSHOT</version>
+    <version>4.0.4-SNAPSHOT</version>
   </parent>
 
 </project>

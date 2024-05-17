@@ -1,5 +1,5 @@
 Bundle-SymbolicName: unit.testing
-Bundle-Version: 4.0.3.qualifier
+Bundle-Version: 4.0.4.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: sailpoint.IIQ_Deployment_Accelerator.core,
  org.junit;bundle-version="4.12.0",

@@ -2,13 +2,13 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>sailpoint.IIQ_Deployment_Accelerator</groupId>
     <artifactId>sailpoint.IIQ_Deployment_Accelerator.features</artifactId>
-    <version>4.0.3-SNAPSHOT</version>
+    <version>4.0.4-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <parent>
         <groupId>sailpoint.IIQ_Deployment_Accelerator</groupId>
         <artifactId>IIQ_Deployment_Accelerator</artifactId>
-        <version>4.0.3-SNAPSHOT</version>
+        <version>4.0.4-SNAPSHOT</version>
     </parent>
     
     <modules>

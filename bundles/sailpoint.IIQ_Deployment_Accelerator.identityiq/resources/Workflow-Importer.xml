@@ -11,8 +11,7 @@
       <Source><![CDATA[
 serilog=org.apache.commons.logging.LogFactory.getLog("sailpoint.iiqda.Importer");
 serilog.debug("operation="+operation);
-
-	  ]]></Source>
+    ]]></Source>
     </Script>
     <Transition to="Import">
       <Script>
@@ -187,15 +186,88 @@ serilog.debug("operation="+operation);
   <Step icon="Default" name="Get Object Types" posX="354" posY="194" resultVariable="payload">
     <Script>
       <Source><![CDATA[
-import sailpoint.object.ClassLists;
+//import sailpoint.object.ClassLists;
+//void removeClass(List a, String cname) {
+//  if(a.contains(cname))a.remove(cname);
+//}
 
-List l = new ArrayList();
-
-for (Class clazz: ClassLists.MajorClasses) {
-  l.add(clazz.getSimpleName());
-}
+// This is just the list from IIQPlugin.java
+List l = new ArrayList(Arrays.asList("AccountGroup","ActivityDataSource","Application","AuditConfig","Bundle","Category","Capability","CertificationDefinition","Configuration","CorrelationConfig","Custom","Dictionary","DynamicScope","EmailTemplate","Form","GroupFactory","GroupDefinition","IdentityRequest","IdentityTrigger","IntegrationConfig","LocalizedAttribute","MessageTemplate","MiningConfig","ObjectConfig","PasswordPolicy","Policy","QuickLink","Request","RequestDefinition","RightConfig","Rule","RuleRegistry","Scope","ScoreConfig","SPRight","ServiceDefinition","TaskDefinition","TimePeriod","UIConfig","Workflow","Workgroup","WorkItem"));
+//
+//for (Class clazz: ClassLists.MajorClasses) {
+//  l.add(clazz.getSimpleName());
+//}
+//
 // Add this in, its a special type of Identity
-l.add("Workgroup");
+//l.add("Workgroup");
+// KCS 2023-12-29 I abandoned removing and just setting a list
+//removeClass(l,"ApplicationActivity");
+//removeClass(l,"ApplicationScorecard");
+//removeClass(l,"AuditEvent");
+//removeClass(l,"BatchRequest");
+//removeClass(l,"BundleArchive");
+//removeClass(l,"BundleProfileRelation");
+//removeClass(l,"BundleProfileRelationObject");
+//removeClass(l,"BundleProfileStep");
+//removeClass(l,"Certification");
+//removeClass(l,"CertificationArchive");
+//removeClass(l,"CertificationGroup");
+//removeClass(l,"CloudAccess3Way");
+//removeClass(l,"CloudAccessGroup");
+//removeClass(l,"CloudAccessRole");
+//removeClass(l,"CloudAccessScope");
+//removeClass(l,"DatabaseVersion");
+//removeClass(l,"FullTextIndex");
+//removeClass(l,"GroupIndex");
+//removeClass(l,"Identity");
+//removeClass(l,"IdentityArchive");
+//removeClass(l,"IdentityEntitlement");
+//removeClass(l,"IdentityHistoryItem");
+//removeClass(l,"IdentityRequest");
+//removeClass(l,"IdentitySnapshot");
+//removeClass(l,"JasperResult");
+//removeClass(l,"JasperTemplate");
+//removeClass(l,"MessageTemplate");
+//removeClass(l,"MitigationExpiration");
+//removeClass(l,"Module");
+//removeClass(l,"MonitoringStatistic");
+//removeClass(l,"PendingRequestAttachment");
+//removeClass(l,"Plugin");
+//removeClass(l,"PolicyViolation");
+//removeClass(l,"PostCommitNotificationObject");
+//removeClass(l,"ProcessLog");
+//removeClass(l,"Profile");
+//removeClass(l,"ProvisioningRequest");
+//removeClass(l,"ProvisioningTransaction");
+//removeClass(l,"RecommenderDefinition");
+//removeClass(l,"Request");
+//removeClass(l,"RequestState");
+//removeClass(l,"ResourceEvent");
+//removeClass(l,"RoleChangeEvent");
+//removeClass(l,"RoleIndex");
+//removeClass(l,"RoleMetadata");
+//removeClass(l,"RoleMiningResult");
+//removeClass(l,"RoleScorecard");
+//removeClass(l,"RuleRegistry");
+//removeClass(l,"Scorecard");
+//removeClass(l,"Server");
+//removeClass(l,"ServerStatistic");
+//removeClass(l,"ServiceLock");
+//removeClass(l,"ServiceStatus");
+//removeClass(l,"");
+//removeClass(l,"");
+//removeClass(l,"");
+//removeClass(l,"");
+//removeClass(l,"");
+//removeClass(l,"");
+//removeClass(l,"");
+//removeClass(l,"");
+//removeClass(l,"");
+//removeClass(l,"");
+//removeClass(l,"");
+//removeClass(l,"");
+//
+
 Collections.sort(l);
 
 workflow.put("result", "success");
@@ -690,7 +762,10 @@ return objects;
           skipClasses.add("TaskSchedule");        // Included for invalid query options.
           skipClasses.add("TaskResult");          // We don't export TaskResult.
           skipClasses.add("UIPreferences");
-
+          // Added for 8.3
+          skipClasses.add("DashboardContent");
+          skipClasses.add("DashboardLayout");
+          skipClasses.add("DashboardLayout");
 
           List majClasses = new ArrayList();
 
